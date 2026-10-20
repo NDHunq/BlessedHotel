@@ -14,6 +14,7 @@ Website giới thiệu cho **một** khách sạn (Blessed Hotel, Phú Quốc). 
 - **React 19**, **TypeScript**
 - **Tailwind CSS v4** — cấu hình bằng `@theme` trong `src/app/globals.css`, **không có** `tailwind.config.*`.
 - Font qua `next/font/google` (xem bảng dưới). Không dùng thư viện UI/icon — icon là SVG inline.
+- **yet-another-react-lightbox** (plugin Zoom, Thumbnails, Counter, Captions): trình xem ảnh phòng trong `RoomGallery`.
 
 ## Lệnh
 
@@ -39,6 +40,7 @@ src/
     booking/            # BookingFab (nút nổi), ChannelList, BookingCta, OpenBookingButton, events.ts
     ui/                 # Button, ArrowLink, Carousel, Container, SectionHeading/Label, PageHero,
                         #   RoomCard, NewsGrid, ServiceList, Stats + CountUp (số chạy khi cuộn tới)
+                        #   RoomGallery (bên ngoài 3 ảnh xếp chồng nghiêng lộn xộn kiểu xấp ảnh, không ghi số lượng → trình xem ảnh đủ ảnh: next/prev, zoom, vuốt, phím ←/→, bộ đếm)
   lib/
     site.ts             # TOÀN BỘ nội dung: menu, banner, thẻ khám phá, kênh đặt phòng, phòng, ẩm thực, dịch vụ, tin tức
 public/brands/          # logo Zalo, Traveloka, Agoda, Klook; social/ = icon Facebook, Instagram, TikTok, Zalo (Simple Icons)
@@ -47,6 +49,7 @@ public/brands/          # logo Zalo, Traveloka, Agoda, Klook; social/ = icon Fac
 - **Menu chính** (`nav` trong `site.ts`): Về chúng tôi `/ve-chung-toi` · Các hạng phòng `/hang-phong` · Ẩm thực `/am-thuc` · Dịch vụ `/dich-vu` · Tin tức `/tin-tuc`. Mỗi tab mở trang riêng; trang chủ chỉ tóm tắt và dẫn tới các trang đó.
 - **Trang chủ** (thứ tự): Hero (banner) → Explore (băng thẻ "Khám phá Blessed Hotel") → RoomTypes (tab lọc Phòng/Suite/Villa) → PromoBanner → BrandBand (băng đen + hàng điểm nhấn) → News.
 - **Header trong suốt ở mọi trang** (chữ trắng, tab đang mở màu `accent`) nằm đè lên banner, chuyển nền trắng khi cuộn > 24px hoặc mở menu mobile; logic trong `Header.tsx` (`transparent`, `navColor`). Vì vậy **mọi trang phải mở đầu bằng banner ảnh/nền tối có `-mt-16`** (`Hero`, `PageHero`, banner trang Về chúng tôi, `not-found.tsx`). `HeroSlideshow` chuyển `hero.slides` (ảnh + chữ + link riêng mỗi slide) mỗi `hero.interval` = 4000ms.
+- **Trang Các hạng phòng**: mỗi phòng hiển thị `RoomGallery` với `room.gallery` (3–4 ảnh có `alt` dùng làm chú thích; ảnh đầu trùng `room.image`).
 - **Trang con**: `PageHero` (ảnh dưới header trong suốt + breadcrumb + tiêu đề) → nội dung → `BookingCta` (trừ Tin tức).
 - **Trang Về chúng tôi** (bố cục theo modernvillagelifestyle.vn/vi/ve-mvillage; dữ liệu `about` trong `site.ts`): banner toàn màn hình (khẩu hiệu mảnh + chữ "Blessed" serif lớn, `h1` ẩn) → section nền `surface` có 2 vòng tròn trang trí mờ: đoạn dẫn căn giữa, tiêu đề 2 dòng tô màu từ đầu (`philosophy.title`), đoạn kết, `Stats` hàng ngang, 4 thẻ ảnh dọc chữ nằm trên ảnh (`pillars`) → ảnh tràn viền + chữ trái, tiêu đề trộn chữ mảnh/đậm (`closing`).
 - **Footer** (dùng chung `Container`): hàng trên: logo + khẩu hiệu (trái) · icon mạng xã hội 22px (phải). Hàng chính 4 cột: Liên hệ (hotline, email, địa chỉ) · Khám phá · Đặt phòng · Vị trí (bản đồ). Tiêu đề cột `text-sm` chữ hoa `brand-400`, link 15px `white/80`. Dòng cuối: bản quyền + giấy phép 13px. **Không có nhóm "Chính sách"** (đã bỏ theo yêu cầu).

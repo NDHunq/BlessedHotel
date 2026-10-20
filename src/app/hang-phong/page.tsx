@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import BookingCta from "@/components/booking/BookingCta";
 import OpenBookingButton from "@/components/booking/OpenBookingButton";
 import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
+import RoomGallery from "@/components/ui/RoomGallery";
 import { Label } from "@/components/ui/SectionHeading";
 import { formatVnd, rooms } from "@/lib/site";
 
@@ -40,8 +40,8 @@ export default function RoomsPage() {
         <Container className="flex flex-col gap-20 md:gap-28">
           {rooms.map((room, i) => (
             <article id={room.slug} key={room.slug} className="grid items-center gap-8 md:grid-cols-2 md:gap-16">
-              <div className={`relative aspect-[4/3] overflow-hidden rounded-card ${i % 2 === 1 ? "md:order-2" : ""}`}>
-                <Image src={room.image} alt={`Phòng ${room.name}`} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+              <div className={i % 2 === 1 ? "md:order-2" : ""}>
+                <RoomGallery photos={room.gallery} name={room.name} />
               </div>
               <div>
                 <Label>{room.view}</Label>

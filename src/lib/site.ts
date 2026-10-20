@@ -23,7 +23,10 @@ export type RoomType = {
   view: string;
   priceFrom: number;
   amenities: string[];
+  /** Ảnh đại diện (thẻ phòng ở trang chủ) */
   image: string;
+  /** 3–4 ảnh cho bộ ảnh xếp chồng + trình xem ảnh ở /hang-phong; ảnh đầu = ảnh đại diện */
+  gallery: { src: string; alt: string }[];
 };
 
 export type DiningVenue = {
@@ -298,6 +301,12 @@ export const rooms: RoomType[] = [
     priceFrom: 1_450_000,
     amenities: ["Wi-Fi miễn phí", "Smart TV", "Máy pha cà phê", "Minibar", "Két sắt", "Phòng tắm đứng"],
     image: unsplash("photo-1618773928121-c32242e63f39", 1400),
+    gallery: [
+      { src: unsplash("photo-1618773928121-c32242e63f39", 1800), alt: "Phòng ngủ Deluxe" },
+      { src: unsplash("photo-1566665797739-1674de7a421a", 1800), alt: "Giường King và đèn đọc sách" },
+      { src: unsplash("photo-1629140727571-9b5c6f6267b4", 1800), alt: "Góc ngồi bên cửa sổ" },
+      { src: unsplash("photo-1584622650111-993a426fbf0a", 1800), alt: "Phòng tắm đứng vách kính" },
+    ],
   },
   {
     slug: "premier",
@@ -313,6 +322,12 @@ export const rooms: RoomType[] = [
     priceFrom: 1_850_000,
     amenities: ["Wi-Fi miễn phí", "Ban công", "Smart TV", "Bàn làm việc", "Minibar", "Áo choàng tắm"],
     image: unsplash("photo-1631049307264-da0ec9d70304", 1400),
+    gallery: [
+      { src: unsplash("photo-1631049307264-da0ec9d70304", 1800), alt: "Phòng ngủ Premier Ocean View" },
+      { src: unsplash("photo-1631049552057-403cdb8f0658", 1800), alt: "Góc sofa và cửa kính lớn" },
+      { src: unsplash("photo-1568495248636-6432b97bd949", 1800), alt: "Cửa kính nhìn ra ngoài" },
+      { src: unsplash("photo-1582719508461-905c673771fd", 1800), alt: "Ban công nhìn ra biển" },
+    ],
   },
   {
     slug: "junior-suite",
@@ -328,6 +343,12 @@ export const rooms: RoomType[] = [
     priceFrom: 2_650_000,
     amenities: ["Khu tiếp khách", "Bồn tắm", "Smart TV", "Máy pha cà phê", "Minibar", "Dịch vụ turndown"],
     image: unsplash("photo-1590490360182-c33d57733427", 1400),
+    gallery: [
+      { src: unsplash("photo-1590490360182-c33d57733427", 1800), alt: "Junior Suite" },
+      { src: unsplash("photo-1591088398332-8a7791972843", 1800), alt: "Phòng ngủ có ghế đọc sách" },
+      { src: unsplash("photo-1598928506311-c55ded91a20c", 1800), alt: "Khu tiếp khách riêng" },
+      { src: unsplash("photo-1620626011761-996317b8d101", 1800), alt: "Phòng tắm có bồn tắm" },
+    ],
   },
   {
     slug: "garden-villa",
@@ -343,6 +364,12 @@ export const rooms: RoomType[] = [
     priceFrom: 3_900_000,
     amenities: ["Hiên riêng", "Bồn tắm lớn", "Phòng khách", "Smart TV", "Máy pha cà phê", "Bữa sáng tại phòng"],
     image: unsplash("photo-1611892440504-42a792e24d32", 1400),
+    gallery: [
+      { src: unsplash("photo-1611892440504-42a792e24d32", 1800), alt: "Phòng ngủ Garden Villa" },
+      { src: unsplash("photo-1563911302283-d2bc129e7570", 1800), alt: "Hồ bơi giữa vườn nhiệt đới" },
+      { src: unsplash("photo-1618221195710-dd6b41faaea6", 1800), alt: "Phòng khách trong villa" },
+      { src: unsplash("photo-1507652313519-d4e9174996dd", 1800), alt: "Bồn tắm lớn bên cây xanh" },
+    ],
   },
 ];
 
