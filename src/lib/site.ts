@@ -53,6 +53,8 @@ export type NewsPost = {
   excerpt: string;
   date: string;
   image: string;
+  /** Nội dung bài viết ở /tin-tuc/[slug]: các mục, mỗi mục có tiêu đề phụ (tuỳ chọn) và đoạn văn */
+  body: { heading?: string; paragraphs: string[] }[];
 };
 
 export type BookingChannel = {
@@ -213,7 +215,7 @@ export const explore: ExploreItem[] = [
     label: "Tin tức",
     title: "Sunday Brunch tại The Hearth",
     description: "Hơn 60 món Á Âu, khu vui chơi cho trẻ em và nhạc sống mỗi Chủ nhật.",
-    href: "/tin-tuc",
+    href: "/tin-tuc/brunch-cuoi-tuan",
     image: unsplash("photo-1544148103-0773bf10d330", 1000),
   },
 ];
@@ -460,6 +462,26 @@ export const news: NewsPost[] = [
     excerpt: "Tận hưởng liệu trình 90 phút cùng trà thảo mộc, áp dụng đến hết tháng 11.",
     date: "2026-10-10",
     image: unsplash("photo-1507652313519-d4e9174996dd", 1000),
+    body: [
+      {
+        paragraphs: [
+          "Mùa thu ở Phú Quốc là lúc nắng dịu và biển lặng hơn. Đây cũng là thời điểm Blessed Spa ra mắt gói thư giãn 90 phút dành riêng cho khách lưu trú và khách ghé thăm.",
+        ],
+      },
+      {
+        heading: "Gói spa gồm những gì",
+        paragraphs: [
+          "Liệu trình bắt đầu bằng ngâm chân thảo mộc, tiếp theo là 60 phút massage toàn thân với tinh dầu sả chanh và kết thúc bằng đắp mặt nạ dưỡng ẩm.",
+          "Sau liệu trình, bạn được mời trà gừng mật ong và một đĩa trái cây theo mùa tại phòng thư giãn.",
+        ],
+      },
+      {
+        heading: "Thời gian áp dụng",
+        paragraphs: [
+          "Ưu đãi áp dụng mỗi ngày từ 10:00 đến 20:00, đến hết tháng 11. Vui lòng đặt lịch trước tại quầy lễ tân hoặc qua Zalo để chọn được khung giờ mong muốn.",
+        ],
+      },
+    ],
   },
   {
     slug: "brunch-cuoi-tuan",
@@ -468,6 +490,26 @@ export const news: NewsPost[] = [
     excerpt: "Hơn 60 món Á Âu, khu vui chơi cho trẻ em và nhạc sống mỗi Chủ nhật.",
     date: "2026-10-02",
     image: unsplash("photo-1544148103-0773bf10d330", 1000),
+    body: [
+      {
+        paragraphs: [
+          "Từ Chủ nhật này, The Hearth mở Sunday Brunch với hơn 60 món Á Âu, phục vụ từ 11:00 đến 14:30.",
+        ],
+      },
+      {
+        heading: "Thực đơn",
+        paragraphs: [
+          "Quầy hải sản tươi có hàu, tôm và ghẹ Phú Quốc. Bên cạnh là góc món nướng, mì làm tại chỗ, bánh ngọt và quầy cà phê phin.",
+          "Mỗi tuần, bếp trưởng chọn thêm hai món đặc biệt theo nguyên liệu trong mùa.",
+        ],
+      },
+      {
+        heading: "Cho cả gia đình",
+        paragraphs: [
+          "Khu vui chơi trẻ em có người trông, cùng nhạc acoustic nhẹ suốt buổi. Trẻ em dưới 6 tuổi được miễn phí khi đi cùng người lớn.",
+        ],
+      },
+    ],
   },
   {
     slug: "hoang-hon-ho-boi",
@@ -476,6 +518,20 @@ export const news: NewsPost[] = [
     excerpt: "DJ, cocktail và BBQ bên hồ bơi vô cực vào tối thứ Bảy cuối cùng mỗi tháng.",
     date: "2026-09-25",
     image: unsplash("photo-1600011689032-8b628b8a8747", 1000),
+    body: [
+      {
+        paragraphs: [
+          "Vào tối thứ Bảy cuối cùng mỗi tháng, hồ bơi vô cực của Blessed Hotel trở thành nơi đón hoàng hôn với DJ, cocktail và tiệc nướng ngoài trời.",
+        ],
+      },
+      {
+        heading: "Chương trình",
+        paragraphs: [
+          "Từ 17:00, quầy bar bên hồ phục vụ cocktail đặc trưng của Sky Terrace. Tiệc nướng bắt đầu lúc 18:30 với hải sản và thịt nướng than hoa.",
+          "DJ chơi nhạc đến 22:00. Khách lưu trú được vào cửa miễn phí, khách bên ngoài vui lòng đặt chỗ trước.",
+        ],
+      },
+    ],
   },
   {
     slug: "kinh-nghiem-du-lich-phu-quoc",
@@ -484,6 +540,27 @@ export const news: NewsPost[] = [
     excerpt: "Lịch trình gợi ý, món ngon nên thử và những điểm ngắm hoàng hôn đẹp nhất đảo.",
     date: "2026-09-12",
     image: unsplash("photo-1551882547-ff40c63fe5fa", 1000),
+    body: [
+      {
+        paragraphs: [
+          "Bốn ngày là vừa đủ để vừa nghỉ ngơi vừa khám phá Phú Quốc mà không bị vội. Dưới đây là lịch trình đội ngũ concierge của chúng tôi hay gợi ý cho khách lần đầu đến đảo.",
+        ],
+      },
+      {
+        heading: "Ngày 1 và 2: Nam đảo",
+        paragraphs: [
+          "Ngày đầu, nhận phòng và đi bộ ra biển ngắm hoàng hôn ở khu Thị trấn Hoàng Hôn. Buổi tối ghé chợ đêm để thử hải sản nướng.",
+          "Ngày thứ hai, đi tour 4 đảo bằng ca nô, lặn ngắm san hô và ăn trưa trên đảo. Chiều về nghỉ ở hồ bơi khách sạn.",
+        ],
+      },
+      {
+        heading: "Ngày 3 và 4: Bắc đảo và mua sắm",
+        paragraphs: [
+          "Ngày thứ ba, đi về phía bắc đảo để tắm biển và ghé một vườn tiêu. Ngày cuối, mua nước mắm, tiêu và ngọc trai làm quà trước khi ra sân bay.",
+          "Concierge có thể đặt xe, tour và nhà hàng giúp bạn. Chỉ cần nhắn trước một ngày.",
+        ],
+      },
+    ],
   },
   {
     slug: "uu-dai-luu-tru-dai-ngay",
@@ -492,6 +569,26 @@ export const news: NewsPost[] = [
     excerpt: "Giảm đến 25% cho kỳ nghỉ từ 5 đêm trở lên khi liên hệ đặt phòng trực tiếp.",
     date: "2026-08-30",
     image: unsplash("photo-1584132967334-10e028bd69f7", 1000),
+    body: [
+      {
+        paragraphs: [
+          "Nếu bạn có kế hoạch ở Phú Quốc từ 5 đêm trở lên, hãy liên hệ đặt phòng trực tiếp với khách sạn để nhận mức giá tốt hơn.",
+        ],
+      },
+      {
+        heading: "Ưu đãi",
+        paragraphs: [
+          "Giảm 15% cho kỳ nghỉ từ 5 đêm và 25% cho kỳ nghỉ từ 7 đêm. Ưu đãi đã bao gồm bữa sáng hằng ngày và giặt ủi hai bộ quần áo mỗi ngày.",
+          "Khách lưu trú dài ngày được nhận phòng sớm và trả phòng muộn nếu còn phòng.",
+        ],
+      },
+      {
+        heading: "Cách đặt",
+        paragraphs: [
+          "Gọi hotline hoặc nhắn Zalo cho chúng tôi, kèm ngày đến, ngày đi và số khách. Ưu đãi không áp dụng khi đặt qua các nền tảng đặt phòng trực tuyến.",
+        ],
+      },
+    ],
   },
   {
     slug: "yoga-san-thuong",
@@ -500,6 +597,20 @@ export const news: NewsPost[] = [
     excerpt: "Lớp yoga miễn phí cho khách lưu trú lúc 6:00 sáng mỗi ngày, đón nắng sớm trên đảo.",
     date: "2026-08-15",
     image: unsplash("photo-1445019980597-93fa8acb246c", 1000),
+    body: [
+      {
+        paragraphs: [
+          "Mỗi sáng lúc 6:00, sân thượng của Blessed Hotel có một lớp yoga nhẹ nhàng kéo dài 45 phút, miễn phí cho khách lưu trú.",
+        ],
+      },
+      {
+        heading: "Lớp học",
+        paragraphs: [
+          "Lớp phù hợp cả người mới bắt đầu, tập trung vào hít thở và giãn cơ. Thảm, khăn và nước được chuẩn bị sẵn.",
+          "Sau buổi tập, bạn có thể xuống The Hearth ăn sáng hoặc ra hồ bơi khi nắng còn dịu.",
+        ],
+      },
+    ],
   },
 ];
 

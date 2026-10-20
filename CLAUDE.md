@@ -33,6 +33,7 @@ src/
     layout.tsx          # font, metadata, Header + Footer + BookingFab
     page.tsx            # trang chủ: ghép các section
     ve-chung-toi/ hang-phong/ am-thuc/ dich-vu/ tin-tuc/   # mỗi tab menu là 1 trang (/gioi-thieu redirect 308 → /ve-chung-toi trong next.config.ts)
+    tin-tuc/[slug]/     # trang chi tiết bài viết (generateStaticParams từ `news`; slug lạ → notFound())
     globals.css         # design tokens (@theme)
   components/
     layout/             # Header (client, active tab theo pathname), Footer, Logo
@@ -51,6 +52,7 @@ public/brands/          # logo Zalo, Traveloka, Agoda, Klook; social/ = icon Fac
 - **Header trong suốt ở mọi trang** (chữ trắng, tab đang mở màu `accent`) nằm đè lên banner, chuyển nền trắng khi cuộn > 24px hoặc mở menu mobile; logic trong `Header.tsx` (`transparent`, `navColor`). Vì vậy **mọi trang phải mở đầu bằng banner ảnh/nền tối có `-mt-16`** (`Hero`, `PageHero`, banner trang Về chúng tôi, `not-found.tsx`). `HeroSlideshow` chuyển `hero.slides` (ảnh + chữ + link riêng mỗi slide) mỗi `hero.interval` = 4000ms.
 - **Trang Các hạng phòng**: mỗi phòng hiển thị `RoomGallery` với `room.gallery` (3–4 ảnh có `alt` dùng làm chú thích; ảnh đầu trùng `room.image`).
 - **Trang con**: `PageHero` (ảnh dưới header trong suốt + breadcrumb + tiêu đề) → nội dung → `BookingCta` (trừ Tin tức).
+- **Tin tức**: mỗi bài trong `news` (`site.ts`) có `body` (các mục `heading?` + `paragraphs`). Thẻ `NewsGrid` là link tới `/tin-tuc/[slug]`. Trang chi tiết bố cục kiểu tạp chí (tham khảo Belmond Stories), lưới 12 cột, mọi khối bắt đầu ở cột 2: phần đầu nền `ink` dưới header trong suốt (breadcrumb + tag chuyên mục, tiêu đề lớn, hàng thông tin Đăng bởi · Ngày đăng · Thời gian đọc) → ảnh chính 16:9 đè lên mép dưới phần đầu → lề trái dính khi cuộn (mục lục "Trong bài này" neo tới `h2`, link Tất cả tin tức; ẩn trên mobile) + cột chữ 7/12 (đoạn mở đầu `font-display` cỡ lớn, các mục, khối liên hệ đặt phòng) → "Bài viết khác". Lưu ý: với `cacheComponents`, slug không tồn tại vẫn trả HTTP 200 nhưng hiển thị trang 404 + `noindex` (do streaming), đây là hành vi của Next, không phải lỗi.
 - **Trang Về chúng tôi** (bố cục theo modernvillagelifestyle.vn/vi/ve-mvillage; dữ liệu `about` trong `site.ts`): banner toàn màn hình (khẩu hiệu mảnh + chữ "Blessed" serif lớn, `h1` ẩn) → section nền `surface` có 2 vòng tròn trang trí mờ: đoạn dẫn căn giữa, tiêu đề 2 dòng tô màu từ đầu (`philosophy.title`), đoạn kết, `Stats` hàng ngang, 4 thẻ ảnh dọc chữ nằm trên ảnh (`pillars`) → ảnh tràn viền + chữ trái, tiêu đề trộn chữ mảnh/đậm (`closing`).
 - **Footer** (dùng chung `Container`): hàng trên: logo + khẩu hiệu (trái) · icon mạng xã hội 22px (phải). Hàng chính 4 cột: Liên hệ (hotline, email, địa chỉ) · Khám phá · Đặt phòng · Vị trí (bản đồ). Tiêu đề cột `text-sm` chữ hoa `brand-400`, link 15px `white/80`. Dòng cuối: bản quyền + giấy phép 13px. **Không có nhóm "Chính sách"** (đã bỏ theo yêu cầu).
 - **Đặt phòng**: link các kênh nằm ở `bookingChannels` trong `site.ts`. Muốn mở menu đặt phòng từ một nút bất kỳ thì dùng `OpenBookingButton` (gọi `openBooking()` trong `components/booking/events.ts`).
@@ -131,5 +133,4 @@ Quy ước kỹ thuật:
 ## Việc tiếp theo
 
 - Thay thông tin liên hệ, logo và ảnh thật.
-- Trang chi tiết tin tức `/tin-tuc/[slug]` (hiện thẻ tin chưa có link).
 - Đa ngôn ngữ (vi/en), SEO (sitemap, Open Graph).
