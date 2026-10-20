@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Design tokens — dùng qua class Tailwind (bg-brand-600, text-ink, font-display…).
+ * Không viết cứng mã hex trong component; thêm token mới ở đây nếu cần.
+ */
+@theme {
+  /* Màu chủ đạo: vàng gold. 500 = gold trang trí; 600 = nền nút/chữ link (đạt tương phản AA với chữ trắng) */
+  --color-brand-50: #fbf7ec;
+  --color-brand-100: #f5ebcf;
+  --color-brand-200: #ebd7a3;
+  --color-brand-300: #dfc075;
+  --color-brand-400: #cda651;
+  --color-brand-500: #b8902f;
+  --color-brand-600: #93701f;
+  --color-brand-700: #7a5c1a;
+  --color-brand-800: #5f4715;
+  --color-brand-900: #46340f;
+
+  /* Nhấn trên nền tối (ảnh, footer) */
+  --color-accent: #e3c987;
+  --color-accent-soft: #f7f0df;
+
+  /* Trung tính */
+  --color-ink: #171717;
+  --color-ink-soft: #1f2937;
+  --color-muted: #6b7280;
+  --color-line: #e5e7eb;
+  --color-surface: #f9fafb;
+  --color-cream: #fbf8f2;
+  /* Nền thẻ xám ấm (thẻ "Khám phá", tin tức) */
+  --color-sand: #f6f4f0;
+
+  /* Font theo bộ của site tham khảo (xem CLAUDE.md) */
+  --font-sans: var(--font-be-vietnam), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+  --font-overline: var(--font-mona-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --text-6\.5xl: 4rem;
+  --text-6\.5xl--line-height: 1.15;
+
+  --radius-card: 0.75rem;
+  --shadow-card: 0 4px 12px rgb(0 0 0 / 0.1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--color-ink);
+}
+
+/* Chừa chỗ cho header dính (+ thanh mục lục ở trang con) khi nhảy tới anchor */
+section[id],
+article[id] {
+  scroll-margin-top: 8rem;
 }
