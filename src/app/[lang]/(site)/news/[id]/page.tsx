@@ -8,11 +8,13 @@ import RoomsMiniList from "@/components/news/RoomsMiniList";
 import SideBookingCta from "@/components/news/SideBookingCta";
 import ArrowLink from "@/components/ui/ArrowLink";
 import Container from "@/components/ui/Container";
+import Markdown from "@/components/ui/Markdown";
 import { fill } from "@/i18n/config";
 import { formatDate, readingMinutes } from "@/i18n/format";
 import { pageMetadata } from "@/i18n/metadata";
 import { getI18n } from "@/i18n/server";
 import { getNews } from "@/lib/content";
+import { blocksText, inlineText, parseMarkdown } from "@/lib/markdown";
 import { news } from "@/lib/site";
 
 // Cache Components: tạo sẵn trang tĩnh cho mọi bài (mỗi ngôn ngữ); URL là /news/<id>, id lạ → notFound()
@@ -28,7 +30,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/news/[id]"
   return pageMetadata({ locale: i18n.locale, path: `/news/${id}`, title: post.title, description: post.excerpt, image: post.image });
 }
 
-/** id neo cho mục thứ i (không lấy từ tiêu đề vì tiếng Hàn/Trung không chuyển được thành chữ Latin) */
+/** id neo cho tiêu đề "##" thứ i (không lấy từ tiêu đề vì tiếng Hàn/Trung không chuyển được thành chữ Latin) */
 const anchorId = (i: number) => `section-${i + 1}`;
 
 /*
@@ -44,11 +46,12 @@ export default async function NewsArticlePage({ params }: PageProps<"/[lang]/new
   const post = all.find((p) => String(p.id) === id);
   if (!post) notFound();
 
-  const allText = [post.excerpt, ...post.keyPoints, ...post.body.flatMap((s) => [s.heading ?? "", ...s.paragraphs])];
-  // Mục có tiêu đề được đánh số 1, 2, 3… (dùng chung cho Mục lục và tiêu đề trong bài)
-  let n = 0;
-  const sections = post.body.map((s, i) => ({ ...s, id: anchorId(i), number: s.heading ? ++n : 0 }));
-  const toc = sections.filter((s) => s.heading);
+  const blocks = parseMarkdown(post.markdown);
+  const allText = [post.excerpt, ...post.keyPoints, ...blocksText(blocks)];
+  // Tiêu đề "##" được đánh số 1, 2, 3… (dùng chung cho Mục lục và tiêu đề trong bài)
+  const toc = blocks
+    .filter((b) => b.type === "heading" && b.level === 2)
+    .map((b, i) => ({ id: anchorId(i), number: i + 1, heading: b.type === "heading" ? inlineText(b.text) : "" }));
   const others = all.filter((p) => p.id !== post.id).slice(0, 4);
 
   return (
@@ -126,24 +129,7 @@ export default async function NewsArticlePage({ params }: PageProps<"/[lang]/new
           <figcaption className="mt-3 text-center text-sm text-muted italic">{post.title}</figcaption>
         </figure>
 
-        <div className="mt-10 space-y-10">
-          {sections.map((section) => (
-            <section key={section.id} id={section.heading ? section.id : undefined}>
-              {section.heading && (
-                <h2 className="mb-4 font-display text-2xl font-semibold tracking-[-0.01em] text-ink">
-                  {section.number}. {section.heading}
-                </h2>
-              )}
-              <div className="space-y-5">
-                {section.paragraphs.map((p) => (
-                  <p key={p.slice(0, 24)} className="text-[17px] leading-[1.8] text-ink-soft">
-                    {p}
-                  </p>
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
+        <Markdown blocks={blocks} headingId={anchorId} numbered className="mt-10" />
 
         <div className="mt-14 flex flex-col gap-5 rounded-2xl bg-sand p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
           <div>

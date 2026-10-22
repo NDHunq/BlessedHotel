@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import MarkdownEditor from "@/components/admin/MarkdownEditor";
 import { fill, localeMeta, locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/vi";
 import { formatDate } from "@/i18n/format";
@@ -19,7 +20,7 @@ const field =
 const isComplete = (c: DraftContent) => c.title.trim() !== "" && c.excerpt.trim() !== "";
 
 /**
- * Trình soạn bài (bản demo, không lưu): tab nội dung theo 4 ngôn ngữ, thiết lập chung, xem trước thẻ bài.
+ * Trình soạn bài (bản demo, không lưu): tab nội dung theo 4 ngôn ngữ (nội dung soạn bằng Markdown), thiết lập chung, xem trước thẻ bài.
  * "Đăng bài" kiểm tra đủ 4 ngôn ngữ + ngày + ảnh bìa rồi báo kết quả; chưa gửi lên máy chủ.
  */
 export default function PostEditor({
@@ -50,8 +51,6 @@ export default function PostEditor({
   };
   const updateContent = (patch: Partial<DraftContent>) =>
     update({ content: { ...draft.content, [tab]: { ...content, ...patch } } });
-  const updateSection = (i: number, patch: Partial<DraftContent["sections"][number]>) =>
-    updateContent({ sections: content.sections.map((s, j) => (j === i ? { ...s, ...patch } : s)) });
 
   const pickFile = (file: File | undefined) => {
     if (file) update({ image: URL.createObjectURL(file) });
@@ -167,50 +166,7 @@ export default function PostEditor({
               </div>
             </fieldset>
 
-            <fieldset>
-              <legend className="text-sm font-medium text-ink">{labels.sections}</legend>
-              <p className="mt-0.5 text-xs text-muted">{labels.paragraphsHint}</p>
-              <ol className="mt-3 space-y-4">
-                {content.sections.map((section, i) => (
-                  <li key={i} className="rounded-xl bg-surface p-4 ring-1 ring-line">
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-xs font-semibold text-muted uppercase">{fill(labels.section, { n: i + 1 })}</p>
-                      {content.sections.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => updateContent({ sections: content.sections.filter((_, j) => j !== i) })}
-                          className="text-xs font-medium text-red-600 hover:text-red-700"
-                        >
-                          {labels.removeSection}
-                        </button>
-                      )}
-                    </div>
-                    <input
-                      value={section.heading}
-                      aria-label={labels.heading}
-                      placeholder={labels.heading}
-                      onChange={(e) => updateSection(i, { heading: e.target.value })}
-                      className={`${field} mt-3 font-medium`}
-                    />
-                    <textarea
-                      rows={5}
-                      value={section.text}
-                      aria-label={labels.paragraphs}
-                      placeholder={labels.paragraphs}
-                      onChange={(e) => updateSection(i, { text: e.target.value })}
-                      className={`${field} mt-2 resize-y leading-relaxed`}
-                    />
-                  </li>
-                ))}
-              </ol>
-              <button
-                type="button"
-                onClick={() => updateContent({ sections: [...content.sections, { heading: "", text: "" }] })}
-                className="mt-3 h-10 rounded-full px-4 text-sm font-medium text-brand-600 ring-1 ring-brand-600 hover:bg-brand-50"
-              >
-                + {labels.addSection}
-              </button>
-            </fieldset>
+            <MarkdownEditor value={content.body} onChange={(body) => updateContent({ body })} lang={localeMeta[tab].htmlLang} labels={labels} />
           </div>
         </section>
 

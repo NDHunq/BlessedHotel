@@ -39,7 +39,9 @@ src/
       (site)/page.tsx   # trang chủ
       (site)/about/ rooms/ dining/ experiences/ news/   # mỗi tab menu là 1 trang (đường dẫn tiếng Việt cũ: redirect 308 trong next.config.ts)
       (site)/news/[id]/ # chi tiết bài viết theo mã số `id` (generateStaticParams từ `news`; id lạ → notFound())
-      admin/            # trang quản trị (layout riêng, noindex, BẢN DEMO chưa lưu): danh sách bài · news/new · news/[id] (sửa)
+      admin/            # trang quản trị (layout riêng, noindex, BẢN DEMO chưa lưu); actions.ts = Server Action login/logout
+      admin/login/      # đăng nhập (giả lập)
+      admin/(panel)/    # cần đăng nhập: danh sách bài · news/new · news/[id] (sửa) · categories (chuyên mục)
       not-found.tsx     # 404 trong một ngôn ngữ (tự bọc SiteChrome vì nằm ngoài nhóm (site))
     global-not-found.tsx # 404 cho URL không khớp route nào (hiện 4 ngôn ngữ; bật `experimental.globalNotFound`)
     globals.css         # design tokens (@theme), font dự phòng CJK theo :lang
@@ -50,18 +52,21 @@ src/
     format.ts           # formatPrice (VND), formatDate, readingMinutes theo ngôn ngữ
     metadata.ts         # pageMetadata(): title/description + canonical + hreflang 4 ngôn ngữ
   components/
-    admin/              # PostEditor (client: tab nội dung 4 ngôn ngữ, thiết lập, xem trước thẻ bài)
+    admin/              # PostEditor (tab nội dung 4 ngôn ngữ, thiết lập, xem trước thẻ bài), MarkdownEditor (thanh công cụ + tab Xem trước),
+                        #   CategoryManager (thêm/sửa/xoá chuyên mục), LoginForm
     layout/             # SiteChrome, Header (client, active tab theo pathname), LanguageSwitcher (LanguageMenu desktop, LanguagePills mobile), Footer, Logo
     home/               # section trang chủ: Hero + HeroSlideshow, Explore, RoomTypes, PromoBanner, BrandBand, News
     booking/            # BookingFab (nút nổi), ChannelList, BookingCta, OpenBookingButton, events.ts
     news/               # trang tin (kiểu Vinpearl): NewsBrowser (client: ô chuyên mục lọc + tìm kiếm + "Tin mới nhất"),
                         #   FeaturedNews (1 lớn + 2 nhỏ), SideTitle (tiêu đề + vạch gold), PostMiniList, RoomsMiniList, SideBookingCta
-    ui/                 # Button, ArrowLink, Carousel, Container, SectionHeading/Label, PageHero,
+    ui/                 # Markdown (hiển thị nội dung bài từ parseMarkdown, dùng ở trang bài viết + xem trước trong admin), Button, ArrowLink, Carousel, Container, SectionHeading/Label, PageHero,
                         #   RoomCard, NewsGrid, Stats + CountUp (số chạy khi cuộn tới)
                         #   VenueCard (thẻ ngang nhà hàng/spa/gym: PhotoScroller cuộn ảnh + giờ mở cửa, điện thoại, MenuViewer "Xem menu", nút đặt bàn/đặt chỗ)
                         #   RoomGallery (bên ngoài 3 ảnh xếp chồng nghiêng lộn xộn kiểu xấp ảnh, không ghi số lượng → trình xem ảnh đủ ảnh: next/prev, zoom, vuốt, phím ←/→, bộ đếm)
   lib/
     site.ts             # dữ liệu KHÔNG phụ thuộc ngôn ngữ: ảnh, giá, số liệu, link, id/slug (không chứa chữ hiển thị)
+    admin-auth.ts       # đăng nhập giả lập: tài khoản demo DEMO_ADMIN (ghi đè bằng env ADMIN_USERNAME/ADMIN_PASSWORD), tên + giá trị cookie phiên
+    markdown.ts         # Markdown đơn giản cho nội dung bài: parseMarkdown → khối, parseInline, bodyToMarkdown, safeUrl
     admin.ts            # PostDraft cho trình soạn: newPostDraft(), getPostDraft(id) (nạp nội dung bài từ cả 4 dictionary)
     content.ts          # ghép site.ts + dictionary → getRooms/getNews/getNav/… (chữ đã dịch + href có tiền tố ngôn ngữ)
 public/menus/           # ảnh từng trang thực đơn <slug>-<n>.svg (ẢNH TẠM, thay bằng menu thật; khai báo trong `menu` của venue ở site.ts)
@@ -83,7 +88,14 @@ public/flags/           # quốc kỳ vuông vn/gb/kr/cn (flag-icons, MIT) cho L
   - Với `cacheComponents`, slug không tồn tại vẫn trả HTTP 200 nhưng hiển thị trang 404 + `noindex` (do streaming), đây là hành vi của Next, không phải lỗi.
 - **Trang Giới thiệu** (bố cục theo modernvillagelifestyle.vn/vi/ve-mvillage; dữ liệu `about` trong `site.ts`): banner toàn màn hình (khẩu hiệu mảnh + chữ "Blessed" serif lớn, `h1` ẩn) → section nền `surface` có 2 vòng tròn trang trí mờ: đoạn dẫn căn giữa, tiêu đề 2 dòng tô màu từ đầu (`philosophy.title`), đoạn kết, `Stats` hàng ngang, 4 thẻ ảnh dọc chữ nằm trên ảnh (`pillars`) → ảnh tràn viền + chữ trái, tiêu đề trộn chữ mảnh/đậm (`closing`).
 - **Footer** (dùng chung `Container`): hàng trên: logo + khẩu hiệu (trái) · icon mạng xã hội 22px (phải). Hàng chính 4 cột: Liên hệ (hotline, email, địa chỉ) · Khám phá · Đặt phòng · Vị trí (bản đồ). Tiêu đề cột `text-sm` chữ hoa `brand-400`, link 15px `white/80`. Dòng cuối: bản quyền + giấy phép 13px. **Không có nhóm "Chính sách"** (đã bỏ theo yêu cầu).
-- **Trang quản trị `/<lang>/admin`** (bản demo, **chưa có đăng nhập, chưa lưu thật**): không link từ website, `robots: noindex` trong `admin/layout.tsx`, không dùng `pageMetadata` (không cần canonical/hreflang). Khung riêng (logo + nhãn Quản trị, Bài viết, Xem website, đổi ngôn ngữ giao diện) + dòng báo bản demo. Danh sách bài (bảng) → `PostEditor`: nội dung soạn theo tab 4 ngôn ngữ (chấm xanh = đủ tiêu đề + tóm tắt), tóm tắt, 3 ý "Thông tin nhanh", các mục (tiêu đề + đoạn văn cách dòng trống); thiết lập chung (chuyên mục, ngày, Tin nổi bật, ảnh bìa từ URL hoặc chọn file → xem trước bằng blob URL); xem trước thẻ bài. "Đăng bài" chỉ kiểm tra đủ 4 ngôn ngữ + ngày + ảnh rồi báo kết quả. Chữ giao diện trong dictionary `admin`. Khi làm thật: thêm đăng nhập (chặn `/<lang>/admin` ở `proxy.ts`), API/database lưu bài theo `id`, thay `news` trong `site.ts` + `news[slug]` trong dictionary bằng dữ liệu từ database.
+- **Trang quản trị `/<lang>/admin`** (BẢN DEMO: đăng nhập giả lập, mọi thay đổi chỉ nằm trên trình duyệt, chưa lưu): không link từ website, `robots: noindex` trong `admin/layout.tsx`, không dùng `pageMetadata`.
+  - **Đăng nhập**: `proxy.ts` chặn mọi `/<lang>/admin/...` khi thiếu cookie phiên → `/<lang>/admin/login?next=…`; đã đăng nhập mà mở trang đăng nhập → vào `/admin`. `LoginForm` gửi Server Action `login` (so với `DEMO_ADMIN` trong `lib/admin-auth.ts`, đúng thì đặt cookie httpOnly 8 giờ, quay về `next` nếu thuộc khu admin). Nút Đăng xuất = Server Action `logout`. Tài khoản demo xem trong `lib/admin-auth.ts`.
+  - **Khung `(panel)`**: logo + nhãn Quản trị, Bài viết, Chuyên mục, Xem website, đổi ngôn ngữ giao diện, Đăng xuất + dòng báo bản demo.
+  - **Bài viết**: bảng danh sách → `PostEditor`: tab 4 ngôn ngữ (chấm xanh = đủ tiêu đề + tóm tắt), tóm tắt, 3 ý "Thông tin nhanh", **nội dung soạn bằng Markdown** (`MarkdownEditor`: H, B, I, danh sách, trích dẫn, link, ảnh từ link, tải ảnh lên → blob: tạm; tab Xem trước dùng đúng component `Markdown` của trang bài viết); thiết lập chung (chuyên mục, ngày, Tin nổi bật, ảnh bìa); xem trước thẻ bài. "Đăng bài" chỉ kiểm tra đủ 4 ngôn ngữ + ngày + ảnh.
+  - **Chuyên mục** (`CategoryManager`): bảng tên (4 ngôn ngữ) + mã + số bài; thêm (mã `a-z0-9-` không trùng + tên đủ 4 ngôn ngữ), sửa tên, xoá (xác nhận ngay trên dòng; không cho xoá khi còn bài).
+  - Chữ giao diện trong dictionary `admin` (`nav`, `list`, `login`, `categories`, `editor`).
+  - Khi làm thật: tài khoản thật (mật khẩu băm, phiên ký/mã hoá), API + database lưu bài (theo `id`, nội dung Markdown từng ngôn ngữ) và chuyên mục, API tải ảnh; thay `news`/`newsCategories` trong `site.ts` + `news[slug]`/`newsCategories` trong dictionary bằng dữ liệu từ database.
+- **Nội dung bài viết là Markdown**: trang bài viết lấy `post.markdown` (hiện chuyển từ `body` trong dictionary bằng `bodyToMarkdown`), tách khối bằng `parseMarkdown` rồi hiển thị bằng `Markdown`; tiêu đề `##` được đánh số và làm mục lục (neo `section-N`), `###` là tiêu đề nhỏ, ảnh một dòng riêng thành ảnh lớn có chú thích (= mô tả ảnh).
 - **Đặt phòng**: link các kênh nằm ở `bookingChannels` trong `site.ts` (nhãn/ghi chú trong dictionary `booking.channels`). Muốn mở menu đặt phòng từ một nút bất kỳ thì dùng `OpenBookingButton` (gọi `openBooking()` trong `components/booking/events.ts`).
 
 ## Đa ngôn ngữ (i18n) — QUY TẮC BẮT BUỘC

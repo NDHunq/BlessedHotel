@@ -4,6 +4,7 @@
  */
 import { fill } from "@/i18n/config";
 import type { I18n } from "@/i18n/server";
+import { bodyToMarkdown } from "@/lib/markdown";
 import { bookingChannels, dining, experiences, explore, hero, highlights, nav, news, newsCategories, rooms, site, type Venue } from "@/lib/site";
 
 export const getNav = ({ t, href }: I18n) => nav.map((item) => ({ label: t.nav[item.id], href: href(item.href) }));
@@ -63,6 +64,8 @@ export const getNews = ({ t, href }: I18n) =>
   news.map((n) => ({
     ...n,
     ...t.news[n.slug],
+    /** Nội dung bài dạng Markdown (trang bài viết hiển thị bằng `Markdown`) */
+    markdown: bodyToMarkdown(t.news[n.slug].body),
     categoryLabel: t.newsCategories[n.category],
     href: href(`/news/${n.id}`),
   }));

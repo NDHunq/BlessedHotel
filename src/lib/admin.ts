@@ -4,14 +4,15 @@
  */
 import { locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/server";
+import { bodyToMarkdown } from "@/lib/markdown";
 import { news, type NewsCategory } from "@/lib/site";
 
 export type DraftContent = {
   title: string;
   excerpt: string;
   keyPoints: string[];
-  /** Mỗi mục: tiêu đề (có thể trống) + các đoạn văn cách nhau bằng một dòng trống */
-  sections: { heading: string; text: string }[];
+  /** Nội dung bài dạng Markdown (xem lib/markdown.ts) */
+  body: string;
 };
 
 export type PostDraft = {
@@ -22,7 +23,7 @@ export type PostDraft = {
   content: Record<Locale, DraftContent>;
 };
 
-const emptyContent = (): DraftContent => ({ title: "", excerpt: "", keyPoints: ["", "", ""], sections: [{ heading: "", text: "" }] });
+const emptyContent = (): DraftContent => ({ title: "", excerpt: "", keyPoints: ["", "", ""], body: "" });
 
 /** Bài trống cho "Viết bài mới" */
 export const newPostDraft = (): PostDraft => ({
@@ -44,7 +45,7 @@ export async function getPostDraft(id: number): Promise<PostDraft | undefined> {
         title: text.title,
         excerpt: text.excerpt,
         keyPoints: [...text.keyPoints],
-        sections: text.body.map((s) => ({ heading: s.heading ?? "", text: s.paragraphs.join("\n\n") })),
+        body: bodyToMarkdown(text.body),
       };
       return [l, content] as const;
     }),
