@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { news } from "./src/lib/site";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -9,10 +10,22 @@ const nextConfig: NextConfig = {
     globalNotFound: true,
   },
   async redirects() {
-    // Trang "Giới thiệu" đổi tên thành "Về chúng tôi" (proxy tự thêm tiền tố ngôn ngữ nếu thiếu)
+    // Đường dẫn cũ bằng tiếng Việt → đường dẫn tiếng Anh hiện tại. URL thiếu tiền tố ngôn ngữ
+    // (VD "/hang-phong") được proxy thêm tiền tố trước, rồi khớp các luật dưới đây.
+    const L = ":lang(vi|en|ko|zh)";
+    const pages: [string, string][] = [
+      ["gioi-thieu", "about"],
+      ["ve-chung-toi", "about"],
+      ["hang-phong", "rooms"],
+      ["am-thuc", "dining"],
+      ["trai-nghiem", "experiences"],
+      ["dich-vu", "experiences"],
+      ["tin-tuc", "news"],
+    ];
     return [
-      { source: "/gioi-thieu", destination: "/ve-chung-toi", permanent: true },
-      { source: "/:lang(vi|en|ko|zh)/gioi-thieu", destination: "/:lang/ve-chung-toi", permanent: true },
+      // Bài viết cũ /tin-tuc/<slug> → /news/<id>
+      ...news.map((post) => ({ source: `/${L}/tin-tuc/${post.slug}`, destination: `/:lang/news/${post.id}`, permanent: true })),
+      ...pages.map(([from, to]) => ({ source: `/${L}/${from}`, destination: `/:lang/${to}`, permanent: true })),
     ];
   },
   images: {

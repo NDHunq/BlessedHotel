@@ -3,7 +3,7 @@ import { defaultLocale, localeMeta, locales, localizeHref, type Locale } from "@
 
 /**
  * Metadata cho một trang theo ngôn ngữ, kèm hreflang tới các bản dịch khác.
- * `path` là đường dẫn KHÔNG có tiền tố ngôn ngữ, VD "/hang-phong".
+ * `path` là đường dẫn KHÔNG có tiền tố ngôn ngữ, VD "/rooms".
  */
 export function pageMetadata({
   locale,

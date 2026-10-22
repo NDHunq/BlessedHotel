@@ -13,7 +13,7 @@ export default async function News() {
       <Container>
         <div className="flex items-end justify-between gap-6">
           <h2 className="font-display text-4xl font-semibold tracking-[-0.01em] text-ink md:text-5xl">{t.home.newsTitle}</h2>
-          <ArrowLink href={href("/tin-tuc")} className="shrink-0 pb-1">
+          <ArrowLink href={href("/news")} className="shrink-0 pb-1">
             {t.ui.viewAll}
           </ArrowLink>
         </div>

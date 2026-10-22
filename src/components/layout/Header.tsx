@@ -27,6 +27,9 @@ const navColor = (transparent: boolean, active: boolean) => {
   return active ? "text-brand-600" : "text-ink-soft hover:text-brand-600";
 };
 
+/** Trang không có banner ảnh ở đầu (nền trắng) → header không trong suốt: /<lang>/news/<slug> */
+const SOLID_HEADER_PAGES = /^\/[a-z]{2}\/news\/[^/]+/;
+
 const subscribeScroll = (cb: () => void) => {
   window.addEventListener("scroll", cb, { passive: true });
   return () => window.removeEventListener("scroll", cb);
@@ -52,9 +55,10 @@ export default function Header({
     () => window.scrollY > 24,
     () => false,
   );
-  // Mọi trang đều mở đầu bằng banner ảnh nằm dưới header (-mt-16):
-  // header trong suốt khi chưa cuộn, chuyển nền trắng khi cuộn hoặc mở menu mobile
-  const transparent = !scrolled && !open;
+  // Trang mở đầu bằng banner ảnh nằm dưới header (-mt-16): header trong suốt khi chưa cuộn,
+  // chuyển nền trắng khi cuộn hoặc mở menu mobile. Ngoại lệ: trang bài viết mở đầu bằng nền trắng → header luôn đặc.
+  const solidPage = SOLID_HEADER_PAGES.test(pathname);
+  const transparent = !solidPage && !scrolled && !open;
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   // Khóa cuộn trang khi mở menu mobile

@@ -59,49 +59,50 @@ export const bookingChannels: {
 
 /** Menu chính (nhãn: dictionary `nav`) — href chưa có tiền tố ngôn ngữ */
 export const nav = [
-  { id: "about", href: "/ve-chung-toi" },
-  { id: "rooms", href: "/hang-phong" },
-  { id: "dining", href: "/am-thuc" },
-  { id: "services", href: "/dich-vu" },
-  { id: "news", href: "/tin-tuc" },
+  { id: "about", href: "/about" },
+  { id: "rooms", href: "/rooms" },
+  { id: "dining", href: "/dining" },
+  { id: "experiences", href: "/experiences" },
+  { id: "news", href: "/news" },
 ] as const;
 
 /** Banner trang chủ (chữ: `home.heroSlides`), tự chuyển mỗi `interval` ms */
 export const hero = {
   slides: [
-    { id: "welcome", image: unsplash("photo-1542314831-068cd1dbfeeb", 2400), href: "/ve-chung-toi" },
-    { id: "pool", image: unsplash("photo-1566073771259-6a8506099945", 2400), href: "/dich-vu" },
-    { id: "sunset", image: unsplash("photo-1600011689032-8b628b8a8747", 2400), href: "/am-thuc" },
-    { id: "rooms", image: unsplash("photo-1571896349842-33c89424de2d", 2400), href: "/hang-phong" },
+    { id: "welcome", image: unsplash("photo-1542314831-068cd1dbfeeb", 2400), href: "/about" },
+    { id: "pool", image: unsplash("photo-1566073771259-6a8506099945", 2400), href: "/experiences" },
+    { id: "sunset", image: unsplash("photo-1600011689032-8b628b8a8747", 2400), href: "/dining#olea-cafe" },
+    { id: "rooms", image: unsplash("photo-1571896349842-33c89424de2d", 2400), href: "/rooms" },
   ],
   interval: 4000,
 } as const;
 
 /** Thẻ "Khám phá" ở trang chủ (chữ: `home.explore`) */
 export const explore = [
-  { id: "rooms", href: "/hang-phong", image: unsplash("photo-1631049307264-da0ec9d70304", 1000) },
-  { id: "dining", href: "/am-thuc", image: unsplash("photo-1414235077428-338989a2e8c0", 1000) },
-  { id: "spa", href: "/dich-vu", image: unsplash("photo-1540555700478-4be289fbecef", 1000) },
-  { id: "story", href: "/ve-chung-toi", image: unsplash("photo-1520250497591-112f2f40a3f4", 1000) },
-  { id: "news", href: "/tin-tuc/brunch-cuoi-tuan", image: unsplash("photo-1544148103-0773bf10d330", 1000) },
+  { id: "rooms", href: "/rooms", image: unsplash("photo-1631049307264-da0ec9d70304", 1000) },
+  { id: "dining", href: "/dining#blessed-bistro", image: unsplash("photo-1414235077428-338989a2e8c0", 1000) },
+  { id: "spa", href: "/experiences#spa", image: unsplash("photo-1540555700478-4be289fbecef", 1000) },
+  { id: "story", href: "/about", image: unsplash("photo-1520250497591-112f2f40a3f4", 1000) },
+  // Bài "Sunday Brunch" (id 5 trong `news`)
+  { id: "news", href: "/news/5", image: unsplash("photo-1544148103-0773bf10d330", 1000) },
 ] as const;
 
 /** Hàng điểm nhấn trong khối thương hiệu ở trang chủ (nhãn: `home.highlights`; tên riêng không dịch) */
 export const highlights = [
-  { id: "the-hearth", name: "The Hearth", href: "/am-thuc#the-hearth" },
-  { id: "saffron", name: "Saffron", href: "/am-thuc#saffron" },
-  { id: "sky-terrace", name: "Sky Terrace", href: "/am-thuc#sky-terrace" },
-  { id: "spa", name: "Blessed Spa", href: "/dich-vu" },
+  { id: "blessed-bistro", name: "Blessed Bistro", href: "/dining#blessed-bistro" },
+  { id: "olea-cafe", name: "Olea Café", href: "/dining#olea-cafe" },
+  { id: "spa", name: "Blessed Spa", href: "/experiences#spa" },
+  { id: "gym", name: "Blessed Gym", href: "/experiences#gym" },
 ] as const;
 
 export type Stat = { value: number; label: string; decimals?: number; suffix?: string };
 
-/** Trang /ve-chung-toi (chữ: dictionary `about`) */
+/** Trang /about (chữ: dictionary `about`) */
 export const about = {
   heroImage: unsplash("photo-1520250497591-112f2f40a3f4", 2400),
   stats: [
     { id: "rooms", value: 120, suffix: "+" },
-    { id: "dining", value: 3 },
+    { id: "dining", value: 2 },
     { id: "reception", value: 24, suffix: "/7" },
   ],
   pillars: [
@@ -117,7 +118,7 @@ export const about = {
 export const pageImages = {
   rooms: unsplash("photo-1631049307264-da0ec9d70304", 2400),
   dining: unsplash("photo-1414235077428-338989a2e8c0", 2400),
-  services: unsplash("photo-1566073771259-6a8506099945", 2400),
+  experiences: unsplash("photo-1566073771259-6a8506099945", 2400),
   news: unsplash("photo-1551882547-ff40c63fe5fa", 2400),
 };
 
@@ -198,22 +199,98 @@ export const rooms = [
 
 export const promoImage = unsplash("photo-1561501900-3701fa6a0864", 2400);
 
-/** Nhà hàng & bar (chữ: dictionary `dining[slug]`; tên riêng và giờ mở cửa không dịch) */
+/**
+ * Nhà hàng / spa / phòng tập hiển thị bằng `VenueCard` (chữ: dictionary `dining[slug]` / `experiences[slug]`).
+ * Tên riêng, giờ mở cửa, số điện thoại không dịch. `menu`: ảnh từng trang thực đơn (public/menus, đang là ảnh tạm).
+ * `reserveUrl`: link đặt bàn / đặt chỗ riêng (đang chờ đối tác làm); để trống thì nút gọi số `phone`.
+ */
+export type Venue = {
+  slug: string;
+  name: string;
+  hours: string;
+  phone?: string;
+  gallery: readonly string[];
+  menu?: readonly string[];
+  reserveUrl?: string;
+};
+
+const menuPages = (slug: string, pages: number) => Array.from({ length: pages }, (_, i) => `/menus/${slug}-${i + 1}.svg`);
+
+// TODO: thay số điện thoại thật của nhà hàng / spa
 export const dining = [
-  { slug: "the-hearth", name: "The Hearth", hours: "06:00 – 22:00", image: unsplash("photo-1517248135467-4c7edcad34c4", 1400) },
-  { slug: "saffron", name: "Saffron", hours: "11:00 – 14:00 · 17:30 – 22:00", image: unsplash("photo-1414235077428-338989a2e8c0", 1400) },
-  { slug: "sky-terrace", name: "Sky Terrace", hours: "16:00 – 00:00", image: unsplash("photo-1559339352-11d035aa65de", 1400) },
-] as const;
+  {
+    slug: "blessed-bistro",
+    name: "Blessed Bistro",
+    hours: "06:00 – 22:00",
+    phone: "0297 000 0011",
+    gallery: [
+      unsplash("photo-1517248135467-4c7edcad34c4", 1400),
+      unsplash("photo-1552566626-52f8b828add9", 1400),
+      unsplash("photo-1424847651672-bf20a4b0982b", 1400),
+      unsplash("photo-1504674900247-0877df9cc836", 1400),
+    ],
+    menu: menuPages("blessed-bistro", 3),
+    reserveUrl: "",
+  },
+  {
+    slug: "olea-cafe",
+    name: "Olea Café",
+    hours: "07:00 – 23:00",
+    phone: "0297 000 0012",
+    gallery: [
+      unsplash("photo-1554118811-1e0d58224f24", 1400),
+      unsplash("photo-1501339847302-ac426a4a7cbb", 1400),
+      unsplash("photo-1495474472287-4d71bcdd2085", 1400),
+      unsplash("photo-1509042239860-f550ce710b93", 1400),
+    ],
+    menu: menuPages("olea-cafe", 2),
+    reserveUrl: "",
+  },
+] as const satisfies readonly Venue[];
 
-/** Dịch vụ, theo thứ tự hiển thị (chữ: dictionary `services[id]`) */
-export const services = ["spa", "pool", "shuttle", "meeting", "gym", "concierge"] as const;
+export const experiences = [
+  {
+    slug: "spa",
+    name: "Blessed Spa",
+    hours: "09:00 – 22:00",
+    phone: "0297 000 0013",
+    gallery: [
+      unsplash("photo-1540555700478-4be289fbecef", 1400),
+      unsplash("photo-1544161515-4ab6ce6db874", 1400),
+      unsplash("photo-1600334089648-b0d9d3028eb2", 1400),
+      unsplash("photo-1515377905703-c4788e51af15", 1400),
+    ],
+    menu: menuPages("blessed-spa", 2),
+    reserveUrl: "",
+  },
+  {
+    slug: "gym",
+    name: "Blessed Gym",
+    hours: "05:30 – 22:00",
+    gallery: [
+      unsplash("photo-1534438327276-14e5300c3a48", 1400),
+      unsplash("photo-1571902943202-507ec2618e8f", 1400),
+      unsplash("photo-1540497077202-7c8a3999166f", 1400),
+      unsplash("photo-1517836357463-d25dfeac3438", 1400),
+    ],
+  },
+] as const satisfies readonly Venue[];
 
-/** Bài viết (chữ: dictionary `news[slug]`), mới nhất trước */
+export type NewsCategory = "offer" | "dining" | "event" | "guide" | "wellness";
+
+/** Chuyên mục tin tức theo thứ tự hiển thị (nhãn: dictionary `newsCategories`) */
+export const newsCategories: NewsCategory[] = ["offer", "dining", "event", "guide", "wellness"];
+
+/**
+ * Bài viết, mới nhất trước; `featured` = hiện ở khối "Tin nổi bật".
+ * `id`: mã bài (số, không đổi, sau này là khoá trong CMS/database), dùng trong URL `/news/<id>`.
+ * `slug`: khoá chữ trong dictionary `news[slug]` (không xuất hiện trên URL; URL cũ /tin-tuc/<slug> được redirect về /news/<id>).
+ */
 export const news = [
-  { slug: "spa-mua-thu", date: "2026-10-10", image: unsplash("photo-1507652313519-d4e9174996dd", 1000) },
-  { slug: "brunch-cuoi-tuan", date: "2026-10-02", image: unsplash("photo-1544148103-0773bf10d330", 1000) },
-  { slug: "hoang-hon-ho-boi", date: "2026-09-25", image: unsplash("photo-1600011689032-8b628b8a8747", 1000) },
-  { slug: "kinh-nghiem-du-lich-phu-quoc", date: "2026-09-12", image: unsplash("photo-1551882547-ff40c63fe5fa", 1000) },
-  { slug: "uu-dai-luu-tru-dai-ngay", date: "2026-08-30", image: unsplash("photo-1584132967334-10e028bd69f7", 1000) },
-  { slug: "yoga-san-thuong", date: "2026-08-15", image: unsplash("photo-1445019980597-93fa8acb246c", 1000) },
-] as const;
+  { id: 6, slug: "spa-mua-thu", category: "offer", date: "2026-10-10", featured: true, image: unsplash("photo-1507652313519-d4e9174996dd", 1600) },
+  { id: 5, slug: "brunch-cuoi-tuan", category: "dining", date: "2026-10-02", featured: true, image: unsplash("photo-1544148103-0773bf10d330", 1600) },
+  { id: 4, slug: "hoang-hon-ho-boi", category: "event", date: "2026-09-25", featured: false, image: unsplash("photo-1600011689032-8b628b8a8747", 1600) },
+  { id: 3, slug: "kinh-nghiem-du-lich-phu-quoc", category: "guide", date: "2026-09-12", featured: true, image: unsplash("photo-1551882547-ff40c63fe5fa", 1600) },
+  { id: 2, slug: "uu-dai-luu-tru-dai-ngay", category: "offer", date: "2026-08-30", featured: false, image: unsplash("photo-1584132967334-10e028bd69f7", 1600) },
+  { id: 1, slug: "yoga-san-thuong", category: "wellness", date: "2026-08-15", featured: false, image: unsplash("photo-1445019980597-93fa8acb246c", 1600) },
+] as const satisfies readonly { id: number; slug: string; category: NewsCategory; date: string; featured: boolean; image: string }[];

@@ -17,7 +17,7 @@ function detectLocale(request: NextRequest): Locale {
   return preferences.find((p) => hasLocale(p.base))?.base as Locale | undefined ?? defaultLocale;
 }
 
-/** URL chưa có tiền tố ngôn ngữ (VD "/hang-phong") → chuyển hướng sang "/<ngôn ngữ>/hang-phong" */
+/** URL chưa có tiền tố ngôn ngữ (VD "/rooms") → chuyển hướng sang "/<ngôn ngữ>/rooms" */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const first = pathname.split("/")[1] ?? "";

@@ -9,7 +9,7 @@ import { about } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t, locale } = await getI18n();
-  return pageMetadata({ locale, path: "/ve-chung-toi", title: t.about.metaTitle, description: t.about.metaDescription });
+  return pageMetadata({ locale, path: "/about", title: t.about.metaTitle, description: t.about.metaDescription });
 }
 
 /*

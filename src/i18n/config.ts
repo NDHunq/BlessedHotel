@@ -24,13 +24,13 @@ export const localeMeta: Record<
 
 export const hasLocale = (value: string): value is Locale => (locales as readonly string[]).includes(value);
 
-/** Gắn tiền tố ngôn ngữ cho đường dẫn nội bộ: ("en", "/hang-phong#deluxe") → "/en/hang-phong#deluxe" */
+/** Gắn tiền tố ngôn ngữ cho đường dẫn nội bộ: ("en", "/rooms#deluxe") → "/en/rooms#deluxe" */
 export function localizeHref(locale: Locale, href: string) {
   if (!href.startsWith("/")) return href; // link ngoài, tel:, mailto:, #...
   return href === "/" ? `/${locale}` : `/${locale}${href}`;
 }
 
-/** Đổi ngôn ngữ của đường dẫn hiện tại: ("/vi/tin-tuc/abc", "en") → "/en/tin-tuc/abc" */
+/** Đổi ngôn ngữ của đường dẫn hiện tại: ("/vi/news/abc", "en") → "/en/news/abc" */
 export function switchLocalePath(pathname: string, locale: Locale) {
   const parts = pathname.split("/");
   if (hasLocale(parts[1] ?? "")) parts[1] = locale;

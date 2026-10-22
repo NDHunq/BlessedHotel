@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1700" viewBox="0 0 1200 1700">
+<rect width="1200" height="1700" fill="#FBF8F2"/>
+<rect x="48" y="48" width="1104" height="1604" fill="none" stroke="#B8902F" stroke-width="2"/>
+<rect x="62" y="62" width="1076" height="1576" fill="none" stroke="#B8902F" stroke-width="1" opacity=".5"/>
+<text x="600.0" y="210" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="76" fill="#171717">Blessed Bistro</text>
+<text x="600.0" y="275" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="26" letter-spacing="12" fill="#93701F">MENU</text>
+<line x1="540.0" y1="315" x2="660.0" y2="315" stroke="#B8902F" stroke-width="2"/>
+<rect x="470.0" y="384" width="260" height="30" rx="4" fill="#B8902F" opacity=".85"/>
+<rect x="140" y="466" width="487" height="20" rx="4" fill="#1F2937" opacity=".75"/>
+<rect x="140" y="500" width="340" height="12" rx="3" fill="#6B7280" opacity=".45"/>
+<line x1="647" y1="480" x2="900" y2="480" stroke="#B8902F" stroke-width="2" stroke-dasharray="2 10" opacity=".7"/>
+<text x="1060" y="486" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#171717">185.000</text>
+<rect x="140" y="534" width="428" height="20" rx="4" fill="#1F2937" opacity=".75"/>
+<rect x="140" y="568" width="299" height="12" rx="3" fill="#6B7280" opacity=".45"/>
+<line x1="588" y1="548" x2="900" y2="548" stroke="#B8902F" stroke-width="2" stroke-dasharray="2 10" opacity=".7"/>
+<text x="1060" y="554" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#171717">145.000</text>
+<rect x="140" y="602" width="336" height="20" rx="4" fill="#1F2937" opacity=".75"/>
+<rect x="140" y="636" width="235" height="12" rx="3" fill="#6B7280" opacity=".45"/>
+<line x1="496" y1="616" x2="900" y2="616" stroke="#B8902F" stroke-width="2" stroke-dasharray="2 10" opacity=".7"/>
+<text x="1060" y="622" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#171717">95.000</text>
+<rect x="140" y="670" width="303" height="20" rx="4" fill="#1F2937" opacity=".75"/>
+<rect x="140" y="704" width="212" height="12" rx="3" fill="#6B7280" opacity=".45"/>
+<line x1="463" y1="684" x2="900" y2="684" stroke="#B8902F" stroke-width="2" stroke-dasharray="2 10" opacity=".7"/>
+<text x="1060" y="690" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#171717">45.000</text>
+<rect x="470.0" y="772" width="260" height="30" rx="4" fill="#B8902F" opacity=".85"/>
+<rect x="140" y="854" width="437" height="20" rx="4" fill="#1F2937" opacity=".75"/>
+<rect x="140" y="888" width="305" height="12" rx="3" fill="#6B7280" opacity=".45"/>
+<line x1="597" y1="868" x2="900" y2="868" stroke="#B8902F" stroke-width="2" stroke-dasharray="2 10" opacity=".7"/>
+<text x="1060" y="874" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#171717">40.000</text>
+<rect x="140" y="922" width="497" height="20" rx="4" fill="#1F2937" opacity=".75"/>
+<rect x="140" y="956" width="347" height="12" rx="3" fill="#6B7280" opacity=".45"/>
+<line x1="657" y1="936" x2="900" y2="936" stroke="#B8902F" stroke-width="2" stroke-dasharray="2 10" opacity=".7"/>
+<text x="1060" y="942" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#171717">70.000</text>
+<rect x="140" y="990" width="301" height="20" rx="4" fill="#1F2937" opacity=".75"/>
+<rect x="140" y="1024" width="210" height="12" rx="3" fill="#6B7280" opacity=".45"/>
+<line x1="461" y1="1004" x2="900" y2="1004" stroke="#B8902F" stroke-width="2" stroke-dasharray="2 10" opacity=".7"/>
+<text x="1060" y="1010" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#171717">180.000</text>
+<rect x="140" y="1058" width="368" height="20" rx="4" fill="#1F2937" opacity=".75"/>
+<rect x="140" y="1092" width="257" height="12" rx="3" fill="#6B7280" opacity=".45"/>
+<line x1="528" y1="1072" x2="900" y2="1072" stroke="#B8902F" stroke-width="2" stroke-dasharray="2 10" opacity=".7"/>
+<text x="1060" y="1078" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#171717">65.000</text>
+<rect x="470.0" y="1160" width="260" height="30" rx="4" fill="#B8902F" opacity=".85"/>
+<rect x="140" y="1242" width="458" height="20" rx="4" fill="#1F2937" opacity=".75"/>
+<rect x="140" y="1276" width="320" height="12" rx="3" fill="#6B7280" opacity=".45"/>
+<line x1="618" y1="1256" x2="900" y2="1256" stroke="#B8902F" stroke-width="2" stroke-dasharray="2 10" opacity=".7"/>
+<text x="1060" y="1262" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#171717">190.000</text>
+<rect x="140" y="1310" width="491" height="20" rx="4" fill="#1F2937" opacity=".75"/>
+<rect x="140" y="1344" width="343" height="12" rx="3" fill="#6B7280" opacity=".45"/>
+<line x1="651" y1="1324" x2="900" y2="1324" stroke="#B8902F" stroke-width="2" stroke-dasharray="2 10" opacity=".7"/>
+<text x="1060" y="1330" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#171717">60.000</text>
+<rect x="140" y="1378" width="390" height="20" rx="4" fill="#1F2937" opacity=".75"/>
+<rect x="140" y="1412" width="273" height="12" rx="3" fill="#6B7280" opacity=".45"/>
+<line x1="550" y1="1392" x2="900" y2="1392" stroke="#B8902F" stroke-width="2" stroke-dasharray="2 10" opacity=".7"/>
+<text x="1060" y="1398" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#171717">140.000</text>
+<rect x="140" y="1446" width="361" height="20" rx="4" fill="#1F2937" opacity=".75"/>
+<rect x="140" y="1480" width="252" height="12" rx="3" fill="#6B7280" opacity=".45"/>
+<line x1="521" y1="1460" x2="900" y2="1460" stroke="#B8902F" stroke-width="2" stroke-dasharray="2 10" opacity=".7"/>
+<text x="1060" y="1466" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#171717">230.000</text>
+<text x="600.0" y="1590" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="24" fill="#6B7280">3 / 3</text>
+</svg>

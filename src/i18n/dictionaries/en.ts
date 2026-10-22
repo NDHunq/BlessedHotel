@@ -4,16 +4,16 @@ import type { Dictionary } from "./vi";
 export const en: Dictionary = {
   meta: {
     tagline: "A peaceful retreat on Phu Quoc island",
-    description: "Blessed Hotel Phu Quoc: a 120-room hotel with an infinity pool, a rooftop bar and a seafood restaurant.",
+    description: "Blessed Hotel Phu Quoc: a 120-room hotel with an infinity pool, a spa and a seafood restaurant.",
     place: "Phu Quoc",
     address: "Sun Village - Primavera, Venice Street, Phu Quoc, An Giang, Vietnam",
   },
 
   nav: {
-    about: "About us",
+    about: "About",
     rooms: "Rooms",
     dining: "Dining",
-    services: "Services",
+    experiences: "Experiences",
     news: "News",
   },
 
@@ -102,7 +102,7 @@ export const en: Dictionary = {
     heroSlides: {
       welcome: { kicker: "Welcome to", title: "Blessed Hotel", subtitle: "On the island of Phu Quoc" },
       pool: { kicker: "Unwind all day", title: "Infinity pool", subtitle: "Open from 6:00 to 22:00" },
-      sunset: { kicker: "Rooftop bar", title: "Sky Terrace sunsets", subtitle: "Signature cocktails every evening" },
+      sunset: { kicker: "Poolside café", title: "Afternoons at Olea Café", subtitle: "Afternoon tea from 14:00 to 17:00" },
       rooms: { kicker: "120 rooms & villas", title: "Sleep well on the island", subtitle: "From Deluxe to Garden Villa" },
     },
     exploreTitle: "Explore Blessed Hotel",
@@ -114,7 +114,7 @@ export const en: Dictionary = {
       },
       dining: {
         label: "Dining",
-        title: "Phu Quoc seafood at Saffron",
+        title: "Phu Quoc seafood at Blessed Bistro",
         description: "Fish, crab and sea urchin from Duong Dong market each morning, cooked with recipes from across Vietnam.",
       },
       spa: {
@@ -129,7 +129,7 @@ export const en: Dictionary = {
       },
       news: {
         label: "News",
-        title: "Sunday Brunch at The Hearth",
+        title: "Sunday Brunch at Blessed Bistro",
         description: "Over 60 Asian and Western dishes, a kids' play area and live music every Sunday.",
       },
     },
@@ -146,16 +146,16 @@ export const en: Dictionary = {
       tagline: ["Sleep well.", "Eat well.", "Slow down on the island."],
     },
     highlights: {
-      "the-hearth": "All-day dining",
-      saffron: "Vietnamese cuisine",
-      "sky-terrace": "Rooftop bar",
+      "blessed-bistro": "Asian & Western",
+      "olea-cafe": "Coffee & pastries",
       spa: "Spa & wellness",
+      gym: "Fitness",
     },
     newsTitle: "News & offers",
   },
 
   about: {
-    metaTitle: "About us",
+    metaTitle: "About",
     metaDescription: "The story and philosophy behind Blessed Hotel Phu Quoc.",
     heroTagline: "A peaceful retreat on the island",
     wordmarkSub: "Hotel · Phu Quoc",
@@ -172,7 +172,7 @@ export const en: Dictionary = {
       ],
       body: "A memorable stay comes from simple things: a good night's sleep, a warm breakfast, a smile at the front desk and the right tip at the right time to explore the island your own way.",
     },
-    stats: { rooms: "Rooms & villas", dining: "Restaurants & bars", reception: "Front desk & support" },
+    stats: { rooms: "Rooms & villas", dining: "Restaurants & cafés", reception: "Front desk & support" },
     pillars: {
       rooms: { title: "Bright rooms", description: "Shaped by care in every small corner." },
       food: { title: "Warm meals", description: "Made with the day's seafood and home recipes." },
@@ -238,86 +238,97 @@ export const en: Dictionary = {
 
   diningPage: {
     metaTitle: "Dining",
-    metaDescription: "All-day dining, Vietnamese cuisine and a rooftop bar at Blessed Hotel Phu Quoc.",
-    heroDescription: "Three places to eat and drink, from a slow breakfast to a cocktail at sunset.",
-    openingHours: "Opening hours",
+    metaDescription: "Blessed Bistro and Olea Café at Blessed Hotel Phu Quoc: opening hours, menus and table reservations.",
+    heroDescription: "Two places to eat and drink, from the breakfast buffet to an afternoon coffee by the pool.",
+    title: "The taste of Phu Quoc",
+    intro: "Seafood from Duong Dong market every morning, pastries baked in-house and coffee roasted in Lam Dong. Browse each menu and reserve ahead for the best tables.",
     cta: {
       title: "Reserve a table or a room",
       description: "Call or message us on Zalo to reserve a table, or book a room quickly on our partner platforms.",
     },
   },
 
+  /** Nhà hàng, khoá theo slug trong site.ts `dining` (tên riêng, giờ mở cửa, số điện thoại không dịch) */
   dining: {
-    "the-hearth": {
-      kind: "All-day restaurant",
-      description:
-        "A generous breakfast buffet and an all-day Asian and Western menu, made with fresh produce from local farms and the Phu Quoc sea.",
-      highlights: ["Breakfast buffet with 50+ dishes", "Bánh mì & coffee corner", "Kids' menu"],
+    "blessed-bistro": {
+      kind: "Asian & Western",
+      description: "All-day dining: a breakfast buffet of 50+ dishes, then à la carte lunch and dinner with charcoal-grilled Phu Quoc seafood, beef pho and house-made pasta. Seats 120, with a terrace overlooking the garden.",
     },
-    saffron: {
-      kind: "Fine Vietnamese cuisine",
-      description:
-        "Traditional dishes from all three regions of Vietnam and island seafood, elevated in presentation and paired with selected wines.",
-      highlights: ["Fresh seafood daily", "7-course tasting menu", "Selected wines"],
-    },
-    "sky-terrace": {
-      kind: "Rooftop Bar",
-      description: "Signature cocktails, chill music and views of the sun setting over the sea every evening.",
-      highlights: ["Signature cocktails", "Happy hour 17:00 – 19:00", "Weekend DJ"],
+    "olea-cafe": {
+      kind: "Coffee & pastries",
+      description: "A poolside café serving Vietnamese phin coffee, cold brew, croissants baked every morning and afternoon tea from 14:00 to 17:00. In the evening, cocktails and tropical fruit mocktails.",
     },
   },
 
-  servicesPage: {
-    metaTitle: "Services",
-    metaDescription: "Spa, pool, airport transfers, meetings and concierge at Blessed Hotel Phu Quoc.",
-    heroDescription: "From the moment you land until you leave the island, leave the details to us.",
+  experiencesPage: {
+    metaTitle: "Experiences",
+    metaDescription: "Blessed Spa and the gym at Blessed Hotel Phu Quoc: opening hours, treatment menu and bookings.",
+    heroTitle: "Slow down on the island",
+    heroDescription: "Herbal massages, a steam room and a garden-view gym, all within the hotel grounds.",
+    explore: "Explore",
+    title: "Unwind & move",
+    intro: "A 60 to 120-minute treatment at Blessed Spa, or a morning workout before the beach. The gym is free for hotel guests.",
   },
 
-  services: {
+  /** Spa / phòng tập, khoá theo slug trong site.ts `experiences` */
+  experiences: {
     spa: {
-      title: "Spa & Massage",
-      description: "Herbal and essential-oil treatments to help you unwind.",
-      details: "Private treatment rooms, hot stone massage, facials and couples' spa packages. Book at the front desk.",
-    },
-    pool: {
-      title: "Infinity pool",
-      description: "An outdoor pool open from early morning until late evening.",
-      details: "A sea-facing pool with sun loungers, free towels and a poolside bar serving light drinks.",
-    },
-    shuttle: {
-      title: "Airport transfers",
-      description: "Private door-to-door transfers, easy to book in advance.",
-      details: "4 to 16-seat vehicles to and from Phu Quoc airport. Please send your flight number at least 24 hours ahead.",
-    },
-    meeting: {
-      title: "Meetings & Events",
-      description: "Flexible meeting rooms for 10 to 300 guests.",
-      details: "Modern presentation equipment, flexible banquet menus and an experienced events team.",
+      kind: "Spa & treatments",
+      description: "Six private treatment rooms, including two for couples. Hot stone massage, Vietnamese herbal massage, facials and a steam room. Please book at least 2 hours ahead.",
     },
     gym: {
-      title: "24/7 fitness centre",
-      description: "Modern equipment, open day and night.",
-      details: "Treadmills, bikes, free weights and a yoga area. Personal trainers available on request.",
+      kind: "Fitness",
+      description: "Treadmills, bikes, resistance machines and free weights, plus a yoga corner with mats and balls. Towels and water are free for hotel guests.",
     },
-    concierge: {
-      title: "Concierge",
-      description: "Itinerary tips, tours and attraction tickets.",
-      details: "4-island boat tours, the Hon Thom cable car, VinWonders, motorbike rental and local restaurant recommendations.",
-    },
+  },
+
+  /** Nhãn dùng chung cho thẻ nhà hàng / spa / phòng tập (`VenueCard`) */
+  venue: {
+    everyday: "Every day",
+    openingHours: "Opening hours",
+    phone: "Phone",
+    viewMenu: "View menu",
+    reserveTable: "Reserve a table",
+    reserveSpa: "Book a treatment",
+    prevPhoto: "Previous photo",
+    nextPhoto: "Next photo",
+    photos: "{name} photos",
+    photoAlt: "{name}, photo {n}",
+    menuAlt: "{name} menu, page {n}",
   },
 
   newsPage: {
     metaTitle: "News",
     metaDescription: "Offers, events and Phu Quoc travel tips from Blessed Hotel.",
     heroDescription: "Offers, events and Phu Quoc travel tips.",
+    featured: "Featured",
+    latest: "Latest news",
+    categories: "Categories",
+    allCategories: "All",
+    search: "Search",
+    searchPlaceholder: "Search by keyword",
+    noResults: "No matching articles.",
+    roomsTitle: "Our rooms",
+    ctaTitle: "Book direct",
+    ctaBody: "Call or message us on Zalo for the best rate.",
+  },
+
+  /** Nhãn chuyên mục tin tức, khoá theo id trong site.ts `newsCategories` */
+  newsCategories: {
+    offer: "Offers",
+    dining: "Dining",
+    event: "Events",
+    guide: "Travel guide",
+    wellness: "Wellness",
   },
 
   article: {
-    postedBy: "Posted by",
+    tableOfContents: "Contents",
+    keyPoints: "At a glance",
+    forYou: "Recommended for you",
     publishedOn: "Published",
     readingTime: "Reading time",
     minutes: "{n} min",
-    inThisPost: "In this post",
     allNews: "All news",
     moreArticles: "More articles",
     ctaTitle: "Want to book or ask a question?",
@@ -326,9 +337,9 @@ export const en: Dictionary = {
 
   news: {
     "spa-mua-thu": {
-      category: "Offer",
       title: "Autumn spa package: full relaxation at a special price",
       excerpt: "Enjoy a 90-minute treatment with herbal tea, available until the end of November.",
+      keyPoints: ["90-minute treatment: foot soak, 60-minute massage, face mask", "Ginger honey tea and seasonal fruit included", "Daily 10:00 – 20:00 until the end of November"],
       body: [
         {
           paragraphs: [
@@ -351,11 +362,11 @@ export const en: Dictionary = {
       ],
     },
     "brunch-cuoi-tuan": {
-      category: "Dining",
-      title: "Introducing Sunday Brunch at The Hearth",
+      title: "Introducing Sunday Brunch at Blessed Bistro",
       excerpt: "Over 60 Asian and Western dishes, a kids' play area and live music every Sunday.",
+      keyPoints: ["Every Sunday, 11:00 – 14:30 at Blessed Bistro", "60+ dishes and a fresh Phu Quoc seafood counter", "Children under 6 eat free"],
       body: [
-        { paragraphs: ["From this Sunday, The Hearth opens its Sunday Brunch with more than 60 Asian and Western dishes, served from 11:00 to 14:30."] },
+        { paragraphs: ["From this Sunday, Blessed Bistro opens its Sunday Brunch with more than 60 Asian and Western dishes, served from 11:00 to 14:30."] },
         {
           heading: "The menu",
           paragraphs: [
@@ -372,9 +383,9 @@ export const en: Dictionary = {
       ],
     },
     "hoang-hon-ho-boi": {
-      category: "Event",
       title: "Sunset Pool Party at the end of the month",
       excerpt: "DJ, cocktails and BBQ by the infinity pool on the last Saturday evening of every month.",
+      keyPoints: ["Last Saturday evening of every month", "Cocktails from 17:00, barbecue from 18:30, DJ until 22:00", "Free entry for hotel guests"],
       body: [
         {
           paragraphs: [
@@ -384,16 +395,16 @@ export const en: Dictionary = {
         {
           heading: "The programme",
           paragraphs: [
-            "From 17:00, the poolside bar serves Sky Terrace signature cocktails. The barbecue starts at 18:30 with seafood and charcoal-grilled meats.",
+            "From 17:00, the poolside bar serves Olea Café signature cocktails. The barbecue starts at 18:30 with seafood and charcoal-grilled meats.",
             "The DJ plays until 22:00. Entry is free for hotel guests; visitors are kindly asked to reserve in advance.",
           ],
         },
       ],
     },
     "kinh-nghiem-du-lich-phu-quoc": {
-      category: "Travel guide",
       title: "Phu Quoc in 4 days and 3 nights",
       excerpt: "A suggested itinerary, dishes worth trying and the best sunset spots on the island.",
+      keyPoints: ["Days 1–2: Sunset Town, night market, 4-island tour", "Days 3–4: the north, a pepper farm, gift shopping", "Concierge books cars, tours and restaurants with a day's notice"],
       body: [
         {
           paragraphs: [
@@ -417,9 +428,9 @@ export const en: Dictionary = {
       ],
     },
     "uu-dai-luu-tru-dai-ngay": {
-      category: "Offer",
       title: "Stay longer, save more",
       excerpt: "Up to 25% off stays of 5 nights or more when you book directly with us.",
+      keyPoints: ["15% off 5+ nights, 25% off 7+ nights", "Daily breakfast and laundry included", "Direct bookings by hotline or Zalo only"],
       body: [
         {
           paragraphs: ["If you're planning to stay in Phu Quoc for 5 nights or more, book directly with the hotel for a better rate."],
@@ -440,9 +451,9 @@ export const en: Dictionary = {
       ],
     },
     "yoga-san-thuong": {
-      category: "Wellness",
       title: "Sunrise yoga on the rooftop",
       excerpt: "A free yoga class for hotel guests at 6:00 every morning, greeting the early sun on the island.",
+      keyPoints: ["6:00 every morning on the rooftop", "45-minute class, beginner friendly", "Free for hotel guests; mats and water provided"],
       body: [
         {
           paragraphs: ["Every morning at 6:00, the Blessed Hotel rooftop hosts a gentle 45-minute yoga class, free for hotel guests."],
@@ -451,7 +462,7 @@ export const en: Dictionary = {
           heading: "The class",
           paragraphs: [
             "The class suits beginners and focuses on breathing and stretching. Mats, towels and water are provided.",
-            "After the session, head down to The Hearth for breakfast or to the pool while the sun is still soft.",
+            "After the session, head down to Blessed Bistro for breakfast or to the pool while the sun is still soft.",
           ],
         },
       ],

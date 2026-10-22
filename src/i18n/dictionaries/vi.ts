@@ -8,16 +8,16 @@
 export const vi = {
   meta: {
     tagline: "Nơi bình yên giữa đảo ngọc Phú Quốc",
-    description: "Blessed Hotel Phú Quốc: khách sạn 120 phòng với hồ bơi vô cực, rooftop bar và nhà hàng hải sản.",
+    description: "Blessed Hotel Phú Quốc: khách sạn 120 phòng với hồ bơi vô cực, spa và nhà hàng hải sản.",
     place: "Phú Quốc",
     address: "Khu Sun Village - Primavera, Đường Venice, Phú Quốc, An Giang",
   },
 
   nav: {
-    about: "Về chúng tôi",
+    about: "Giới thiệu",
     rooms: "Các hạng phòng",
     dining: "Ẩm thực",
-    services: "Dịch vụ",
+    experiences: "Trải nghiệm",
     news: "Tin tức",
   },
 
@@ -107,7 +107,7 @@ export const vi = {
     heroSlides: {
       welcome: { kicker: "Chào mừng đến với", title: "Blessed Hotel", subtitle: "Tại đảo ngọc Phú Quốc" },
       pool: { kicker: "Thư giãn trọn ngày", title: "Hồ bơi vô cực", subtitle: "Mở cửa từ 6:00 đến 22:00" },
-      sunset: { kicker: "Rooftop bar", title: "Hoàng hôn Sky Terrace", subtitle: "Cocktail đặc trưng mỗi chiều" },
+      sunset: { kicker: "Cà phê bên hồ bơi", title: "Chiều ở Olea Café", subtitle: "Trà chiều từ 14:00 đến 17:00" },
       rooms: { kicker: "120 phòng & villa", title: "Ngủ ngon giữa đảo", subtitle: "Từ Deluxe đến Garden Villa" },
     },
     exploreTitle: "Khám phá Blessed Hotel",
@@ -119,7 +119,7 @@ export const vi = {
       },
       dining: {
         label: "Ẩm thực",
-        title: "Hải sản Phú Quốc tại Saffron",
+        title: "Hải sản Phú Quốc tại Blessed Bistro",
         description: "Cá, ghẹ, nhum được nhập trong ngày từ chợ Dương Đông, chế biến theo công thức ba miền.",
       },
       spa: {
@@ -134,7 +134,7 @@ export const vi = {
       },
       news: {
         label: "Tin tức",
-        title: "Sunday Brunch tại The Hearth",
+        title: "Sunday Brunch tại Blessed Bistro",
         description: "Hơn 60 món Á Âu, khu vui chơi cho trẻ em và nhạc sống mỗi Chủ nhật.",
       },
     },
@@ -151,16 +151,16 @@ export const vi = {
       tagline: ["Ngủ ngon.", "Ăn ngon.", "Sống chậm giữa đảo."],
     },
     highlights: {
-      "the-hearth": "Ẩm thực cả ngày",
-      saffron: "Ẩm thực Việt",
-      "sky-terrace": "Rooftop bar",
+      "blessed-bistro": "Ẩm thực Á Âu",
+      "olea-cafe": "Cà phê & bánh ngọt",
       spa: "Spa & thư giãn",
+      gym: "Phòng tập",
     },
     newsTitle: "Tin tức & ưu đãi",
   },
 
   about: {
-    metaTitle: "Về chúng tôi",
+    metaTitle: "Giới thiệu",
     metaDescription: "Câu chuyện và triết lý của Blessed Hotel Phú Quốc.",
     heroTagline: "Nơi bình yên giữa đảo ngọc",
     wordmarkSub: "Hotel · Phú Quốc",
@@ -177,7 +177,7 @@ export const vi = {
       ],
       body: "Một kỳ nghỉ đáng nhớ đến từ những điều giản dị: giấc ngủ ngon, bữa sáng nóng hổi, nụ cười ở quầy lễ tân và một gợi ý đúng lúc để bạn khám phá hòn đảo theo cách của riêng mình.",
     },
-    stats: { rooms: "Phòng & villa", dining: "Nhà hàng & bar", reception: "Lễ tân & hỗ trợ" },
+    stats: { rooms: "Phòng & villa", dining: "Nhà hàng & café", reception: "Lễ tân & hỗ trợ" },
     pillars: {
       rooms: { title: "Những căn phòng sáng", description: "Đến từ sự chăm chút trong từng góc nhỏ." },
       food: { title: "Những bữa ăn ấm", description: "Đến từ hải sản trong ngày và công thức nhà làm." },
@@ -243,86 +243,97 @@ export const vi = {
 
   diningPage: {
     metaTitle: "Ẩm thực",
-    metaDescription: "Nhà hàng, ẩm thực Việt và rooftop bar tại Blessed Hotel Phú Quốc.",
-    heroDescription: "Ba điểm đến ẩm thực, từ bữa sáng thong thả đến ly cocktail lúc hoàng hôn.",
-    openingHours: "Giờ mở cửa",
+    metaDescription: "Blessed Bistro và Olea Café tại Blessed Hotel Phú Quốc: giờ mở cửa, thực đơn và đặt bàn.",
+    heroDescription: "Hai điểm hẹn ăn uống, từ bữa sáng buffet đến ly cà phê chiều bên hồ bơi.",
+    title: "Tinh hoa ẩm thực",
+    intro: "Hải sản nhập mỗi sáng từ chợ Dương Đông, bánh nướng tại bếp và cà phê rang xay từ Lâm Đồng. Xem thực đơn từng nơi và đặt bàn trước để có chỗ đẹp.",
     cta: {
       title: "Đặt bàn hoặc đặt phòng",
       description: "Gọi điện hoặc nhắn Zalo để đặt bàn, hoặc đặt phòng nhanh qua các nền tảng.",
     },
   },
 
+  /** Nhà hàng, khoá theo slug trong site.ts `dining` (tên riêng, giờ mở cửa, số điện thoại không dịch) */
   dining: {
-    "the-hearth": {
-      kind: "Nhà hàng All-day",
-      description:
-        "Bữa sáng buffet phong phú và thực đơn Á Âu suốt ngày, sử dụng nguyên liệu tươi từ nông trại và biển Phú Quốc.",
-      highlights: ["Buffet sáng hơn 50 món", "Góc bánh mì & cà phê", "Thực đơn trẻ em"],
+    "blessed-bistro": {
+      kind: "Ẩm thực Á Âu",
+      description: "Nhà hàng phục vụ cả ngày: buffet sáng hơn 50 món, trưa và tối gọi món với hải sản Phú Quốc nướng than, phở bò và mì Ý làm tại bếp. Sức chứa 120 khách, có khu ngoài trời nhìn ra vườn.",
     },
-    saffron: {
-      kind: "Ẩm thực Việt tinh hoa",
-      description:
-        "Những món ăn truyền thống ba miền và hải sản đảo được nâng tầm trong cách trình bày, kết hợp rượu vang chọn lọc.",
-      highlights: ["Hải sản tươi trong ngày", "Thực đơn nếm thử 7 món", "Rượu vang chọn lọc"],
-    },
-    "sky-terrace": {
-      kind: "Rooftop Bar",
-      description: "Cocktail đặc trưng, nhạc chill và khung cảnh hoàng hôn trên biển mỗi chiều.",
-      highlights: ["Cocktail đặc trưng", "Happy hour 17:00 – 19:00", "DJ cuối tuần"],
+    "olea-cafe": {
+      kind: "Cà phê & bánh ngọt",
+      description: "Quán cà phê cạnh hồ bơi với cà phê phin, cold brew, bánh croissant nướng mỗi sáng và set trà chiều từ 14:00 đến 17:00. Buổi tối có cocktail và mocktail trái cây nhiệt đới.",
     },
   },
 
-  servicesPage: {
-    metaTitle: "Dịch vụ",
-    metaDescription: "Spa, hồ bơi, đưa đón sân bay, hội nghị và concierge tại Blessed Hotel Phú Quốc.",
-    heroDescription: "Từ lúc đặt chân xuống sân bay đến khi rời đảo, mọi việc cứ để chúng tôi lo.",
+  experiencesPage: {
+    metaTitle: "Trải nghiệm",
+    metaDescription: "Blessed Spa và phòng tập tại Blessed Hotel Phú Quốc: giờ mở cửa, bảng giá liệu trình và đặt lịch.",
+    heroTitle: "Chậm lại giữa đảo ngọc",
+    heroDescription: "Massage thảo mộc, xông hơi và phòng tập nhìn ra vườn, ngay trong khuôn viên khách sạn.",
+    explore: "Khám phá",
+    title: "Thư giãn & rèn luyện",
+    intro: "Liệu trình 60 đến 120 phút tại Blessed Spa, hoặc một buổi tập sáng trước khi xuống biển. Khách lưu trú dùng phòng tập miễn phí.",
   },
 
-  services: {
+  /** Spa / phòng tập, khoá theo slug trong site.ts `experiences` */
+  experiences: {
     spa: {
-      title: "Spa & Massage",
-      description: "Liệu trình thảo mộc và tinh dầu giúp cơ thể thư thái.",
-      details: "Phòng trị liệu riêng tư, massage đá nóng, chăm sóc da mặt và gói spa cho cặp đôi. Đặt lịch tại lễ tân.",
-    },
-    pool: {
-      title: "Hồ bơi vô cực",
-      description: "Hồ bơi ngoài trời mở cửa từ sáng sớm đến tối muộn.",
-      details: "Hồ bơi hướng biển với ghế tắm nắng, khăn tắm miễn phí và quầy bar bên hồ phục vụ đồ uống nhẹ.",
-    },
-    shuttle: {
-      title: "Đưa đón sân bay",
-      description: "Xe riêng đón tiễn tận nơi, đặt trước dễ dàng.",
-      details: "Xe 4–16 chỗ đón tiễn sân bay Phú Quốc. Vui lòng báo trước số hiệu chuyến bay ít nhất 24 giờ.",
-    },
-    meeting: {
-      title: "Hội nghị & Sự kiện",
-      description: "Phòng họp linh hoạt cho 10 – 300 khách.",
-      details: "Trang thiết bị trình chiếu hiện đại, thực đơn tiệc linh hoạt và đội ngũ hỗ trợ tổ chức chuyên nghiệp.",
+      kind: "Spa & trị liệu",
+      description: "6 phòng trị liệu riêng, trong đó có 2 phòng đôi. Massage đá nóng, massage thảo mộc Việt, chăm sóc da mặt và xông hơi. Vui lòng đặt lịch trước ít nhất 2 giờ.",
     },
     gym: {
-      title: "Phòng tập 24/7",
-      description: "Trang thiết bị hiện đại, mở cửa suốt ngày đêm.",
-      details: "Máy chạy bộ, xe đạp, tạ tự do và khu yoga. Huấn luyện viên cá nhân theo yêu cầu.",
+      kind: "Phòng tập",
+      description: "Máy chạy bộ, xe đạp, máy tập kháng lực và khu tạ tự do, cùng góc yoga có thảm và bóng. Khăn và nước uống miễn phí cho khách lưu trú.",
     },
-    concierge: {
-      title: "Concierge",
-      description: "Gợi ý lịch trình, đặt tour và vé tham quan.",
-      details: "Đặt tour 4 đảo, cáp treo Hòn Thơm, VinWonders, thuê xe máy và gợi ý quán ăn địa phương.",
-    },
+  },
+
+  /** Nhãn dùng chung cho thẻ nhà hàng / spa / phòng tập (`VenueCard`) */
+  venue: {
+    everyday: "Hằng ngày",
+    openingHours: "Giờ mở cửa",
+    phone: "Điện thoại",
+    viewMenu: "Xem menu",
+    reserveTable: "Đặt bàn",
+    reserveSpa: "Đặt chỗ",
+    prevPhoto: "Ảnh trước",
+    nextPhoto: "Ảnh sau",
+    photos: "Ảnh {name}",
+    photoAlt: "{name}, ảnh {n}",
+    menuAlt: "Thực đơn {name}, trang {n}",
   },
 
   newsPage: {
     metaTitle: "Tin tức",
     metaDescription: "Ưu đãi, sự kiện và cẩm nang du lịch Phú Quốc từ Blessed Hotel.",
     heroDescription: "Ưu đãi, sự kiện và cẩm nang du lịch Phú Quốc.",
+    featured: "Tin nổi bật",
+    latest: "Tin mới nhất",
+    categories: "Chuyên mục",
+    allCategories: "Tất cả",
+    search: "Tìm kiếm",
+    searchPlaceholder: "Tìm theo từ khoá",
+    noResults: "Không có bài viết phù hợp.",
+    roomsTitle: "Hạng phòng",
+    ctaTitle: "Đặt phòng trực tiếp",
+    ctaBody: "Gọi hoặc nhắn Zalo để nhận giá tốt nhất.",
+  },
+
+  /** Nhãn chuyên mục tin tức, khoá theo id trong site.ts `newsCategories` */
+  newsCategories: {
+    offer: "Ưu đãi",
+    dining: "Ẩm thực",
+    event: "Sự kiện",
+    guide: "Cẩm nang",
+    wellness: "Sức khỏe",
   },
 
   article: {
-    postedBy: "Đăng bởi",
+    tableOfContents: "Mục lục",
+    keyPoints: "Thông tin nhanh",
+    forYou: "Bài viết dành cho bạn",
     publishedOn: "Ngày đăng",
     readingTime: "Thời gian đọc",
     minutes: "{n} phút",
-    inThisPost: "Trong bài này",
     allNews: "Tất cả tin tức",
     moreArticles: "Bài viết khác",
     ctaTitle: "Muốn đặt phòng hoặc hỏi thêm?",
@@ -332,9 +343,9 @@ export const vi = {
   /** Bài viết, khoá theo slug (slug giữ nguyên cho mọi ngôn ngữ) */
   news: {
     "spa-mua-thu": {
-      category: "Ưu đãi",
       title: "Gói spa mùa thu: thư giãn trọn vẹn với giá đặc biệt",
       excerpt: "Tận hưởng liệu trình 90 phút cùng trà thảo mộc, áp dụng đến hết tháng 11.",
+      keyPoints: ["Liệu trình 90 phút: ngâm chân, massage 60 phút, đắp mặt nạ", "Mời trà gừng mật ong và trái cây theo mùa", "Áp dụng 10:00 – 20:00 mỗi ngày đến hết tháng 11"],
       body: [
         {
           paragraphs: [
@@ -357,11 +368,11 @@ export const vi = {
       ],
     },
     "brunch-cuoi-tuan": {
-      category: "Ẩm thực",
-      title: "Ra mắt Sunday Brunch tại The Hearth",
+      title: "Ra mắt Sunday Brunch tại Blessed Bistro",
       excerpt: "Hơn 60 món Á Âu, khu vui chơi cho trẻ em và nhạc sống mỗi Chủ nhật.",
+      keyPoints: ["Mỗi Chủ nhật, 11:00 – 14:30 tại Blessed Bistro", "Hơn 60 món, quầy hải sản tươi Phú Quốc", "Trẻ em dưới 6 tuổi được miễn phí"],
       body: [
-        { paragraphs: ["Từ Chủ nhật này, The Hearth mở Sunday Brunch với hơn 60 món Á Âu, phục vụ từ 11:00 đến 14:30."] },
+        { paragraphs: ["Từ Chủ nhật này, Blessed Bistro mở Sunday Brunch với hơn 60 món Á Âu, phục vụ từ 11:00 đến 14:30."] },
         {
           heading: "Thực đơn",
           paragraphs: [
@@ -378,9 +389,9 @@ export const vi = {
       ],
     },
     "hoang-hon-ho-boi": {
-      category: "Sự kiện",
       title: "Pool Party hoàng hôn cuối tháng",
       excerpt: "DJ, cocktail và BBQ bên hồ bơi vô cực vào tối thứ Bảy cuối cùng mỗi tháng.",
+      keyPoints: ["Tối thứ Bảy cuối cùng mỗi tháng", "Cocktail từ 17:00, tiệc nướng từ 18:30, DJ đến 22:00", "Khách lưu trú vào cửa miễn phí"],
       body: [
         {
           paragraphs: [
@@ -390,16 +401,16 @@ export const vi = {
         {
           heading: "Chương trình",
           paragraphs: [
-            "Từ 17:00, quầy bar bên hồ phục vụ cocktail đặc trưng của Sky Terrace. Tiệc nướng bắt đầu lúc 18:30 với hải sản và thịt nướng than hoa.",
+            "Từ 17:00, quầy bar bên hồ phục vụ cocktail đặc trưng của Olea Café. Tiệc nướng bắt đầu lúc 18:30 với hải sản và thịt nướng than hoa.",
             "DJ chơi nhạc đến 22:00. Khách lưu trú được vào cửa miễn phí, khách bên ngoài vui lòng đặt chỗ trước.",
           ],
         },
       ],
     },
     "kinh-nghiem-du-lich-phu-quoc": {
-      category: "Cẩm nang",
       title: "Kinh nghiệm du lịch Phú Quốc 4 ngày 3 đêm",
       excerpt: "Lịch trình gợi ý, món ngon nên thử và những điểm ngắm hoàng hôn đẹp nhất đảo.",
+      keyPoints: ["Ngày 1–2: Thị trấn Hoàng Hôn, chợ đêm, tour 4 đảo", "Ngày 3–4: bắc đảo, vườn tiêu, mua quà", "Concierge đặt xe, tour, nhà hàng nếu nhắn trước một ngày"],
       body: [
         {
           paragraphs: [
@@ -423,9 +434,9 @@ export const vi = {
       ],
     },
     "uu-dai-luu-tru-dai-ngay": {
-      category: "Ưu đãi",
       title: "Ở càng lâu, ưu đãi càng lớn",
       excerpt: "Giảm đến 25% cho kỳ nghỉ từ 5 đêm trở lên khi liên hệ đặt phòng trực tiếp.",
+      keyPoints: ["Giảm 15% từ 5 đêm, 25% từ 7 đêm", "Bao gồm bữa sáng và giặt ủi hằng ngày", "Chỉ áp dụng khi đặt trực tiếp qua hotline hoặc Zalo"],
       body: [
         {
           paragraphs: [
@@ -448,9 +459,9 @@ export const vi = {
       ],
     },
     "yoga-san-thuong": {
-      category: "Sức khỏe",
       title: "Yoga bình minh trên sân thượng",
       excerpt: "Lớp yoga miễn phí cho khách lưu trú lúc 6:00 sáng mỗi ngày, đón nắng sớm trên đảo.",
+      keyPoints: ["6:00 sáng mỗi ngày trên sân thượng", "Lớp 45 phút, phù hợp người mới bắt đầu", "Miễn phí cho khách lưu trú, có sẵn thảm và nước"],
       body: [
         {
           paragraphs: [
@@ -461,7 +472,7 @@ export const vi = {
           heading: "Lớp học",
           paragraphs: [
             "Lớp phù hợp cả người mới bắt đầu, tập trung vào hít thở và giãn cơ. Thảm, khăn và nước được chuẩn bị sẵn.",
-            "Sau buổi tập, bạn có thể xuống The Hearth ăn sáng hoặc ra hồ bơi khi nắng còn dịu.",
+            "Sau buổi tập, bạn có thể xuống Blessed Bistro ăn sáng hoặc ra hồ bơi khi nắng còn dịu.",
           ],
         },
       ],
@@ -475,8 +486,9 @@ export type Dictionary = Omit<typeof vi, "news"> & {
 };
 
 export type NewsText = {
-  category: string;
   title: string;
   excerpt: string;
+  /** 3 ý chính hiện trong khung "Thông tin nhanh" */
+  keyPoints: string[];
   body: { heading?: string; paragraphs: string[] }[];
 };

@@ -14,7 +14,7 @@ import { pageImages } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t, locale } = await getI18n();
-  return pageMetadata({ locale, path: "/hang-phong", title: t.roomsPage.metaTitle, description: t.roomsPage.metaDescription });
+  return pageMetadata({ locale, path: "/rooms", title: t.roomsPage.metaTitle, description: t.roomsPage.metaDescription });
 }
 
 export default async function RoomsPage() {

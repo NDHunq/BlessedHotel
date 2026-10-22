@@ -4,16 +4,16 @@ import type { Dictionary } from "./vi";
 export const zh: Dictionary = {
   meta: {
     tagline: "富国岛上的宁静居所",
-    description: "富国岛 Blessed Hotel：拥有 120 间客房、无边泳池、屋顶酒吧和海鲜餐厅的酒店。",
+    description: "富国岛 Blessed Hotel：拥有 120 间客房、无边泳池、水疗中心和海鲜餐厅的酒店。",
     place: "富国岛",
     address: "越南安江省富国岛威尼斯街 Sun Village - Primavera 区",
   },
 
   nav: {
-    about: "关于我们",
+    about: "酒店简介",
     rooms: "客房",
     dining: "餐饮",
-    services: "服务",
+    experiences: "体验",
     news: "新闻",
   },
 
@@ -102,7 +102,7 @@ export const zh: Dictionary = {
     heroSlides: {
       welcome: { kicker: "欢迎来到", title: "Blessed Hotel", subtitle: "位于富国岛" },
       pool: { kicker: "全天惬意放松", title: "无边泳池", subtitle: "开放时间 6:00 – 22:00" },
-      sunset: { kicker: "屋顶酒吧", title: "Sky Terrace 日落", subtitle: "每晚供应招牌鸡尾酒" },
+      sunset: { kicker: "泳池边咖啡馆", title: "Olea Café 的午后", subtitle: "下午茶 14:00 – 17:00" },
       rooms: { kicker: "120 间客房与别墅", title: "在海岛安然入眠", subtitle: "从豪华客房到花园别墅" },
     },
     exploreTitle: "探索 Blessed Hotel",
@@ -114,7 +114,7 @@ export const zh: Dictionary = {
       },
       dining: {
         label: "餐饮",
-        title: "Saffron 餐厅的富国岛海鲜",
+        title: "Blessed Bistro 餐厅的富国岛海鲜",
         description: "每天清晨从阳东市场采购鲜鱼、螃蟹和海胆，以越南南北各地的做法烹制。",
       },
       spa: {
@@ -129,7 +129,7 @@ export const zh: Dictionary = {
       },
       news: {
         label: "新闻",
-        title: "The Hearth 周日早午餐",
+        title: "Blessed Bistro 周日早午餐",
         description: "60 多道亚洲与西式菜肴、儿童游乐区，每周日还有现场音乐。",
       },
     },
@@ -146,16 +146,16 @@ export const zh: Dictionary = {
       tagline: ["睡得好。", "吃得好。", "在海岛慢下来。"],
     },
     highlights: {
-      "the-hearth": "全日餐厅",
-      saffron: "越南菜",
-      "sky-terrace": "屋顶酒吧",
+      "blessed-bistro": "亚洲与西式料理",
+      "olea-cafe": "咖啡与甜点",
       spa: "水疗与养生",
+      gym: "健身房",
     },
     newsTitle: "新闻与优惠",
   },
 
   about: {
-    metaTitle: "关于我们",
+    metaTitle: "酒店简介",
     metaDescription: "富国岛 Blessed Hotel 的故事与理念。",
     heroTagline: "海岛上的宁静居所",
     wordmarkSub: "Hotel · Phu Quoc",
@@ -167,7 +167,7 @@ export const zh: Dictionary = {
       ],
       body: "难忘的假期来自简单的小事：一夜好眠、一顿热腾腾的早餐、前台的微笑，以及在恰当时机给出的建议，让您以自己的方式探索这座海岛。",
     },
-    stats: { rooms: "客房与别墅", dining: "餐厅与酒吧", reception: "前台与服务" },
+    stats: { rooms: "客房与别墅", dining: "餐厅与咖啡馆", reception: "前台与服务" },
     pillars: {
       rooms: { title: "明亮的客房", description: "源自每个角落的用心。" },
       food: { title: "温暖的餐食", description: "源自当天的海鲜和家常配方。" },
@@ -229,84 +229,97 @@ export const zh: Dictionary = {
 
   diningPage: {
     metaTitle: "餐饮",
-    metaDescription: "富国岛 Blessed Hotel 的全日餐厅、越南菜和屋顶酒吧。",
-    heroDescription: "三处餐饮空间，从悠闲的早餐到日落时分的鸡尾酒。",
-    openingHours: "营业时间",
+    metaDescription: "富国岛 Blessed Hotel 的 Blessed Bistro 与 Olea Café：营业时间、菜单及餐位预订。",
+    heroDescription: "两处餐饮空间，从自助早餐到泳池边的午后咖啡。",
+    title: "美食精选",
+    intro: "每天清晨从阳东市场采购的海鲜、酒店自制的烘焙点心和林同省烘焙的咖啡。查看各餐厅菜单，提前预订好位置。",
     cta: {
       title: "预订餐位或客房",
       description: "致电或通过 Zalo 预订餐位，也可在合作平台上快速预订客房。",
     },
   },
 
+  /** Nhà hàng, khoá theo slug trong site.ts `dining` (tên riêng, giờ mở cửa, số điện thoại không dịch) */
   dining: {
-    "the-hearth": {
-      kind: "全日餐厅",
-      description: "丰盛的自助早餐和全天供应的亚洲与西式菜单，选用当地农场和富国岛海域的新鲜食材。",
-      highlights: ["50 多道菜的自助早餐", "越南法棍与咖啡角", "儿童菜单"],
+    "blessed-bistro": {
+      kind: "亚洲与西式料理",
+      description: "全日餐厅：50 多道菜品的自助早餐，午餐和晚餐提供炭烤富国岛海鲜、牛肉河粉和自制意面等单点菜品。可容纳 120 位客人，设有面向花园的户外座位。",
     },
-    saffron: {
-      kind: "越南精致料理",
-      description: "以精致的呈现方式演绎越南南北中三地的传统菜肴与海岛海鲜，并搭配精选葡萄酒。",
-      highlights: ["每日新鲜海鲜", "7 道菜品鉴菜单", "精选葡萄酒"],
-    },
-    "sky-terrace": {
-      kind: "屋顶酒吧",
-      description: "招牌鸡尾酒、轻松的音乐，每晚都能欣赏海上日落。",
-      highlights: ["招牌鸡尾酒", "欢乐时光 17:00 – 19:00", "周末 DJ"],
+    "olea-cafe": {
+      kind: "咖啡与甜点",
+      description: "泳池边的咖啡馆，供应越南滴滤咖啡、冷萃咖啡、每天早上新鲜出炉的可颂，以及 14:00 至 17:00 的下午茶套餐。晚间提供鸡尾酒和热带水果无酒精饮品。",
     },
   },
 
-  servicesPage: {
-    metaTitle: "服务",
-    metaDescription: "富国岛 Blessed Hotel 的水疗、泳池、机场接送、会议及礼宾服务。",
-    heroDescription: "从您抵达机场到离开海岛，一切交给我们。",
+  experiencesPage: {
+    metaTitle: "体验",
+    metaDescription: "富国岛 Blessed Hotel 的 Blessed Spa 与健身房：开放时间、护理项目及预约。",
+    heroTitle: "在海岛慢下来",
+    heroDescription: "草本按摩、蒸汽浴和花园景观健身房，都在酒店之内。",
+    explore: "探索",
+    title: "放松与运动",
+    intro: "在 Blessed Spa 享受 60 至 120 分钟的护理，或在去海边前晨练一场。住客可免费使用健身房。",
   },
 
-  services: {
+  /** Spa / phòng tập, khoá theo slug trong site.ts `experiences` */
+  experiences: {
     spa: {
-      title: "水疗与按摩",
-      description: "草本与精油疗程，让身心彻底放松。",
-      details: "私密理疗室、热石按摩、面部护理和情侣水疗套餐。请在前台预约。",
-    },
-    pool: {
-      title: "无边泳池",
-      description: "从清晨开放至深夜的户外泳池。",
-      details: "面朝大海的泳池，配有日光躺椅、免费毛巾和供应轻饮的池畔酒吧。",
-    },
-    shuttle: {
-      title: "机场接送",
-      description: "专车门到门接送，可轻松提前预订。",
-      details: "提供 4 至 16 座车辆往返富国岛机场。请至少提前 24 小时告知航班号。",
-    },
-    meeting: {
-      title: "会议与活动",
-      description: "可容纳 10 至 300 人的多功能会议室。",
-      details: "现代化演示设备、灵活的宴会菜单和专业的活动支持团队。",
+      kind: "水疗与护理",
+      description: "设有 6 间私密护理室，其中 2 间为双人房。提供热石按摩、越南草本按摩、面部护理和蒸汽浴。请至少提前 2 小时预约。",
     },
     gym: {
-      title: "24 小时健身房",
-      description: "现代化设备，全天候开放。",
-      details: "跑步机、动感单车、自由重量区和瑜伽区。可按需预约私人教练。",
+      kind: "健身房",
+      description: "配备跑步机、动感单车、力量器械和自由重量区，另有提供瑜伽垫和健身球的瑜伽角。住客可免费使用毛巾和饮用水。",
     },
-    concierge: {
-      title: "礼宾服务",
-      description: "行程建议，代订游览项目与景点门票。",
-      details: "四岛游、香岛缆车、珍珠乐园（VinWonders）、摩托车租赁及当地餐厅推荐。",
-    },
+  },
+
+  /** Nhãn dùng chung cho thẻ nhà hàng / spa / phòng tập (`VenueCard`) */
+  venue: {
+    everyday: "每天",
+    openingHours: "营业时间",
+    phone: "电话",
+    viewMenu: "查看菜单",
+    reserveTable: "预订餐位",
+    reserveSpa: "预约护理",
+    prevPhoto: "上一张",
+    nextPhoto: "下一张",
+    photos: "{name} 图片",
+    photoAlt: "{name}，第 {n} 张图片",
+    menuAlt: "{name} 菜单，第 {n} 页",
   },
 
   newsPage: {
     metaTitle: "新闻",
     metaDescription: "Blessed Hotel 的优惠、活动和富国岛旅行攻略。",
     heroDescription: "优惠、活动和富国岛旅行攻略。",
+    featured: "精选文章",
+    latest: "最新文章",
+    categories: "分类",
+    allCategories: "全部",
+    search: "搜索",
+    searchPlaceholder: "按关键词搜索",
+    noResults: "没有找到相关文章。",
+    roomsTitle: "客房",
+    ctaTitle: "直接预订",
+    ctaBody: "致电或通过 Zalo 联系我们获取最优价格。",
+  },
+
+  /** Nhãn chuyên mục tin tức, khoá theo id trong site.ts `newsCategories` */
+  newsCategories: {
+    offer: "优惠",
+    dining: "餐饮",
+    event: "活动",
+    guide: "旅行攻略",
+    wellness: "养生",
   },
 
   article: {
-    postedBy: "发布者",
+    tableOfContents: "目录",
+    keyPoints: "要点速览",
+    forYou: "为您推荐",
     publishedOn: "发布日期",
     readingTime: "阅读时间",
     minutes: "{n} 分钟",
-    inThisPost: "本文目录",
     allNews: "全部新闻",
     moreArticles: "更多文章",
     ctaTitle: "想要预订或咨询？",
@@ -315,9 +328,9 @@ export const zh: Dictionary = {
 
   news: {
     "spa-mua-thu": {
-      category: "优惠",
       title: "秋季水疗套餐：特惠价格，全身放松",
       excerpt: "享受 90 分钟疗程与草本茶，活动截至 11 月底。",
+      keyPoints: ["90 分钟疗程：足浴、60 分钟按摩、面膜", "附赠姜蜜茶和时令水果", "每天 10:00 – 20:00，截至 11 月底"],
       body: [
         { paragraphs: ["富国岛的秋天阳光柔和、海面平静。Blessed Spa 也在此时为住客和访客推出 90 分钟放松套餐。"] },
         {
@@ -331,11 +344,11 @@ export const zh: Dictionary = {
       ],
     },
     "brunch-cuoi-tuan": {
-      category: "餐饮",
-      title: "The Hearth 推出周日早午餐",
+      title: "Blessed Bistro 推出周日早午餐",
       excerpt: "60 多道亚洲与西式菜肴、儿童游乐区，每周日还有现场音乐。",
+      keyPoints: ["每周日 11:00 – 14:30，Blessed Bistro 餐厅", "60 多道菜品及富国岛新鲜海鲜台", "6 岁以下儿童免费"],
       body: [
-        { paragraphs: ["从本周日起，The Hearth 推出周日早午餐，提供 60 多道亚洲与西式菜肴，供应时间为 11:00 至 14:30。"] },
+        { paragraphs: ["从本周日起，Blessed Bistro 推出周日早午餐，提供 60 多道亚洲与西式菜肴，供应时间为 11:00 至 14:30。"] },
         {
           heading: "菜单",
           paragraphs: [
@@ -350,24 +363,24 @@ export const zh: Dictionary = {
       ],
     },
     "hoang-hon-ho-boi": {
-      category: "活动",
       title: "月末日落泳池派对",
       excerpt: "每月最后一个周六晚上，在无边泳池畔享受 DJ、鸡尾酒和烧烤。",
+      keyPoints: ["每月最后一个周六晚上", "17:00 鸡尾酒，18:30 烧烤，DJ 至 22:00", "住客免费入场"],
       body: [
         { paragraphs: ["每月最后一个周六晚上，Blessed Hotel 的无边泳池将化身观赏日落的好去处，伴有 DJ、鸡尾酒和户外烧烤。"] },
         {
           heading: "活动安排",
           paragraphs: [
-            "17:00 起，池畔酒吧供应 Sky Terrace 招牌鸡尾酒。烧烤于 18:30 开始，提供海鲜和炭烤肉类。",
+            "17:00 起，池畔酒吧供应 Olea Café 招牌鸡尾酒。烧烤于 18:30 开始，提供海鲜和炭烤肉类。",
             "DJ 演出持续至 22:00。住客免费入场，外部访客请提前预订。",
           ],
         },
       ],
     },
     "kinh-nghiem-du-lich-phu-quoc": {
-      category: "旅行攻略",
       title: "富国岛四天三晚旅行攻略",
       excerpt: "推荐行程、必尝美食以及岛上最美的日落观赏点。",
+      keyPoints: ["第 1–2 天：日落小镇、夜市、四岛游", "第 3–4 天：北岛、胡椒园、购买伴手礼", "提前一天告知，礼宾部可代订车辆、游览和餐厅"],
       body: [
         { paragraphs: ["四天时间刚好可以不慌不忙地休息并游览富国岛。以下是我们礼宾团队常为首次来岛的客人推荐的行程。"] },
         {
@@ -387,9 +400,9 @@ export const zh: Dictionary = {
       ],
     },
     "uu-dai-luu-tru-dai-ngay": {
-      category: "优惠",
       title: "住得越久，优惠越多",
       excerpt: "直接向酒店预订，入住 5 晚及以上最高可享 25% 折扣。",
+      keyPoints: ["入住 5 晚享 85 折，7 晚享 75 折", "含每日早餐和洗衣服务", "仅限通过热线或 Zalo 直接预订"],
       body: [
         { paragraphs: ["如果您计划在富国岛入住 5 晚或以上，请直接向酒店预订以获得更优惠的价格。"] },
         {
@@ -403,14 +416,14 @@ export const zh: Dictionary = {
       ],
     },
     "yoga-san-thuong": {
-      category: "养生",
       title: "屋顶日出瑜伽",
       excerpt: "每天早上 6:00 为住客提供免费瑜伽课，迎接海岛清晨的阳光。",
+      keyPoints: ["每天早上 6:00，酒店屋顶", "45 分钟课程，适合初学者", "住客免费，提供瑜伽垫和饮用水"],
       body: [
         { paragraphs: ["每天早上 6:00，Blessed Hotel 屋顶都会开设一节 45 分钟的舒缓瑜伽课，住客可免费参加。"] },
         {
           heading: "课程介绍",
-          paragraphs: ["课程适合初学者，注重呼吸与拉伸。现场提供瑜伽垫、毛巾和饮用水。", "课后您可以到 The Hearth 享用早餐，或趁阳光还柔和时去泳池。"],
+          paragraphs: ["课程适合初学者，注重呼吸与拉伸。现场提供瑜伽垫、毛巾和饮用水。", "课后您可以到 Blessed Bistro 享用早餐，或趁阳光还柔和时去泳池。"],
         },
       ],
     },

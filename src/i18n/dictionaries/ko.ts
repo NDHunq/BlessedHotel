@@ -4,7 +4,7 @@ import type { Dictionary } from "./vi";
 export const ko: Dictionary = {
   meta: {
     tagline: "푸꾸옥 섬의 평화로운 휴식처",
-    description: "블레스드 호텔 푸꾸옥: 인피니티 풀, 루프톱 바, 해산물 레스토랑을 갖춘 120객실 호텔입니다.",
+    description: "블레스드 호텔 푸꾸옥: 인피니티 풀, 스파, 해산물 레스토랑을 갖춘 120객실 호텔입니다.",
     place: "푸꾸옥",
     address: "베트남 안장성 푸꾸옥, 베니스 거리, 선 빌리지 - 프리마베라",
   },
@@ -13,7 +13,7 @@ export const ko: Dictionary = {
     about: "호텔 소개",
     rooms: "객실",
     dining: "다이닝",
-    services: "서비스",
+    experiences: "체험",
     news: "소식",
   },
 
@@ -102,7 +102,7 @@ export const ko: Dictionary = {
     heroSlides: {
       welcome: { kicker: "환영합니다", title: "Blessed Hotel", subtitle: "푸꾸옥 섬에서" },
       pool: { kicker: "하루 종일 여유롭게", title: "인피니티 풀", subtitle: "운영 시간 6:00 – 22:00" },
-      sunset: { kicker: "루프톱 바", title: "스카이 테라스의 노을", subtitle: "매일 저녁 시그니처 칵테일" },
+      sunset: { kicker: "수영장 옆 카페", title: "Olea Café의 오후", subtitle: "14:00 – 17:00 애프터눈 티" },
       rooms: { kicker: "객실 & 빌라 120개", title: "섬에서의 편안한 잠", subtitle: "디럭스부터 가든 빌라까지" },
     },
     exploreTitle: "블레스드 호텔 둘러보기",
@@ -114,7 +114,7 @@ export const ko: Dictionary = {
       },
       dining: {
         label: "다이닝",
-        title: "사프론에서 맛보는 푸꾸옥 해산물",
+        title: "Blessed Bistro에서 맛보는 푸꾸옥 해산물",
         description: "매일 아침 즈엉동 시장에서 들여온 생선, 게, 성게를 베트남 전국의 레시피로 요리합니다.",
       },
       spa: {
@@ -129,7 +129,7 @@ export const ko: Dictionary = {
       },
       news: {
         label: "소식",
-        title: "더 하스의 선데이 브런치",
+        title: "Blessed Bistro의 선데이 브런치",
         description: "60가지가 넘는 아시아·서양 요리, 키즈 플레이 공간, 매주 일요일 라이브 음악.",
       },
     },
@@ -146,10 +146,10 @@ export const ko: Dictionary = {
       tagline: ["푹 자고.", "잘 먹고.", "섬에서 천천히."],
     },
     highlights: {
-      "the-hearth": "올데이 다이닝",
-      saffron: "베트남 요리",
-      "sky-terrace": "루프톱 바",
+      "blessed-bistro": "아시안 & 웨스턴",
+      "olea-cafe": "커피 & 디저트",
       spa: "스파 & 웰니스",
+      gym: "피트니스",
     },
     newsTitle: "소식 & 프로모션",
   },
@@ -167,7 +167,7 @@ export const ko: Dictionary = {
       ],
       body: "기억에 남는 여행은 소소한 것에서 시작됩니다. 깊은 잠, 따뜻한 아침 식사, 프런트의 미소, 그리고 나만의 방식으로 섬을 즐길 수 있도록 건네는 적절한 추천 한마디.",
     },
-    stats: { rooms: "객실 & 빌라", dining: "레스토랑 & 바", reception: "프런트 & 고객 지원" },
+    stats: { rooms: "객실 & 빌라", dining: "레스토랑 & 카페", reception: "프런트 & 고객 지원" },
     pillars: {
       rooms: { title: "밝은 객실", description: "구석구석 세심한 손길에서 시작됩니다." },
       food: { title: "따뜻한 식사", description: "그날 들어온 해산물과 집밥 레시피로 만듭니다." },
@@ -230,84 +230,97 @@ export const ko: Dictionary = {
 
   diningPage: {
     metaTitle: "다이닝",
-    metaDescription: "블레스드 호텔 푸꾸옥의 올데이 다이닝, 베트남 요리, 루프톱 바.",
-    heroDescription: "여유로운 아침 식사부터 노을 속 칵테일까지, 세 곳의 다이닝 공간.",
-    openingHours: "운영 시간",
+    metaDescription: "Blessed Hotel 푸꾸옥의 Blessed Bistro와 Olea Café: 영업시간, 메뉴, 테이블 예약 안내.",
+    heroDescription: "조식 뷔페부터 수영장 옆 오후의 커피까지, 두 곳의 다이닝 공간을 소개합니다.",
+    title: "미식의 정수",
+    intro: "매일 아침 즈엉동 시장에서 들여온 해산물, 호텔에서 직접 굽는 페이스트리, 럼동에서 로스팅한 커피를 즐겨 보세요. 매장별 메뉴를 확인하고 좋은 자리를 미리 예약하세요.",
     cta: {
       title: "테이블 또는 객실 예약",
-      description: "전화나 Zalo 메시지로 테이블을 예약하거나, 제휴 플랫폼에서 객실을 빠르게 예약하세요.",
+      description: "전화나 Zalo로 테이블을 예약하거나, 제휴 플랫폼에서 객실을 간편하게 예약하세요.",
     },
   },
 
+  /** Nhà hàng, khoá theo slug trong site.ts `dining` (tên riêng, giờ mở cửa, số điện thoại không dịch) */
   dining: {
-    "the-hearth": {
-      kind: "올데이 레스토랑",
-      description: "풍성한 조식 뷔페와 하루 종일 즐기는 아시아·서양 메뉴, 현지 농장과 푸꾸옥 바다의 신선한 재료를 사용합니다.",
-      highlights: ["50가지 이상의 조식 뷔페", "반미 & 커피 코너", "어린이 메뉴"],
+    "blessed-bistro": {
+      kind: "아시안 & 웨스턴",
+      description: "하루 종일 운영하는 레스토랑입니다. 50가지 이상의 조식 뷔페를, 점심과 저녁에는 숯불에 구운 푸꾸옥 해산물, 소고기 쌀국수, 직접 만든 파스타를 단품으로 제공합니다. 120석 규모이며 정원이 보이는 야외석이 있습니다.",
     },
-    saffron: {
-      kind: "베트남 파인 다이닝",
-      description: "베트남 세 지역의 전통 요리와 섬의 해산물을 세련되게 담아내고, 엄선한 와인과 함께 즐깁니다.",
-      highlights: ["매일 들어오는 신선한 해산물", "7코스 테이스팅 메뉴", "엄선한 와인"],
-    },
-    "sky-terrace": {
-      kind: "루프톱 바",
-      description: "시그니처 칵테일, 편안한 음악, 그리고 매일 저녁 바다 위로 지는 노을.",
-      highlights: ["시그니처 칵테일", "해피 아워 17:00 – 19:00", "주말 DJ"],
+    "olea-cafe": {
+      kind: "커피 & 디저트",
+      description: "수영장 옆 카페로 베트남 핀 커피, 콜드브루, 매일 아침 굽는 크루아상, 14:00부터 17:00까지 애프터눈 티 세트를 제공합니다. 저녁에는 칵테일과 열대 과일 목테일을 즐기실 수 있습니다.",
     },
   },
 
-  servicesPage: {
-    metaTitle: "서비스",
-    metaDescription: "블레스드 호텔 푸꾸옥의 스파, 수영장, 공항 픽업, 회의 시설, 컨시어지.",
-    heroDescription: "공항에 도착하는 순간부터 섬을 떠날 때까지, 모든 것을 맡겨 주세요.",
+  experiencesPage: {
+    metaTitle: "체험",
+    metaDescription: "Blessed Hotel 푸꾸옥의 Blessed Spa와 피트니스: 운영 시간, 트리트먼트 메뉴, 예약 안내.",
+    heroTitle: "섬에서 누리는 느린 휴식",
+    heroDescription: "허브 마사지, 스팀룸, 정원이 보이는 피트니스까지 모두 호텔 안에 있습니다.",
+    explore: "둘러보기",
+    title: "휴식과 운동",
+    intro: "Blessed Spa에서 60~120분 트리트먼트를 받거나, 바다에 가기 전 아침 운동을 해 보세요. 투숙객은 피트니스를 무료로 이용하실 수 있습니다.",
   },
 
-  services: {
+  /** Spa / phòng tập, khoá theo slug trong site.ts `experiences` */
+  experiences: {
     spa: {
-      title: "스파 & 마사지",
-      description: "몸과 마음을 풀어 주는 허브·아로마 오일 트리트먼트.",
-      details: "프라이빗 트리트먼트 룸, 핫스톤 마사지, 페이셜 케어, 커플 스파 패키지. 프런트에서 예약하세요.",
-    },
-    pool: {
-      title: "인피니티 풀",
-      description: "이른 아침부터 늦은 저녁까지 운영하는 야외 수영장.",
-      details: "선베드, 무료 타월, 가벼운 음료를 제공하는 풀사이드 바가 있는 오션뷰 수영장.",
-    },
-    shuttle: {
-      title: "공항 픽업",
-      description: "미리 예약하는 전용 차량 픽업·샌딩 서비스.",
-      details: "푸꾸옥 공항 왕복 4–16인승 차량. 최소 24시간 전에 항공편 번호를 알려 주세요.",
-    },
-    meeting: {
-      title: "회의 & 이벤트",
-      description: "10–300명을 위한 다양한 회의실.",
-      details: "최신 프레젠테이션 장비, 유연한 연회 메뉴, 전문 이벤트 지원팀.",
+      kind: "스파 & 트리트먼트",
+      description: "커플룸 2개를 포함한 6개의 프라이빗 트리트먼트 룸이 있습니다. 핫스톤 마사지, 베트남 허브 마사지, 페이셜 케어, 스팀룸을 제공하며 최소 2시간 전에 예약해 주세요.",
     },
     gym: {
-      title: "24시간 피트니스",
-      description: "최신 장비, 밤낮없이 운영.",
-      details: "러닝머신, 실내 자전거, 프리 웨이트, 요가 공간. 요청 시 퍼스널 트레이너 이용 가능.",
+      kind: "피트니스",
+      description: "트레드밀, 실내 자전거, 웨이트 머신, 프리 웨이트 존과 매트·짐볼이 있는 요가 공간을 갖추고 있습니다. 투숙객에게 수건과 생수를 무료로 제공합니다.",
     },
-    concierge: {
-      title: "컨시어지",
-      description: "일정 추천, 투어 및 관광지 티켓 예약.",
-      details: "4개 섬 투어, 혼텀 케이블카, 빈원더스, 오토바이 렌털, 현지 맛집 추천.",
-    },
+  },
+
+  /** Nhãn dùng chung cho thẻ nhà hàng / spa / phòng tập (`VenueCard`) */
+  venue: {
+    everyday: "매일",
+    openingHours: "운영 시간",
+    phone: "전화",
+    viewMenu: "메뉴 보기",
+    reserveTable: "테이블 예약",
+    reserveSpa: "트리트먼트 예약",
+    prevPhoto: "이전 사진",
+    nextPhoto: "다음 사진",
+    photos: "{name} 사진",
+    photoAlt: "{name} 사진 {n}",
+    menuAlt: "{name} 메뉴 {n}페이지",
   },
 
   newsPage: {
     metaTitle: "소식",
     metaDescription: "블레스드 호텔의 프로모션, 이벤트, 푸꾸옥 여행 가이드.",
     heroDescription: "프로모션, 이벤트, 푸꾸옥 여행 가이드.",
+    featured: "주요 소식",
+    latest: "최신 소식",
+    categories: "카테고리",
+    allCategories: "전체",
+    search: "검색",
+    searchPlaceholder: "키워드로 검색",
+    noResults: "일치하는 글이 없습니다.",
+    roomsTitle: "객실",
+    ctaTitle: "직접 예약",
+    ctaBody: "전화나 Zalo로 최저가를 안내받으세요.",
+  },
+
+  /** Nhãn chuyên mục tin tức, khoá theo id trong site.ts `newsCategories` */
+  newsCategories: {
+    offer: "프로모션",
+    dining: "다이닝",
+    event: "이벤트",
+    guide: "여행 가이드",
+    wellness: "웰니스",
   },
 
   article: {
-    postedBy: "작성",
+    tableOfContents: "목차",
+    keyPoints: "한눈에 보기",
+    forYou: "추천 글",
     publishedOn: "게시일",
     readingTime: "읽는 시간",
     minutes: "{n}분",
-    inThisPost: "목차",
     allNews: "전체 소식",
     moreArticles: "다른 글",
     ctaTitle: "예약하거나 문의하고 싶으신가요?",
@@ -316,9 +329,9 @@ export const ko: Dictionary = {
 
   news: {
     "spa-mua-thu": {
-      category: "프로모션",
       title: "가을 스파 패키지: 특별한 가격으로 완벽한 휴식",
       excerpt: "허브티와 함께하는 90분 트리트먼트, 11월 말까지 진행됩니다.",
+      keyPoints: ["90분 코스: 족욕, 60분 마사지, 페이스 마스크", "생강 꿀차와 제철 과일 제공", "11월 말까지 매일 10:00 – 20:00"],
       body: [
         {
           paragraphs: ["푸꾸옥의 가을은 햇살이 부드럽고 바다가 잔잔해지는 계절입니다. 이 시기에 맞춰 블레스드 스파가 투숙객과 방문객을 위한 90분 릴랙스 패키지를 선보입니다."],
@@ -337,11 +350,11 @@ export const ko: Dictionary = {
       ],
     },
     "brunch-cuoi-tuan": {
-      category: "다이닝",
-      title: "더 하스 선데이 브런치 오픈",
+      title: "Blessed Bistro 선데이 브런치 오픈",
       excerpt: "60가지가 넘는 아시아·서양 요리, 키즈 플레이 공간, 매주 일요일 라이브 음악.",
+      keyPoints: ["매주 일요일 11:00 – 14:30, Blessed Bistro", "60가지 이상의 요리와 푸꾸옥 해산물 코너", "6세 미만 어린이 무료"],
       body: [
-        { paragraphs: ["이번 일요일부터 더 하스에서 60가지가 넘는 아시아·서양 요리로 구성된 선데이 브런치를 11:00부터 14:30까지 운영합니다."] },
+        { paragraphs: ["이번 일요일부터 Blessed Bistro에서 60가지가 넘는 아시아·서양 요리로 구성된 선데이 브런치를 11:00부터 14:30까지 운영합니다."] },
         {
           heading: "메뉴",
           paragraphs: [
@@ -356,9 +369,9 @@ export const ko: Dictionary = {
       ],
     },
     "hoang-hon-ho-boi": {
-      category: "이벤트",
       title: "월말 선셋 풀 파티",
       excerpt: "매월 마지막 토요일 저녁, 인피니티 풀에서 DJ, 칵테일, 바비큐를 즐기세요.",
+      keyPoints: ["매월 마지막 토요일 저녁", "17:00 칵테일, 18:30 바비큐, 22:00까지 DJ", "투숙객 무료 입장"],
       body: [
         {
           paragraphs: ["매월 마지막 토요일 저녁, 블레스드 호텔의 인피니티 풀이 DJ, 칵테일, 야외 바비큐와 함께하는 노을 명소로 변신합니다."],
@@ -366,16 +379,16 @@ export const ko: Dictionary = {
         {
           heading: "프로그램",
           paragraphs: [
-            "17:00부터 풀사이드 바에서 스카이 테라스의 시그니처 칵테일을 제공합니다. 바비큐는 18:30에 시작하며 해산물과 숯불구이가 준비됩니다.",
+            "17:00부터 풀사이드 바에서 Olea Café의 시그니처 칵테일을 제공합니다. 바비큐는 18:30에 시작하며 해산물과 숯불구이가 준비됩니다.",
             "DJ 공연은 22:00까지 이어집니다. 투숙객은 무료 입장이며, 외부 방문객은 사전 예약을 부탁드립니다.",
           ],
         },
       ],
     },
     "kinh-nghiem-du-lich-phu-quoc": {
-      category: "여행 가이드",
       title: "푸꾸옥 3박 4일 여행 가이드",
       excerpt: "추천 일정, 꼭 먹어 봐야 할 음식, 섬에서 가장 아름다운 노을 명소.",
+      keyPoints: ["1–2일차: 선셋 타운, 야시장, 4개 섬 투어", "3–4일차: 섬 북부, 후추 농장, 기념품 쇼핑", "하루 전 요청 시 컨시어지가 차량·투어·레스토랑 예약"],
       body: [
         {
           paragraphs: ["4일이면 서두르지 않고 쉬면서 푸꾸옥을 둘러보기에 충분합니다. 처음 섬을 찾는 손님께 저희 컨시어지 팀이 자주 추천하는 일정을 소개합니다."],
@@ -397,9 +410,9 @@ export const ko: Dictionary = {
       ],
     },
     "uu-dai-luu-tru-dai-ngay": {
-      category: "프로모션",
       title: "오래 머물수록 더 큰 혜택",
       excerpt: "호텔에 직접 예약 시 5박 이상 최대 25% 할인.",
+      keyPoints: ["5박 이상 15%, 7박 이상 25% 할인", "매일 조식과 세탁 서비스 포함", "핫라인 또는 Zalo 직접 예약 시에만 적용"],
       body: [
         { paragraphs: ["푸꾸옥에서 5박 이상 머무를 계획이라면 호텔에 직접 예약하고 더 좋은 요금을 받으세요."] },
         {
@@ -416,16 +429,16 @@ export const ko: Dictionary = {
       ],
     },
     "yoga-san-thuong": {
-      category: "웰니스",
       title: "루프톱 선라이즈 요가",
       excerpt: "매일 아침 6:00, 투숙객을 위한 무료 요가 클래스로 섬의 아침 햇살을 맞이하세요.",
+      keyPoints: ["매일 아침 6:00 루프톱", "초보자도 가능한 45분 클래스", "투숙객 무료, 매트와 물 제공"],
       body: [
         { paragraphs: ["매일 아침 6:00, 블레스드 호텔 루프톱에서 투숙객을 위한 45분 무료 요가 클래스가 열립니다."] },
         {
           heading: "클래스 안내",
           paragraphs: [
             "초보자도 참여할 수 있으며 호흡과 스트레칭에 집중합니다. 매트, 타월, 물이 준비되어 있습니다.",
-            "수업 후에는 더 하스에서 아침 식사를 하거나, 햇살이 부드러울 때 수영장으로 향해 보세요.",
+            "수업 후에는 Blessed Bistro에서 아침 식사를 하거나, 햇살이 부드러울 때 수영장으로 향해 보세요.",
           ],
         },
       ],

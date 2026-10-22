@@ -2,8 +2,9 @@
  * Ghép dữ liệu không phụ thuộc ngôn ngữ (site.ts) với chữ đã dịch (dictionary).
  * Component nhận dữ liệu đã có chữ đúng ngôn ngữ + href đã gắn tiền tố ngôn ngữ.
  */
+import { fill } from "@/i18n/config";
 import type { I18n } from "@/i18n/server";
-import { bookingChannels, dining, explore, hero, highlights, nav, news, rooms, services, site } from "@/lib/site";
+import { bookingChannels, dining, experiences, explore, hero, highlights, nav, news, newsCategories, rooms, site, type Venue } from "@/lib/site";
 
 export const getNav = ({ t, href }: I18n) => nav.map((item) => ({ label: t.nav[item.id], href: href(item.href) }));
 
@@ -33,18 +34,47 @@ export const getRooms = ({ t, href }: I18n) =>
     return {
       ...r,
       ...text,
-      href: href(`/hang-phong#${r.slug}`),
+      href: href(`/rooms#${r.slug}`),
       gallery: r.gallery.map((src, i) => ({ src, alt: text.gallery[i] ?? r.name })),
     };
   });
 
 export type LocalizedRoom = ReturnType<typeof getRooms>[number];
 
-export const getDining = ({ t }: I18n) => dining.map((d) => ({ ...d, ...t.dining[d.slug] }));
+/** Ghép dữ liệu nhà hàng / spa / phòng tập với chữ đã dịch; ảnh và trang thực đơn kèm `alt` theo ngôn ngữ */
+const localizeVenue = ({ t }: I18n, v: Venue, text: { kind: string; description: string }) => ({
+  slug: v.slug,
+  name: v.name,
+  hours: v.hours,
+  phone: v.phone,
+  reserveUrl: v.reserveUrl ?? "",
+  ...text,
+  gallery: v.gallery.map((src, i) => ({ src, alt: fill(t.venue.photoAlt, { name: v.name, n: i + 1 }) })),
+  menu: (v.menu ?? []).map((src, i) => ({ src, alt: fill(t.venue.menuAlt, { name: v.name, n: i + 1 }) })),
+});
 
-export const getServices = ({ t }: I18n) => services.map((id) => ({ id, ...t.services[id] }));
+export const getDining = (i18n: I18n) => dining.map((d) => localizeVenue(i18n, d, i18n.t.dining[d.slug]));
+
+export const getExperiences = (i18n: I18n) => experiences.map((e) => localizeVenue(i18n, e, i18n.t.experiences[e.slug]));
+
+export type LocalizedVenue = ReturnType<typeof localizeVenue>;
 
 export const getNews = ({ t, href }: I18n) =>
-  news.map((n) => ({ ...n, ...t.news[n.slug], href: href(`/tin-tuc/${n.slug}`) }));
+  news.map((n) => ({
+    ...n,
+    ...t.news[n.slug],
+    categoryLabel: t.newsCategories[n.category],
+    href: href(`/news/${n.id}`),
+  }));
 
 export type LocalizedNewsPost = ReturnType<typeof getNews>[number];
+
+/** Chuyên mục tin tức kèm nhãn và ảnh đại diện (ảnh bài mới nhất của chuyên mục) */
+export const getNewsCategories = ({ t }: I18n) =>
+  newsCategories.map((id) => ({
+    id,
+    label: t.newsCategories[id],
+    image: news.find((n) => n.category === id)?.image ?? news[0].image,
+  }));
+
+export type LocalizedNewsCategory = ReturnType<typeof getNewsCategories>[number];

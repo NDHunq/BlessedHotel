@@ -6,7 +6,7 @@ import { formatDate } from "@/i18n/format";
 import { getI18n } from "@/i18n/server";
 import type { LocalizedNewsPost } from "@/lib/content";
 
-/** Lưới thẻ tin tức; cả thẻ là link tới /tin-tuc/[slug] */
+/** Lưới thẻ tin tức; cả thẻ là link tới /news/[id] */
 export default async function NewsGrid({ posts, className = "" }: { posts: LocalizedNewsPost[]; className?: string }) {
   const { t, locale } = await getI18n();
   return (
@@ -24,7 +24,7 @@ export default async function NewsGrid({ posts, className = "" }: { posts: Local
           </div>
           <div className="flex flex-1 flex-col p-6">
             <Label>
-              {post.category} · <time dateTime={post.date}>{formatDate(post.date, locale)}</time>
+              {post.categoryLabel} · <time dateTime={post.date}>{formatDate(post.date, locale)}</time>
             </Label>
             <h3 className="mt-2 text-xl leading-snug font-semibold text-ink transition-colors group-hover:text-brand-600">{post.title}</h3>
             <p className="mt-3 line-clamp-3 text-[15px] leading-relaxed text-ink-soft">{post.excerpt}</p>
