@@ -4,8 +4,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import OpenBookingButton from "@/components/booking/OpenBookingButton";
+import { LanguageMenu, LanguagePills } from "@/components/layout/LanguageSwitcher";
 import Logo from "@/components/layout/Logo";
-import { nav, site } from "@/lib/site";
+import type { Locale } from "@/i18n/config";
+
+/** Chữ hiển thị trên header (đã dịch, truyền từ layout) */
+export type HeaderLabels = {
+  mainMenu: string;
+  mobileMenu: string;
+  openMenu: string;
+  closeMenu: string;
+  homeAria: string;
+  bookNow: string;
+  bookNowLong: string;
+  language: string;
+  hotline: string;
+};
 
 /** Màu chữ menu: trên ảnh (header trong suốt) dùng trắng / gold sáng, trên nền trắng dùng chữ tối / gold */
 const navColor = (transparent: boolean, active: boolean) => {
@@ -18,7 +32,19 @@ const subscribeScroll = (cb: () => void) => {
   return () => window.removeEventListener("scroll", cb);
 };
 
-export default function Header() {
+export default function Header({
+  locale,
+  nav,
+  homeHref,
+  hotline,
+  labels,
+}: {
+  locale: Locale;
+  nav: { label: string; href: string }[];
+  homeHref: string;
+  hotline: string;
+  labels: HeaderLabels;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const scrolled = useSyncExternalStore(
@@ -42,20 +68,26 @@ export default function Header() {
   return (
     <header
       className={`sticky top-0 z-50 h-16 border-b transition-colors duration-300 ${
-        transparent ? "border-transparent bg-transparent" : "border-line bg-white/95 backdrop-blur"
+        transparent
+          ? "border-transparent bg-transparent"
+          : open
+            ? // Không dùng backdrop-blur khi mở menu: backdrop-filter biến header thành khung chứa
+              // của phần tử `fixed`, làm menu mobile toàn màn hình bị co lại trong header
+              "border-line bg-white"
+            : "border-line bg-white/95 backdrop-blur"
       }`}
     >
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-6 px-4 md:px-8">
-        <Logo light={transparent} />
+        <Logo href={homeHref} label={labels.homeAria} light={transparent} />
 
-        <nav aria-label="Menu chính" className="hidden lg:block">
+        <nav aria-label={labels.mainMenu} className="hidden lg:block">
           <ul className="flex items-center gap-8">
             {nav.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={`relative py-5 text-sm font-medium transition-colors ${navColor(transparent, isActive(item.href))} ${
+                  className={`relative py-5 text-sm font-medium whitespace-nowrap transition-colors ${navColor(transparent, isActive(item.href))} ${
                     isActive(item.href) ? "after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-current" : ""
                   }`}
                 >
@@ -66,19 +98,22 @@ export default function Header() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <a
-            href={`tel:${site.hotline.replace(/\s/g, "")}`}
-            className={`hidden text-sm font-medium transition-colors xl:block ${
+            href={`tel:${hotline.replace(/\s/g, "")}`}
+            className={`mr-1 hidden text-sm font-medium transition-colors xl:block ${
               transparent ? "text-white hover:text-accent" : "text-ink-soft hover:text-brand-600"
             }`}
           >
-            {site.hotline}
+            {hotline}
           </a>
-          <OpenBookingButton className="hidden sm:inline-flex">Đặt phòng</OpenBookingButton>
+          <div className="hidden lg:block">
+            <LanguageMenu locale={locale} label={labels.language} light={transparent} />
+          </div>
+          <OpenBookingButton className="hidden sm:inline-flex">{labels.bookNow}</OpenBookingButton>
           <button
             type="button"
-            aria-label={open ? "Đóng menu" : "Mở menu"}
+            aria-label={open ? labels.closeMenu : labels.openMenu}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
             className={`grid size-10 place-items-center rounded-full lg:hidden ${
@@ -98,7 +133,7 @@ export default function Header() {
           open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
-        <nav aria-label="Menu mobile" className="flex h-full flex-col px-6 py-8">
+        <nav aria-label={labels.mobileMenu} className="flex h-full flex-col overflow-y-auto px-6 py-8">
           <ul className="flex flex-col divide-y divide-line">
             {nav.map((item) => (
               <li key={item.href}>
@@ -106,20 +141,23 @@ export default function Header() {
                   href={item.href}
                   onClick={() => setOpen(false)}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={`block py-4 font-display text-2xl font-medium ${
-                    isActive(item.href) ? "text-brand-600" : "text-ink"
-                  }`}
+                  className={`block py-4 font-display text-2xl font-medium ${isActive(item.href) ? "text-brand-600" : "text-ink"}`}
                 >
                   {item.label}
                 </Link>
               </li>
             ))}
           </ul>
-          <div className="mt-auto flex flex-col gap-3 pb-20">
+          <div className="mt-8">
+            <LanguagePills locale={locale} label={labels.language} onSelect={() => setOpen(false)} />
+          </div>
+          <div className="mt-auto flex flex-col gap-3 pt-8 pb-20">
             <OpenBookingButton size="lg" onClick={() => setOpen(false)}>
-              Đặt phòng ngay
+              {labels.bookNowLong}
             </OpenBookingButton>
-            <p className="text-center text-sm text-muted">Hotline {site.hotline}</p>
+            <p className="text-center text-sm text-muted">
+              {labels.hotline} {hotline}
+            </p>
           </div>
         </nav>
       </div>

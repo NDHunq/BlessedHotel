@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getI18n } from "@/i18n/server";
 
 /** Banner đầu trang con: ảnh nền (nằm dưới header trong suốt) + breadcrumb + tiêu đề */
-export default function PageHero({
+export default async function PageHero({
   title,
   description,
   image,
@@ -11,6 +12,7 @@ export default function PageHero({
   description?: string;
   image: string;
 }) {
+  const { t, href } = await getI18n();
   return (
     // -mt-16: kéo banner lên dưới header trong suốt; pt-* chừa chỗ cho header
     <section className="relative isolate -mt-16 overflow-hidden">
@@ -18,9 +20,9 @@ export default function PageHero({
       {/* Tối phía trên cho chữ menu, tối phía dưới cho tiêu đề */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/50 via-black/25 to-black/65" />
       <div className="mx-auto flex min-h-[380px] max-w-7xl flex-col justify-end px-4 pt-32 pb-12 text-white md:min-h-[480px] md:px-8 md:pb-16">
-        <nav aria-label="Breadcrumb" className="mb-4 text-sm text-white/75">
-          <Link href="/" className="hover:text-white">
-            Trang chủ
+        <nav aria-label={t.ui.breadcrumb} className="mb-4 text-sm text-white/75">
+          <Link href={href("/")} className="hover:text-white">
+            {t.ui.home}
           </Link>
           <span className="mx-2" aria-hidden>
             /

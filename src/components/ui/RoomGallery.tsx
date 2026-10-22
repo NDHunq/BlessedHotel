@@ -7,6 +7,7 @@ import Captions from "yet-another-react-lightbox/plugins/captions";
 import Counter from "yet-another-react-lightbox/plugins/counter";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import { fill } from "@/i18n/config";
 import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/counter.css";
@@ -26,7 +27,18 @@ const layers = [
  * Ảnh phòng hiển thị dạng xếp chồng (tối đa 3 lớp cho gọn mắt); bấm vào mở trình xem ảnh
  * với đủ số ảnh (next/prev, zoom, vuốt, phím ←/→, thumbnails, bộ đếm).
  */
-export default function RoomGallery({ photos, name }: { photos: Photo[]; name: string }) {
+export default function RoomGallery({
+  photos,
+  name,
+  labels,
+  lightboxLabels,
+}: {
+  photos: Photo[];
+  name: string;
+  labels: { viewPhotos: string; viewPhotosOf: string };
+  /** Nhãn của trình xem ảnh đã dịch (dictionary `lightbox`) */
+  lightboxLabels: Record<string, string>;
+}) {
   const [index, setIndex] = useState(-1);
   const stack = photos.slice(0, layers.length);
 
@@ -35,7 +47,7 @@ export default function RoomGallery({ photos, name }: { photos: Photo[]; name: s
       <button
         type="button"
         onClick={() => setIndex(0)}
-        aria-label={`Xem ảnh phòng ${name}`}
+        aria-label={fill(labels.viewPhotosOf, { name })}
         // p-*: chừa chỗ cho góc các ảnh nghiêng không tràn ra ngoài cột
         className="group relative block aspect-[4/3] w-full cursor-zoom-in p-5 text-left md:p-8"
       >
@@ -58,7 +70,7 @@ export default function RoomGallery({ photos, name }: { photos: Photo[]; name: s
               <rect x="3" y="5" width="15" height="13" rx="2" />
               <path d="M7 3h12a2 2 0 0 1 2 2v11M3 14l4-4 4 4 3-3 4 4" />
             </svg>
-            Xem ảnh
+            {labels.viewPhotos}
           </span>
         </div>
       </button>
@@ -69,6 +81,7 @@ export default function RoomGallery({ photos, name }: { photos: Photo[]; name: s
         close={() => setIndex(-1)}
         slides={photos.map((p) => ({ src: p.src, alt: p.alt, description: p.alt }))}
         plugins={[Zoom, Thumbnails, Counter, Captions]}
+        labels={lightboxLabels}
         zoom={{ maxZoomPixelRatio: 3, scrollToZoom: true }}
         thumbnails={{ width: 96, height: 64, border: 0, borderRadius: 8, padding: 0, gap: 12, imageFit: "cover" }}
         counter={{ container: { style: { top: 0, bottom: "unset" } } }}

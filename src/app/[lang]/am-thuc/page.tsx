@@ -4,20 +4,27 @@ import BookingCta from "@/components/booking/BookingCta";
 import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
 import { Label } from "@/components/ui/SectionHeading";
-import { dining } from "@/lib/site";
+import { pageMetadata } from "@/i18n/metadata";
+import { getI18n } from "@/i18n/server";
+import { getDining } from "@/lib/content";
+import { pageImages } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Ẩm thực",
-  description: "Nhà hàng, ẩm thực Việt và rooftop bar tại Blessed Hotel Phú Quốc.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t, locale } = await getI18n();
+  return pageMetadata({ locale, path: "/am-thuc", title: t.diningPage.metaTitle, description: t.diningPage.metaDescription });
+}
 
-export default function DiningPage() {
+export default async function DiningPage() {
+  const i18n = await getI18n();
+  const { t } = i18n;
+  const dining = getDining(i18n);
+
   return (
     <>
       <PageHero
-        title="Ẩm thực"
-        description="Ba điểm đến ẩm thực, từ bữa sáng thong thả đến ly cocktail lúc hoàng hôn."
-        image={dining[1].image}
+        title={t.diningPage.metaTitle}
+        description={t.diningPage.heroDescription}
+        image={pageImages.dining}
       />
 
       <div className="py-16 md:py-24">
@@ -43,7 +50,8 @@ export default function DiningPage() {
                     <circle cx="12" cy="12" r="9" />
                     <path d="M12 7v5l3 2" />
                   </svg>
-                  Giờ mở cửa: {venue.hours}
+                  {t.diningPage.openingHours}
+                  <span className="font-semibold text-ink">{venue.hours}</span>
                 </p>
               </div>
             </article>
@@ -51,7 +59,7 @@ export default function DiningPage() {
         </Container>
       </div>
 
-      <BookingCta title="Đặt bàn hoặc đặt phòng" description="Gọi điện hoặc nhắn Zalo để đặt bàn, hoặc đặt phòng nhanh qua các nền tảng." />
+      <BookingCta title={t.diningPage.cta.title} description={t.diningPage.cta.description} />
     </>
   );
 }

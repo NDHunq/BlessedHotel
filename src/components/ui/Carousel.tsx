@@ -3,7 +3,16 @@
 import { useRef } from "react";
 
 /** Băng thẻ cuộn ngang (scroll-snap) với nút mũi tên tròn đè lên mép */
-export default function Carousel({ children, label }: { children: React.ReactNode; label: string }) {
+export default function Carousel({
+  children,
+  label,
+  labels,
+}: {
+  children: React.ReactNode;
+  label: string;
+  /** Nhãn nút trước/sau (đã dịch) */
+  labels: { previous: string; next: string };
+}) {
   const trackRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: 1 | -1) => {
@@ -25,12 +34,12 @@ export default function Carousel({ children, label }: { children: React.ReactNod
       >
         {children}
       </div>
-      <button type="button" aria-label="Trước" onClick={() => scroll(-1)} className={`${btn} -left-5`}>
+      <button type="button" aria-label={labels.previous} onClick={() => scroll(-1)} className={`${btn} -left-5`}>
         <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={2}>
           <path d="m15 6-6 6 6 6" />
         </svg>
       </button>
-      <button type="button" aria-label="Sau" onClick={() => scroll(1)} className={`${btn} -right-5`}>
+      <button type="button" aria-label={labels.next} onClick={() => scroll(1)} className={`${btn} -right-5`}>
         <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={2}>
           <path d="m9 6 6 6-6 6" />
         </svg>

@@ -1,34 +1,41 @@
 import Link from "next/link";
+import { Fragment } from "react";
 import Container from "@/components/ui/Container";
-import { highlights } from "@/lib/site";
+import { getI18n } from "@/i18n/server";
+import { getHighlights } from "@/lib/content";
+
+/** Ghép các dòng bằng <br /> */
+const Lines = ({ lines }: { lines: string[] }) =>
+  lines.map((line, i) => (
+    <Fragment key={line}>
+      {i > 0 && <br />}
+      {line}
+    </Fragment>
+  ));
 
 /** Khối thương hiệu: băng đen (logo chữ + khẩu hiệu) và hàng điểm nhấn ngăn bởi đường kẻ */
-export default function BrandBand() {
+export default async function BrandBand() {
+  const i18n = await getI18n();
+  const { brand } = i18n.t.home;
+  const highlights = getHighlights(i18n);
+
   return (
     <section className="py-20 md:py-28">
       <Container>
         <div className="overflow-hidden rounded-sm ring-1 ring-line">
           <div className="flex items-center justify-center gap-6 bg-ink px-6 py-10 text-white md:gap-8 md:py-12">
             <p className="text-right font-display text-2xl leading-[1.1] font-semibold tracking-wide text-white/90 uppercase md:text-4xl">
-              Blessed
-              <br />
-              Hotel
-              <br />
-              Phú Quốc
+              <Lines lines={brand.wordmark} />
             </p>
             <span className="h-24 w-px bg-white/25 md:h-28" aria-hidden />
             <p className="font-serif text-lg leading-snug text-white/85 md:text-2xl">
-              Ngủ ngon.
-              <br />
-              Ăn ngon.
-              <br />
-              Sống chậm giữa đảo.
+              <Lines lines={brand.tagline} />
             </p>
           </div>
 
           <ul className="grid grid-cols-2 gap-y-8 px-6 py-10 md:grid-cols-4 md:px-8">
             {highlights.map((h, i) => (
-              <li key={h.name} className="flex flex-col items-center text-center">
+              <li key={h.id} className="flex flex-col items-center text-center">
                 {/* Đường kẻ nối giữa các mục, giống hàng logo ở site tham khảo */}
                 <div className="flex w-full items-center gap-4">
                   <span className={`h-px flex-1 ${i === 0 ? "" : "bg-line"}`} aria-hidden />

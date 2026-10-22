@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { bookingChannels, type BookingChannel } from "@/lib/site";
+import type { LocalizedChannel } from "@/lib/content";
 
 const PhoneIcon = () => (
   <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
@@ -7,7 +7,7 @@ const PhoneIcon = () => (
   </svg>
 );
 
-function ChannelLogo({ channel }: { channel: BookingChannel }) {
+function ChannelLogo({ channel }: { channel: LocalizedChannel }) {
   if (!channel.logo) {
     return (
       <span className="grid size-10 shrink-0 place-items-center rounded-full bg-brand-600 text-white">
@@ -35,11 +35,11 @@ function ChannelLogo({ channel }: { channel: BookingChannel }) {
   );
 }
 
-/** Danh sách kênh đặt phòng — dùng trong BookingFab và các trang */
-export default function ChannelList({ onSelect }: { onSelect?: () => void }) {
+/** Danh sách kênh đặt phòng (đã dịch, lấy từ getBookingChannels) — dùng trong BookingFab và BookingCta */
+export default function ChannelList({ channels, onSelect }: { channels: LocalizedChannel[]; onSelect?: () => void }) {
   return (
     <ul className="flex flex-col gap-1">
-      {bookingChannels.map((c) => {
+      {channels.map((c) => {
         const external = c.href.startsWith("http");
         return (
           <li key={c.id}>

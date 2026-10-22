@@ -31,11 +31,12 @@
   /* Nền thẻ xám ấm (thẻ "Khám phá", tin tức) */
   --color-sand: #f6f4f0;
 
-  /* Font theo bộ của site tham khảo (xem CLAUDE.md) */
-  --font-sans: var(--font-be-vietnam), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
-  --font-overline: var(--font-mona-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Font theo bộ của site tham khảo (xem CLAUDE.md).
+     Các font này không có chữ Hàn/Trung → --font-cjk-* (đặt theo <html lang>, xem bên dưới) làm dự phòng */
+  --font-sans: var(--font-be-vietnam), var(--font-cjk-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter-tight), var(--font-cjk-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), var(--font-cjk-serif), ui-serif, Georgia, serif;
+  --font-overline: var(--font-mona-sans), var(--font-cjk-sans), ui-sans-serif, system-ui, sans-serif;
 
   --text-6\.5xl: 4rem;
   --text-6\.5xl--line-height: 1.15;
@@ -46,6 +47,25 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Font hệ thống cho chữ Hàn/Trung theo ngôn ngữ trang (tránh chữ Hán hiển thị bằng font Hàn và ngược lại) */
+:root {
+  --font-cjk-sans: ui-sans-serif;
+  --font-cjk-serif: ui-serif;
+}
+:root:lang(ko) {
+  --font-cjk-sans: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR";
+  --font-cjk-serif: "AppleMyungjo", "Noto Serif KR";
+}
+:root:lang(zh) {
+  --font-cjk-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans SC";
+  --font-cjk-serif: "Songti SC", "Noto Serif SC";
+}
+
+/* Tiếng Hàn ngắt dòng theo từ (mặc định trình duyệt cắt giữa từ, VD "최저가|를") */
+:lang(ko) {
+  word-break: keep-all;
 }
 
 body {

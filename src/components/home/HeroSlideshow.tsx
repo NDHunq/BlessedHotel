@@ -3,10 +3,19 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
-import type { HeroSlide } from "@/lib/site";
+import { fill } from "@/i18n/config";
+import type { LocalizedHeroSlide } from "@/lib/content";
 
 /** Banner trang chủ: ảnh + chữ của từng slide, tự chuyển (crossfade) sau mỗi `interval` ms */
-export default function HeroSlideshow({ slides, interval }: { slides: HeroSlide[]; interval: number }) {
+export default function HeroSlideshow({
+  slides,
+  interval,
+  labels,
+}: {
+  slides: LocalizedHeroSlide[];
+  interval: number;
+  labels: { explore: string; slideLabel: string };
+}) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -54,7 +63,7 @@ export default function HeroSlideshow({ slides, interval }: { slides: HeroSlide[
             )}
             <p className="mt-3 font-serif text-2xl md:text-3xl">{s.subtitle}</p>
             <Button href={s.href} variant="dark" size="lg" className="mt-8 font-semibold">
-              Khám phá
+              {labels.explore}
             </Button>
           </div>
         ))}
@@ -65,7 +74,7 @@ export default function HeroSlideshow({ slides, interval }: { slides: HeroSlide[
           <button
             key={s.title}
             type="button"
-            aria-label={`Ảnh ${i + 1}: ${s.title}`}
+            aria-label={fill(labels.slideLabel, { n: i + 1, title: s.title })}
             aria-current={i === index}
             onClick={() => setIndex(i)}
             className={`grid size-4 place-items-center rounded-full transition-colors ${i === index ? "ring-2 ring-brand-500" : ""}`}

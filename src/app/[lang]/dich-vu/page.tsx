@@ -3,19 +3,23 @@ import BookingCta from "@/components/booking/BookingCta";
 import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
 import ServiceList from "@/components/ui/ServiceList";
+import { pageMetadata } from "@/i18n/metadata";
+import { getI18n } from "@/i18n/server";
 import { pageImages } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Dịch vụ",
-  description: "Spa, hồ bơi, đưa đón sân bay, hội nghị và concierge tại Blessed Hotel Phú Quốc.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t, locale } = await getI18n();
+  return pageMetadata({ locale, path: "/dich-vu", title: t.servicesPage.metaTitle, description: t.servicesPage.metaDescription });
+}
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const { t } = await getI18n();
+
   return (
     <>
       <PageHero
-        title="Dịch vụ"
-        description="Từ lúc đặt chân xuống sân bay đến khi rời đảo, mọi việc cứ để chúng tôi lo."
+        title={t.servicesPage.metaTitle}
+        description={t.servicesPage.heroDescription}
         image={pageImages.services}
       />
 

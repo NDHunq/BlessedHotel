@@ -3,13 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 import ChannelList from "@/components/booking/ChannelList";
 import { OPEN_BOOKING_EVENT } from "@/components/booking/events";
+import type { LocalizedChannel } from "@/lib/content";
 
 // Thời gian giữ dạng đầy đủ (icon + chữ) và dạng thu gọn (chỉ icon)
 const EXPANDED_MS = 4000;
 const COLLAPSED_MS = 3000;
 
 /** Nút nổi "Đặt phòng" góc phải dưới, bấm mở danh sách kênh đặt phòng */
-export default function BookingFab() {
+export default function BookingFab({
+  channels,
+  labels,
+}: {
+  channels: LocalizedChannel[];
+  labels: { bookNow: string; via: string; panelLabel: string };
+}) {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState(true);
   const [hovered, setHovered] = useState(false);
@@ -49,15 +56,15 @@ export default function BookingFab() {
       <div
         id="booking-panel"
         role="dialog"
-        aria-label="Kênh đặt phòng"
+        aria-label={labels.panelLabel}
         className={`w-[min(20rem,calc(100vw-2rem))] origin-bottom-right rounded-2xl bg-white p-2 shadow-[0_12px_40px_rgb(0_0_0/0.18)] ring-1 ring-line transition-all duration-200 ${
           open ? "visible scale-100 opacity-100" : "invisible scale-95 opacity-0"
         }`}
       >
         <p className="px-3 pt-2 pb-1 font-overline text-[11px] font-semibold tracking-[0.2em] text-brand-600 uppercase">
-          Đặt phòng qua
+          {labels.via}
         </p>
-        <ChannelList onSelect={() => setOpen(false)} />
+        <ChannelList channels={channels} onSelect={() => setOpen(false)} />
       </div>
 
       <button
@@ -85,10 +92,10 @@ export default function BookingFab() {
         {/* Chữ vẫn nằm trong DOM khi thu gọn để giữ tên nút cho trình đọc màn hình */}
         <span
           className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity,margin] duration-500 ease-out ${
-            showLabel ? "ml-2 max-w-28 opacity-100" : "ml-0 max-w-0 opacity-0"
+            showLabel ? "ml-2 max-w-40 opacity-100" : "ml-0 max-w-0 opacity-0"
           }`}
         >
-          Đặt phòng
+          {labels.bookNow}
         </span>
       </button>
     </div>

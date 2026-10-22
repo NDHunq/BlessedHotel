@@ -11,11 +11,14 @@ export default function CountUp({
   suffix = "",
   duration = 1600,
   className = "tabular-nums",
+  locale = "vi-VN",
 }: {
   value: number;
   decimals?: number;
   suffix?: string;
   duration?: number;
+  /** Mã Intl để định dạng số theo ngôn ngữ (VD "en-US") */
+  locale?: string;
   /** Kiểu số; mặc định tabular-nums để số không nhảy độ rộng khi chạy */
   className?: string;
 }) {
@@ -51,7 +54,7 @@ export default function CountUp({
     };
   }, [value, duration]);
 
-  const fmt = new Intl.NumberFormat("vi-VN", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  const fmt = new Intl.NumberFormat(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 
   return (
     <span ref={ref} className={className}>

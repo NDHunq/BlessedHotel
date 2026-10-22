@@ -5,24 +5,33 @@ import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
 import RoomGallery from "@/components/ui/RoomGallery";
 import { Label } from "@/components/ui/SectionHeading";
-import { formatVnd, rooms } from "@/lib/site";
+import { fill } from "@/i18n/config";
+import { formatPrice } from "@/i18n/format";
+import { pageMetadata } from "@/i18n/metadata";
+import { getI18n } from "@/i18n/server";
+import { getRooms } from "@/lib/content";
+import { pageImages } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Các hạng phòng",
-  description: "Deluxe, Premier Ocean View, Junior Suite và Garden Villa tại Blessed Hotel Phú Quốc.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t, locale } = await getI18n();
+  return pageMetadata({ locale, path: "/hang-phong", title: t.roomsPage.metaTitle, description: t.roomsPage.metaDescription });
+}
 
-export default function RoomsPage() {
+export default async function RoomsPage() {
+  const i18n = await getI18n();
+  const { t, locale } = i18n;
+  const rooms = getRooms(i18n);
+
   return (
     <>
       <PageHero
-        title="Các hạng phòng"
-        description="Từ phòng Deluxe ấm cúng đến Garden Villa biệt lập, chọn không gian hợp với chuyến đi của bạn."
-        image={rooms[1].image}
+        title={t.roomsPage.metaTitle}
+        description={t.roomsPage.heroDescription}
+        image={pageImages.rooms}
       />
 
       {/* Mục lục nhanh */}
-      <nav aria-label="Các hạng phòng" className="sticky top-16 z-30 border-b border-line bg-white/95 backdrop-blur">
+      <nav aria-label={t.roomsPage.metaTitle} className="sticky top-16 z-30 border-b border-line bg-white/95 backdrop-blur">
         <Container>
           <ul className="flex gap-6 overflow-x-auto py-4 text-sm font-medium whitespace-nowrap [scrollbar-width:none]">
             {rooms.map((r) => (
@@ -41,7 +50,12 @@ export default function RoomsPage() {
           {rooms.map((room, i) => (
             <article id={room.slug} key={room.slug} className="grid items-center gap-8 md:grid-cols-2 md:gap-16">
               <div className={i % 2 === 1 ? "md:order-2" : ""}>
-                <RoomGallery photos={room.gallery} name={room.name} />
+                <RoomGallery
+                  photos={room.gallery}
+                  name={room.name}
+                  labels={{ viewPhotos: t.ui.viewPhotos, viewPhotosOf: t.ui.viewPhotosOf }}
+                  lightboxLabels={t.lightbox}
+                />
               </div>
               <div>
                 <Label>{room.view}</Label>
@@ -50,15 +64,15 @@ export default function RoomsPage() {
 
                 <dl className="mt-6 grid grid-cols-3 gap-4 border-y border-line py-5 text-sm">
                   <div>
-                    <dt className="text-muted">Diện tích</dt>
+                    <dt className="text-muted">{t.roomsPage.size}</dt>
                     <dd className="mt-1 font-medium text-ink">{room.size} m²</dd>
                   </div>
                   <div>
-                    <dt className="text-muted">Sức chứa</dt>
-                    <dd className="mt-1 font-medium text-ink">{room.guests} khách</dd>
+                    <dt className="text-muted">{t.roomsPage.capacity}</dt>
+                    <dd className="mt-1 font-medium text-ink">{fill(t.ui.guests, { n: room.guests })}</dd>
                   </div>
                   <div>
-                    <dt className="text-muted">Giường</dt>
+                    <dt className="text-muted">{t.roomsPage.bed}</dt>
                     <dd className="mt-1 font-medium text-ink">{room.bed}</dd>
                   </div>
                 </dl>
@@ -76,9 +90,9 @@ export default function RoomsPage() {
 
                 <div className="mt-8 flex flex-wrap items-center gap-6">
                   <p className="text-sm text-muted">
-                    Chỉ từ <span className="text-2xl font-semibold text-brand-600">{formatVnd(room.priceFrom)}</span> / đêm
+                    {t.ui.fromLong} <span className="text-2xl font-semibold text-brand-600">{formatPrice(room.priceFrom, locale)}</span> {t.ui.perNight}
                   </p>
-                  <OpenBookingButton>Đặt phòng này</OpenBookingButton>
+                  <OpenBookingButton>{t.roomsPage.bookThisRoom}</OpenBookingButton>
                 </div>
               </div>
             </article>
