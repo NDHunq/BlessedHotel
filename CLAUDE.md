@@ -34,11 +34,13 @@ src/
   proxy.ts              # URL thiếu tiền tố ngôn ngữ → chuyển sang /<ngôn ngữ>/… (cookie → Accept-Language → vi)
   app/
     [lang]/             # MỌI trang nằm dưới segment ngôn ngữ (vi | en | ko | zh)
-      layout.tsx        # layout gốc: <html lang>, font, metadata, Header + Footer + BookingFab; generateStaticParams 4 ngôn ngữ
-      page.tsx          # trang chủ
-      about/ rooms/ dining/ experiences/ news/   # mỗi tab menu là 1 trang (đường dẫn tiếng Việt cũ: redirect 308 trong next.config.ts)
-      news/[id]/        # chi tiết bài viết theo mã số `id` (generateStaticParams từ `news`; id lạ → notFound())
-      not-found.tsx     # 404 trong một ngôn ngữ
+      layout.tsx        # layout gốc: chỉ <html lang>, <body>, font, metadata; generateStaticParams 4 ngôn ngữ
+      (site)/           # nhóm route website công khai (không ảnh hưởng URL): layout.tsx = SiteChrome (Header + Footer + BookingFab)
+      (site)/page.tsx   # trang chủ
+      (site)/about/ rooms/ dining/ experiences/ news/   # mỗi tab menu là 1 trang (đường dẫn tiếng Việt cũ: redirect 308 trong next.config.ts)
+      (site)/news/[id]/ # chi tiết bài viết theo mã số `id` (generateStaticParams từ `news`; id lạ → notFound())
+      admin/            # trang quản trị (layout riêng, noindex, BẢN DEMO chưa lưu): danh sách bài · news/new · news/[id] (sửa)
+      not-found.tsx     # 404 trong một ngôn ngữ (tự bọc SiteChrome vì nằm ngoài nhóm (site))
     global-not-found.tsx # 404 cho URL không khớp route nào (hiện 4 ngôn ngữ; bật `experimental.globalNotFound`)
     globals.css         # design tokens (@theme), font dự phòng CJK theo :lang
   i18n/
@@ -48,7 +50,8 @@ src/
     format.ts           # formatPrice (VND), formatDate, readingMinutes theo ngôn ngữ
     metadata.ts         # pageMetadata(): title/description + canonical + hreflang 4 ngôn ngữ
   components/
-    layout/             # Header (client, active tab theo pathname), LanguageSwitcher (LanguageMenu desktop, LanguagePills mobile), Footer, Logo
+    admin/              # PostEditor (client: tab nội dung 4 ngôn ngữ, thiết lập, xem trước thẻ bài)
+    layout/             # SiteChrome, Header (client, active tab theo pathname), LanguageSwitcher (LanguageMenu desktop, LanguagePills mobile), Footer, Logo
     home/               # section trang chủ: Hero + HeroSlideshow, Explore, RoomTypes, PromoBanner, BrandBand, News
     booking/            # BookingFab (nút nổi), ChannelList, BookingCta, OpenBookingButton, events.ts
     news/               # trang tin (kiểu Vinpearl): NewsBrowser (client: ô chuyên mục lọc + tìm kiếm + "Tin mới nhất"),
@@ -59,6 +62,7 @@ src/
                         #   RoomGallery (bên ngoài 3 ảnh xếp chồng nghiêng lộn xộn kiểu xấp ảnh, không ghi số lượng → trình xem ảnh đủ ảnh: next/prev, zoom, vuốt, phím ←/→, bộ đếm)
   lib/
     site.ts             # dữ liệu KHÔNG phụ thuộc ngôn ngữ: ảnh, giá, số liệu, link, id/slug (không chứa chữ hiển thị)
+    admin.ts            # PostDraft cho trình soạn: newPostDraft(), getPostDraft(id) (nạp nội dung bài từ cả 4 dictionary)
     content.ts          # ghép site.ts + dictionary → getRooms/getNews/getNav/… (chữ đã dịch + href có tiền tố ngôn ngữ)
 public/menus/           # ảnh từng trang thực đơn <slug>-<n>.svg (ẢNH TẠM, thay bằng menu thật; khai báo trong `menu` của venue ở site.ts)
 public/brands/          # logo Zalo, Traveloka, Agoda, Klook; social/ = icon Facebook, Instagram, TikTok, Zalo (Simple Icons)
@@ -79,6 +83,7 @@ public/flags/           # quốc kỳ vuông vn/gb/kr/cn (flag-icons, MIT) cho L
   - Với `cacheComponents`, slug không tồn tại vẫn trả HTTP 200 nhưng hiển thị trang 404 + `noindex` (do streaming), đây là hành vi của Next, không phải lỗi.
 - **Trang Giới thiệu** (bố cục theo modernvillagelifestyle.vn/vi/ve-mvillage; dữ liệu `about` trong `site.ts`): banner toàn màn hình (khẩu hiệu mảnh + chữ "Blessed" serif lớn, `h1` ẩn) → section nền `surface` có 2 vòng tròn trang trí mờ: đoạn dẫn căn giữa, tiêu đề 2 dòng tô màu từ đầu (`philosophy.title`), đoạn kết, `Stats` hàng ngang, 4 thẻ ảnh dọc chữ nằm trên ảnh (`pillars`) → ảnh tràn viền + chữ trái, tiêu đề trộn chữ mảnh/đậm (`closing`).
 - **Footer** (dùng chung `Container`): hàng trên: logo + khẩu hiệu (trái) · icon mạng xã hội 22px (phải). Hàng chính 4 cột: Liên hệ (hotline, email, địa chỉ) · Khám phá · Đặt phòng · Vị trí (bản đồ). Tiêu đề cột `text-sm` chữ hoa `brand-400`, link 15px `white/80`. Dòng cuối: bản quyền + giấy phép 13px. **Không có nhóm "Chính sách"** (đã bỏ theo yêu cầu).
+- **Trang quản trị `/<lang>/admin`** (bản demo, **chưa có đăng nhập, chưa lưu thật**): không link từ website, `robots: noindex` trong `admin/layout.tsx`, không dùng `pageMetadata` (không cần canonical/hreflang). Khung riêng (logo + nhãn Quản trị, Bài viết, Xem website, đổi ngôn ngữ giao diện) + dòng báo bản demo. Danh sách bài (bảng) → `PostEditor`: nội dung soạn theo tab 4 ngôn ngữ (chấm xanh = đủ tiêu đề + tóm tắt), tóm tắt, 3 ý "Thông tin nhanh", các mục (tiêu đề + đoạn văn cách dòng trống); thiết lập chung (chuyên mục, ngày, Tin nổi bật, ảnh bìa từ URL hoặc chọn file → xem trước bằng blob URL); xem trước thẻ bài. "Đăng bài" chỉ kiểm tra đủ 4 ngôn ngữ + ngày + ảnh rồi báo kết quả. Chữ giao diện trong dictionary `admin`. Khi làm thật: thêm đăng nhập (chặn `/<lang>/admin` ở `proxy.ts`), API/database lưu bài theo `id`, thay `news` trong `site.ts` + `news[slug]` trong dictionary bằng dữ liệu từ database.
 - **Đặt phòng**: link các kênh nằm ở `bookingChannels` trong `site.ts` (nhãn/ghi chú trong dictionary `booking.channels`). Muốn mở menu đặt phòng từ một nút bất kỳ thì dùng `OpenBookingButton` (gọi `openBooking()` trong `components/booking/events.ts`).
 
 ## Đa ngôn ngữ (i18n) — QUY TẮC BẮT BUỘC
@@ -165,7 +170,7 @@ Quy ước kỹ thuật:
 
 ## Quy ước code
 
-- Mặc định **Server Component**; chỉ thêm `"use client"` khi cần state/event (`Header`, `LanguageSwitcher`, `HeroSlideshow`, `RoomTypes`, `RoomCard`, `Carousel`, `RoomGallery`, `PhotoScroller`, `MenuViewer`, `CountUp`, `BookingFab`, `OpenBookingButton`). Client component nhận chữ đã dịch qua props.
+- Mặc định **Server Component**; chỉ thêm `"use client"` khi cần state/event (`Header`, `LanguageSwitcher`, `HeroSlideshow`, `RoomTypes`, `RoomCard`, `Carousel`, `RoomGallery`, `PhotoScroller`, `MenuViewer`, `PostEditor`, `CountUp`, `BookingFab`, `OpenBookingButton`). Client component nhận chữ đã dịch qua props.
 - Với `cacheComponents`, không gọi `new Date()`/`Math.random()`/API runtime trong Server Component lúc render — tính ở client (`useEffect`) hoặc bọc `<Suspense>`.
 - Chữ hiển thị lấy từ dictionary (xem mục i18n); dữ liệu không phụ thuộc ngôn ngữ lấy từ `src/lib/site.ts`, ghép qua `src/lib/content.ts`. Không hard-code nội dung trong component.
 - Mỗi trang export `generateMetadata` dùng `pageMetadata()` (`title` ngắn; layout gắn hậu tố `| Blessed Hotel`). `NEXT_PUBLIC_SITE_URL` = domain thật cho canonical/hreflang/OG (mặc định `http://localhost:3000`).

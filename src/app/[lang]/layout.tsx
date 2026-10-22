@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro, Cormorant, Inter_Tight, Mona_Sans } from "next/font/google";
-import BookingFab from "@/components/booking/BookingFab";
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
 import { localeMeta, locales } from "@/i18n/config";
 import { getI18n } from "@/i18n/server";
-import { getBookingChannels, getNav } from "@/lib/content";
 import { site } from "@/lib/site";
 import "../globals.css";
 
@@ -55,40 +51,16 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+/** Layout gốc: chỉ <html>/<body> + font. Khung website (Header/Footer) nằm ở (site)/layout.tsx, admin có layout riêng */
 export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
-  const i18n = await getI18n();
-  const { t, locale, href } = i18n;
+  const { locale } = await getI18n();
 
   return (
     <html
       lang={localeMeta[locale].htmlLang}
       className={`${beVietnam.variable} ${interTight.variable} ${cormorant.variable} ${monaSans.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col font-sans">
-        <Header
-          locale={locale}
-          nav={getNav(i18n)}
-          homeHref={href("/")}
-          hotline={site.hotline}
-          labels={{
-            mainMenu: t.ui.mainMenu,
-            mobileMenu: t.ui.mobileMenu,
-            openMenu: t.ui.openMenu,
-            closeMenu: t.ui.closeMenu,
-            homeAria: t.ui.homeAria,
-            bookNow: t.ui.bookNow,
-            bookNowLong: t.ui.bookNowLong,
-            language: t.ui.language,
-            hotline: t.ui.hotline,
-          }}
-        />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <BookingFab
-          channels={getBookingChannels(i18n)}
-          labels={{ bookNow: t.ui.bookNow, via: t.booking.via, panelLabel: t.booking.panelLabel }}
-        />
-      </body>
+      <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   );
 }
