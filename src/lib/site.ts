@@ -124,6 +124,16 @@ export const pageImages = {
 
 export type RoomCategory = "room" | "suite" | "villa";
 
+/**
+ * Tiện ích hiển thị trong modal "Xem thêm" của trang phòng (nhãn: dictionary `roomFacilities[id]`).
+ * `baseFacilities` có ở mọi hạng phòng; mỗi phòng thêm tiện ích riêng trong `facilities`.
+ */
+const baseFacilities = [
+  "air-conditioning", "wifi", "smart-tv", "satellite-tv", "telephone", "minibar", "kettle", "bottled-water",
+  "slippers", "wardrobe", "blackout-curtains", "safe", "private-bathroom", "rain-shower", "hairdryer", "towels",
+  "toiletries", "daily-housekeeping", "room-service", "reception-24h", "laundry", "luggage-storage", "wake-up-call",
+] as const;
+
 /** Hạng phòng (chữ: dictionary `rooms[slug]`; tên phòng là tên riêng, không dịch) */
 export const rooms = [
   {
@@ -140,6 +150,7 @@ export const rooms = [
       unsplash("photo-1629140727571-9b5c6f6267b4", 1800),
       unsplash("photo-1584622650111-993a426fbf0a", 1800),
     ],
+    facilities: ["desk", "coffee-machine", ...baseFacilities],
   },
   {
     slug: "premier",
@@ -155,6 +166,7 @@ export const rooms = [
       unsplash("photo-1568495248636-6432b97bd949", 1800),
       unsplash("photo-1582719508461-905c673771fd", 1800),
     ],
+    facilities: ["balcony", "sea-view", "desk", "bathrobe", ...baseFacilities],
   },
   {
     slug: "junior-suite",
@@ -170,6 +182,7 @@ export const rooms = [
       unsplash("photo-1598928506311-c55ded91a20c", 1800),
       unsplash("photo-1620626011761-996317b8d101", 1800),
     ],
+    facilities: ["living-area", "sofa-bed", "bathtub", "coffee-machine", "bathrobe", "turndown", ...baseFacilities],
   },
   {
     slug: "garden-villa",
@@ -185,6 +198,7 @@ export const rooms = [
       unsplash("photo-1618221195710-dd6b41faaea6", 1800),
       unsplash("photo-1507652313519-d4e9174996dd", 1800),
     ],
+    facilities: ["terrace", "garden-view", "living-area", "bathtub", "coffee-machine", "bathrobe", "in-room-breakfast", ...baseFacilities],
   },
 ] as const satisfies readonly {
   slug: string;
@@ -195,7 +209,10 @@ export const rooms = [
   priceFrom: number;
   image: string;
   gallery: readonly string[];
+  facilities: readonly string[];
 }[];
+
+export type RoomFacility = (typeof rooms)[number]["facilities"][number];
 
 export const promoImage = unsplash("photo-1561501900-3701fa6a0864", 2400);
 

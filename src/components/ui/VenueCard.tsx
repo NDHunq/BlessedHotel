@@ -8,8 +8,17 @@ import type { LocalizedVenue } from "@/lib/content";
 /**
  * Thẻ nhà hàng / spa / phòng tập: băng ảnh cuộn ngang bên trái, bên phải tên + loại hình + mô tả,
  * giờ mở cửa, số điện thoại; đáy thẻ: "Xem menu" (nếu có ảnh thực đơn) và nút đặt (nếu truyền `reserveLabel`).
+ * `reverse`: trên máy tính đổi bên (ảnh phải, chữ trái), dùng xen kẽ cho thẻ chẵn/lẻ; điện thoại vẫn ảnh trên.
  */
-export default async function VenueCard({ venue, reserveLabel }: { venue: LocalizedVenue; reserveLabel?: string }) {
+export default async function VenueCard({
+  venue,
+  reserveLabel,
+  reverse = false,
+}: {
+  venue: LocalizedVenue;
+  reserveLabel?: string;
+  reverse?: boolean;
+}) {
   const { t } = await getI18n();
   const tel = venue.phone ? `tel:${venue.phone.replace(/\s/g, "")}` : undefined;
   // Chưa có link đặt riêng → gọi thẳng số của nhà hàng / spa
@@ -20,13 +29,15 @@ export default async function VenueCard({ venue, reserveLabel }: { venue: Locali
   return (
     <article
       id={venue.slug}
-      className="grid scroll-mt-24 overflow-hidden rounded-2xl bg-white ring-1 ring-line md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]"
+      className={`grid scroll-mt-24 overflow-hidden rounded-2xl bg-white ring-1 ring-line ${
+        reverse ? "md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)]" : "md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]"
+      }`}
     >
       <PhotoScroller
         photos={venue.gallery}
         sizes="(min-width: 1280px) 680px, (min-width: 768px) 56vw, 100vw"
         labels={{ region: fill(t.venue.photos, { name: venue.name }), previous: t.venue.prevPhoto, next: t.venue.nextPhoto }}
-        className="aspect-[4/3] md:aspect-auto md:min-h-[420px]"
+        className={`aspect-[4/3] md:aspect-auto md:min-h-[420px] ${reverse ? "md:order-2" : ""}`}
       />
 
       <div className="flex flex-col p-6 md:p-8 lg:p-10">

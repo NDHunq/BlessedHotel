@@ -7,17 +7,19 @@ type Photo = { src: string; alt: string };
 
 /**
  * Băng ảnh cuộn ngang (vuốt trên điện thoại, nút mũi tên trái/phải + bộ đếm trên máy tính).
- * Hết ảnh thì nút "sau" quay về ảnh đầu và ngược lại.
+ * Hết ảnh thì nút "sau" quay về ảnh đầu và ngược lại. `indicator`: bộ đếm "n / tổng" (mặc định) hoặc chấm tròn ở giữa đáy.
  */
 export default function PhotoScroller({
   photos,
   sizes,
   labels,
+  indicator = "counter",
   className = "",
 }: {
   photos: Photo[];
   sizes: string;
   labels: { region: string; previous: string; next: string };
+  indicator?: "counter" | "dots";
   className?: string;
 }) {
   const track = useRef<HTMLDivElement>(null);
@@ -59,9 +61,24 @@ export default function PhotoScroller({
               <path d="m9 6 6 6-6 6" />
             </svg>
           </button>
-          <p className="absolute right-3 bottom-3 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white tabular-nums" aria-live="polite">
-            {current + 1} / {photos.length}
-          </p>
+          {indicator === "dots" ? (
+            <div className="absolute inset-x-0 bottom-3 flex justify-center gap-1.5">
+              {photos.map((photo, i) => (
+                <span
+                  key={photo.src}
+                  aria-hidden
+                  className={`size-1.5 rounded-full transition-colors ${i === current ? "bg-white" : "bg-white/50"}`}
+                />
+              ))}
+              <span className="sr-only" aria-live="polite">
+                {current + 1} / {photos.length}
+              </span>
+            </div>
+          ) : (
+            <p className="absolute right-3 bottom-3 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white tabular-nums" aria-live="polite">
+              {current + 1} / {photos.length}
+            </p>
+          )}
         </>
       )}
     </div>

@@ -40,23 +40,17 @@ export default async function AboutPage() {
       <section className="relative isolate overflow-hidden bg-surface py-20 md:py-28">
         <Arcs />
         <Container>
-          <div className="mx-auto max-w-xl text-center">
-            <p className="text-base leading-relaxed text-ink md:text-lg">
-              {philosophy.lead.map((line) => (
-                <span key={line} className="block">
-                  {line}
-                </span>
-              ))}
-            </p>
-            <h2 className="mt-8 font-display text-4xl leading-[1.2] font-semibold tracking-[-0.01em] text-ink md:text-6xl">
-              {philosophy.title.map((line) => (
-                <span key={line.highlight} className="block">
-                  <span className="text-brand-600">{line.highlight}</span>
-                  {line.rest}
-                </span>
-              ))}
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="font-display text-3xl leading-[1.2] font-semibold tracking-[-0.01em] text-balance text-ink md:text-5xl">
+              {philosophy.title.before}
+              <span className="text-brand-600">{philosophy.title.highlight}</span>
+              {philosophy.title.after}
             </h2>
-            <p className="mx-auto mt-8 max-w-md text-base leading-relaxed text-ink md:text-lg">{philosophy.body}</p>
+            <div className="mx-auto mt-8 max-w-2xl space-y-5 text-base leading-relaxed text-ink-soft md:text-lg">
+              {philosophy.body.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+            </div>
           </div>
 
           <Stats stats={stats} intlLocale={localeMeta[locale].intl} className="mt-14 md:mt-16" />

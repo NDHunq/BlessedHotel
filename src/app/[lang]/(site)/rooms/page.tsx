@@ -3,6 +3,7 @@ import BookingCta from "@/components/booking/BookingCta";
 import OpenBookingButton from "@/components/booking/OpenBookingButton";
 import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
+import RoomDetails from "@/components/ui/RoomDetails";
 import RoomGallery from "@/components/ui/RoomGallery";
 import { Label } from "@/components/ui/SectionHeading";
 import { fill } from "@/i18n/config";
@@ -92,7 +93,25 @@ export default async function RoomsPage() {
                   <p className="text-sm text-muted">
                     {t.ui.fromLong} <span className="text-2xl font-semibold text-brand-600">{formatPrice(room.priceFrom, locale)}</span> {t.ui.perNight}
                   </p>
-                  <OpenBookingButton>{t.roomsPage.bookThisRoom}</OpenBookingButton>
+                  <div className="flex flex-wrap gap-3">
+                    <OpenBookingButton>{t.roomsPage.bookThisRoom}</OpenBookingButton>
+                    <RoomDetails
+                      name={room.name}
+                      description={room.description}
+                      photos={room.gallery}
+                      facilities={room.facilities.map((f) => t.roomFacilities[f])}
+                      labels={{
+                        viewMore: t.roomsPage.viewMore,
+                        dialog: fill(t.roomsPage.detailsOf, { name: room.name }),
+                        hotel: "Blessed Hotel",
+                        facilities: t.roomsPage.facilities,
+                        close: t.roomsPage.close,
+                        photos: fill(t.roomsPage.photosOf, { name: room.name }),
+                        previous: t.ui.previous,
+                        next: t.ui.next,
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </article>

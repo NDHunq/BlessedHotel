@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /*
  * Bố cục theo trang ẩm thực của Vinpearl: tiêu đề + đoạn dẫn căn giữa, rồi mỗi nhà hàng một thẻ ngang
- * (băng ảnh cuộn bên trái; tên, loại hình, mô tả, giờ mở cửa, điện thoại, "Xem menu", "Đặt bàn" bên phải).
+ * (băng ảnh cuộn + tên, loại hình, mô tả, giờ mở cửa, điện thoại, "Xem menu", "Đặt bàn"); thẻ thứ 2, 4… đổi bên (ảnh phải, chữ trái).
  */
 export default async function DiningPage() {
   const i18n = await getI18n();
@@ -30,8 +30,8 @@ export default async function DiningPage() {
         <Container>
           <SectionHeading title={t.diningPage.title} description={t.diningPage.intro} align="center" />
           <div className="mx-auto mt-12 flex max-w-6xl flex-col gap-8 md:mt-16 md:gap-10">
-            {getDining(i18n).map((venue) => (
-              <VenueCard key={venue.slug} venue={venue} reserveLabel={t.venue.reserveTable} />
+            {getDining(i18n).map((venue, i) => (
+              <VenueCard key={venue.slug} venue={venue} reserveLabel={t.venue.reserveTable} reverse={i % 2 === 1} />
             ))}
           </div>
         </Container>
