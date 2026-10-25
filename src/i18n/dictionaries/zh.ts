@@ -355,6 +355,7 @@ export const zh: Dictionary = {
       featured: "精选",
       edit: "编辑",
       view: "查看",
+      seo: "SEO",
     },
     login: {
       metaTitle: "登录",
@@ -445,6 +446,73 @@ export const zh: Dictionary = {
       missingSettings: "请选择发布日期和封面图片。",
       listSeparator: "、",
     },
+    /** Khung chấm điểm SEO trong trình soạn bài (lib/seo.ts) */
+    seo: {
+      title: "SEO",
+      score: "SEO 评分",
+      tabScore: "SEO 评分 {score}/100",
+      ratingGood: "良好",
+      ratingWarn: "一般",
+      ratingBad: "需改进",
+      keyword: "核心关键词",
+      keywordHint: "客人搜索时输入的词语，例如：富国岛早午餐。",
+      problems: "需修改",
+      improvements: "建议改进",
+      passed: "已通过",
+      snippet: "Google 搜索预览",
+      snippetHint: "留空则使用文章标题和摘要。",
+      seoTitle: "SEO 标题",
+      metaDescription: "元描述",
+      desktop: "电脑",
+      mobile: "手机",
+      width: "显示长度",
+      goTo: "跳转到需修改的位置",
+      tips: "更多建议",
+      sourceGoogle: "Google",
+      sourceGoogleTitle: "查看 Google 对此项的官方建议",
+      sourceConvention: "惯例",
+      sourceConventionTitle: "Yoast / Rank Math 的惯例，并非 Google 规定。仅为建议，不会扣分。",
+      disclaimer: "只有标有 Google 的项目计入评分，点击标签可查看官方文档。“惯例”项目依据 Yoast / Rank Math，仅供参考。Google 不限制长度，所有数值标准均为参考。这不是 Google 排名分数。",
+      messages: {
+        keywordMissing: "请输入核心关键词，以评估关键词相关项目。",
+        titleShort: "SEO 标题稍短（{n}/{max}），可补充具体信息。",
+        titleLong: "SEO 标题过长（{n}/{max}），Google 会截断显示。",
+        titleGood: "SEO 标题长度合适（{n}/{max}）。",
+        titleKeywordMissing: "SEO 标题中没有核心关键词。",
+        titleKeywordLate: "建议将核心关键词移到 SEO 标题靠前的位置。",
+        titleKeywordGood: "核心关键词位于 SEO 标题前部。",
+        metaMissing: "没有元描述，摘要也为空。",
+        metaShort: "元描述稍短（{n}，建议 {min} 至 {max}）。",
+        metaLong: "元描述过长（{n}/{max}），Google 会截断显示。",
+        metaGood: "元描述长度合适（{n}）。",
+        metaKeywordMissing: "元描述中没有核心关键词。",
+        metaKeywordGood: "元描述包含核心关键词。",
+        introKeywordMissing: "正文开头段落没有提到核心关键词。",
+        introKeywordGood: "正文开头段落包含核心关键词。",
+        lengthBad: "正文过短（{n} 个词），建议至少 {min} 个词。",
+        lengthWarn: "正文稍短（{n} 个词），建议至少 {min} 个词。",
+        lengthGood: "正文长度良好（{n} 个词）。",
+        densityNone: "正文中没有出现核心关键词。",
+        densityLow: "关键词出现 {n} 次（{pct}%），略少，建议约 0.5% 至 2.5%。",
+        densityHigh: "关键词出现 {n} 次（{pct}%），过于密集，可能被视为堆砌关键词。",
+        densityGood: "关键词密度合适：{n} 次（{pct}%）。",
+        headingsFew: "建议将正文分为至少 2 个带小标题（##）的部分。",
+        headingsGood: "正文有 {n} 个小标题。",
+        headingKeywordMissing: "没有包含核心关键词的小标题。",
+        headingKeywordGood: "有小标题包含核心关键词。",
+        coverMissing: "没有封面图（分享链接和搜索结果中会显示）。",
+        coverGood: "已设置封面图。",
+        imagesNone: "建议在正文中加入至少 1 张图片。",
+        imagesAltMissing: "正文中有 {n} 张图片没有描述（alt）。",
+        imagesGood: "正文中的图片都有描述。",
+        linksNone: "没有链接到网站其他页面（客房、餐饮、其他文章）。",
+        linksGood: "有 {n} 个链接指向网站其他页面。",
+        paragraphsLong: "有 {n} 个段落过长，建议拆分，方便手机阅读。",
+        paragraphsGood: "段落长度便于阅读。",
+        keywordDuplicate: "该关键词已用于文章“{title}”，两篇文章会互相争夺排名。",
+        keywordUnique: "核心关键词未与其他文章重复。",
+      },
+    },
   },
 
   newsPage: {
@@ -488,6 +556,8 @@ export const zh: Dictionary = {
   news: {
     "spa-mua-thu": {
       title: "秋季水疗套餐：特惠价格，全身放松",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "富国岛水疗",
       excerpt: "享受 90 分钟疗程与草本茶，活动截至 11 月底。",
       keyPoints: ["90 分钟疗程：足浴、60 分钟按摩、面膜", "附赠姜蜜茶和时令水果", "每天 10:00 – 20:00，截至 11 月底"],
       body: [
@@ -504,6 +574,8 @@ export const zh: Dictionary = {
     },
     "brunch-cuoi-tuan": {
       title: "Blessed Bistro 推出周日早午餐",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "富国岛早午餐",
       excerpt: "60 多道亚洲与西式菜肴、儿童游乐区，每周日还有现场音乐。",
       keyPoints: ["每周日 11:00 – 14:30，Blessed Bistro 餐厅", "60 多道菜品及富国岛新鲜海鲜台", "6 岁以下儿童免费"],
       body: [
@@ -523,6 +595,8 @@ export const zh: Dictionary = {
     },
     "hoang-hon-ho-boi": {
       title: "月末日落泳池派对",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "富国岛泳池派对",
       excerpt: "每月最后一个周六晚上，在无边泳池畔享受 DJ、鸡尾酒和烧烤。",
       keyPoints: ["每月最后一个周六晚上", "17:00 鸡尾酒，18:30 烧烤，DJ 至 22:00", "住客免费入场"],
       body: [
@@ -538,6 +612,8 @@ export const zh: Dictionary = {
     },
     "kinh-nghiem-du-lich-phu-quoc": {
       title: "富国岛四天三晚旅行攻略",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "富国岛旅游攻略",
       excerpt: "推荐行程、必尝美食以及岛上最美的日落观赏点。",
       keyPoints: ["第 1–2 天：日落小镇、夜市、四岛游", "第 3–4 天：北岛、胡椒园、购买伴手礼", "提前一天告知，礼宾部可代订车辆、游览和餐厅"],
       body: [
@@ -560,6 +636,8 @@ export const zh: Dictionary = {
     },
     "uu-dai-luu-tru-dai-ngay": {
       title: "住得越久，优惠越多",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "长住优惠",
       excerpt: "直接向酒店预订，入住 5 晚及以上最高可享 25% 折扣。",
       keyPoints: ["入住 5 晚享 85 折，7 晚享 75 折", "含每日早餐和洗衣服务", "仅限通过热线或 Zalo 直接预订"],
       body: [
@@ -576,6 +654,8 @@ export const zh: Dictionary = {
     },
     "yoga-san-thuong": {
       title: "屋顶日出瑜伽",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "富国岛瑜伽",
       excerpt: "每天早上 6:00 为住客提供免费瑜伽课，迎接海岛清晨的阳光。",
       keyPoints: ["每天早上 6:00，酒店屋顶", "45 分钟课程，适合初学者", "住客免费，提供瑜伽垫和饮用水"],
       body: [

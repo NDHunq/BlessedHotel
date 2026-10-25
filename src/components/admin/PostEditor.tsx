@@ -2,15 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import MarkdownEditor from "@/components/admin/MarkdownEditor";
+import SeoPanel from "@/components/admin/SeoPanel";
+import SerpPreview from "@/components/admin/SerpPreview";
 import { fill, localeMeta, locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/vi";
 import { formatDate } from "@/i18n/format";
-import type { DraftContent, PostDraft } from "@/lib/admin";
+import type { DraftContent, KeywordIndex, PostDraft } from "@/lib/admin";
+import { analyzeSeo, ratingColor, type SeoResult } from "@/lib/seo";
 import type { NewsCategory } from "@/lib/site";
 
 type Labels = Dictionary["admin"]["editor"];
+type SeoLabels = Dictionary["admin"]["seo"];
 type Message = { tone: "ok" | "error"; text: string };
 
 const field =
@@ -21,6 +25,7 @@ const isComplete = (c: DraftContent) => c.title.trim() !== "" && c.excerpt.trim(
 
 /**
  * Trình soạn bài (bản demo, không lưu): tab nội dung theo 4 ngôn ngữ (nội dung soạn bằng Markdown), thiết lập chung, xem trước thẻ bài.
+ * SEO: chấm điểm ngay khi gõ cho từng ngôn ngữ (`analyzeSeo`, điểm hiện cạnh tab), khung `SeoPanel` dính bên phải, `SerpPreview` dưới nội dung.
  * "Đăng bài" kiểm tra đủ 4 ngôn ngữ + ngày + ảnh bìa rồi báo kết quả; chưa gửi lên máy chủ.
  */
 export default function PostEditor({
@@ -29,7 +34,9 @@ export default function PostEditor({
   uiLocale,
   categories,
   backHref,
+  keywordIndex,
   labels,
+  seoLabels,
 }: {
   initial: PostDraft;
   /** Có id → đang sửa bài cũ */
@@ -38,12 +45,40 @@ export default function PostEditor({
   uiLocale: Locale;
   categories: { id: NewsCategory; label: string }[];
   backHref: string;
+  /** Từ khoá chính của các bài khác (kiểm tra trùng) */
+  keywordIndex: KeywordIndex;
   labels: Labels;
+  seoLabels: SeoLabels;
 }) {
   const [draft, setDraft] = useState(initial);
   const [tab, setTab] = useState<Locale>(uiLocale);
   const [message, setMessage] = useState<Message | null>(null);
   const content = draft.content[tab];
+
+  // Chấm lại cả 4 ngôn ngữ mỗi khi bài thay đổi (chỉ là xử lý chuỗi, đủ nhanh để chạy theo từng phím gõ)
+  const seo = useMemo(
+    () =>
+      Object.fromEntries(
+        locales.map((l) => {
+          const c = draft.content[l];
+          return [
+            l,
+            analyzeSeo({
+              locale: l,
+              keyword: c.focusKeyword,
+              title: c.title,
+              excerpt: c.excerpt,
+              seoTitle: c.seoTitle,
+              metaDescription: c.metaDescription,
+              body: c.body,
+              hasCover: draft.image !== "",
+              otherKeywords: keywordIndex[l],
+            }),
+          ];
+        }),
+      ) as Record<Locale, SeoResult>,
+    [draft, keywordIndex],
+  );
 
   const update = (patch: Partial<PostDraft>) => {
     setDraft((d) => ({ ...d, ...patch }));
@@ -131,6 +166,15 @@ export default function PostEditor({
                     className={`size-2 rounded-full ${done ? "bg-emerald-500" : "bg-line"}`}
                   />
                   <span className="sr-only">{done ? labels.complete : labels.incomplete}</span>
+                  <span
+                    title={fill(seoLabels.tabScore, { score: seo[l].score })}
+                    className={`rounded-full px-1.5 text-xs font-semibold tabular-nums ${
+                      tab === l ? "bg-white/15 text-white" : `bg-white ring-1 ring-line ${ratingColor[seo[l].rating].text}`
+                    }`}
+                  >
+                    <span className="sr-only">{fill(seoLabels.tabScore, { score: seo[l].score })}</span>
+                    <span aria-hidden>{seo[l].score}</span>
+                  </span>
                 </button>
               );
             })}
@@ -166,11 +210,31 @@ export default function PostEditor({
               </div>
             </fieldset>
 
-            <MarkdownEditor value={content.body} onChange={(body) => updateContent({ body })} lang={localeMeta[tab].htmlLang} labels={labels} />
+            <MarkdownEditor
+              id="seo-field-body"
+              value={content.body}
+              onChange={(body) => updateContent({ body })}
+              lang={localeMeta[tab].htmlLang}
+              labels={labels}
+            />
+
+            <SerpPreview
+              locale={tab}
+              lang={localeMeta[tab].htmlLang}
+              postId={postId}
+              date={draft.date}
+              title={content.title}
+              excerpt={content.excerpt}
+              seoTitle={content.seoTitle}
+              metaDescription={content.metaDescription}
+              onChange={updateContent}
+              untitled={labels.untitled}
+              labels={seoLabels}
+            />
           </div>
         </section>
 
-        <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+        <aside className="flex flex-col gap-6">
           {/* Thiết lập chung cho mọi ngôn ngữ */}
           <section className="space-y-5 rounded-2xl bg-white p-5 ring-1 ring-line">
             <p className="text-sm font-semibold text-ink">{labels.settings}</p>
@@ -204,6 +268,7 @@ export default function PostEditor({
             <div>
               <p className="text-sm text-ink-soft">{labels.cover}</p>
               <input
+                id="seo-field-cover"
                 value={draft.image.startsWith("blob:") ? "" : draft.image}
                 onChange={(e) => update({ image: e.target.value })}
                 placeholder={labels.coverUrl}
@@ -242,6 +307,17 @@ export default function PostEditor({
               </div>
             </div>
           </section>
+
+          {/* Dính khi cuộn để vừa soạn nội dung vừa thấy điểm SEO */}
+          <SeoPanel
+            result={seo[tab]}
+            keyword={content.focusKeyword}
+            onKeywordChange={(focusKeyword) => updateContent({ focusKeyword })}
+            lang={localeMeta[tab].htmlLang}
+            languageLabel={localeMeta[tab].label}
+            labels={seoLabels}
+            className="lg:sticky lg:top-24 lg:max-h-[calc(100svh-7rem)] lg:overflow-y-auto"
+          />
         </aside>
       </div>
     </div>

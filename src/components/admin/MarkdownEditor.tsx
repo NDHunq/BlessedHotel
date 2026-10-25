@@ -17,12 +17,15 @@ export default function MarkdownEditor({
   onChange,
   lang,
   labels,
+  id,
 }: {
   value: string;
   onChange: (value: string) => void;
   /** Mã ngôn ngữ HTML của nội dung đang soạn */
   lang: string;
   labels: Labels;
+  /** id của ô soạn (khung bọc có id `<id>-wrap`, dùng khi đang ở tab Xem trước) */
+  id?: string;
 }) {
   const area = useRef<HTMLTextAreaElement>(null);
   const [tab, setTab] = useState<"write" | "preview">("write");
@@ -77,7 +80,11 @@ export default function MarkdownEditor({
       <p className="text-sm font-medium text-ink">{labels.body}</p>
       <p className="mt-0.5 text-xs leading-relaxed text-muted">{labels.bodyHint}</p>
 
-      <div className="mt-2 overflow-hidden rounded-xl ring-1 ring-line focus-within:ring-2 focus-within:ring-brand-500">
+      <div
+        id={id ? `${id}-wrap` : undefined}
+        tabIndex={-1}
+        className="mt-2 overflow-hidden rounded-xl ring-1 ring-line outline-none focus-within:ring-2 focus-within:ring-brand-500"
+      >
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-surface px-2 py-1.5">
           <div className="flex gap-1">
             <button type="button" className={tabCls(tab === "write")} onClick={() => setTab("write")} aria-pressed={tab === "write"}>
@@ -134,6 +141,7 @@ export default function MarkdownEditor({
         {tab === "write" ? (
           <textarea
             ref={area}
+            id={id}
             lang={lang}
             rows={16}
             value={value}

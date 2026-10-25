@@ -53,6 +53,7 @@ src/
     metadata.ts         # pageMetadata(): title/description + canonical + hreflang 4 ngôn ngữ
   components/
     admin/              # PostEditor (tab nội dung 4 ngôn ngữ, thiết lập, xem trước thẻ bài), MarkdownEditor (thanh công cụ + tab Xem trước),
+                        #   SeoPanel (điểm SEO + từ khoá chính + danh sách kiểm tra), SerpPreview (tiêu đề SEO, mô tả meta, xem trước trên Google),
                         #   CategoryManager (thêm/sửa/xoá chuyên mục), LoginForm
     layout/             # SiteChrome, Header (client, active tab theo pathname), LanguageSwitcher (LanguageMenu desktop, LanguagePills mobile), Footer, Logo
     home/               # section trang chủ: Hero + HeroSlideshow, Explore, RoomTypes, PromoBanner, BrandBand, News
@@ -67,7 +68,8 @@ src/
     site.ts             # dữ liệu KHÔNG phụ thuộc ngôn ngữ: ảnh, giá, số liệu, link, id/slug (không chứa chữ hiển thị)
     admin-auth.ts       # đăng nhập giả lập: tài khoản demo DEMO_ADMIN (ghi đè bằng env ADMIN_USERNAME/ADMIN_PASSWORD), tên + giá trị cookie phiên
     markdown.ts         # Markdown đơn giản cho nội dung bài: parseMarkdown → khối, parseInline, bodyToMarkdown, safeUrl
-    admin.ts            # PostDraft cho trình soạn: newPostDraft(), getPostDraft(id) (nạp nội dung bài từ cả 4 dictionary)
+    seo.ts              # analyzeSeo(): chấm điểm SEO bài viết theo từng ngôn ngữ (hàm thuần, chạy cả client lẫn server)
+    admin.ts            # PostDraft cho trình soạn: newPostDraft(), getPostDraft(id) (nạp nội dung bài từ cả 4 dictionary), getKeywordIndex() (từ khoá các bài để kiểm tra trùng)
     content.ts          # ghép site.ts + dictionary → getRooms/getNews/getNav/… (chữ đã dịch + href có tiền tố ngôn ngữ)
 public/menus/           # ảnh từng trang thực đơn <slug>-<n>.svg (ẢNH TẠM, thay bằng menu thật; khai báo trong `menu` của venue ở site.ts)
 public/brands/          # logo Zalo, Traveloka, Agoda, Klook; social/ = icon Facebook, Instagram, TikTok, Zalo (Simple Icons)
@@ -93,7 +95,15 @@ public/flags/           # quốc kỳ vuông vn/gb/kr/cn (flag-icons, MIT) cho L
   - **Khung `(panel)`**: logo + nhãn Quản trị, Bài viết, Chuyên mục, Xem website, đổi ngôn ngữ giao diện, Đăng xuất + dòng báo bản demo.
   - **Bài viết**: bảng danh sách → `PostEditor`: tab 4 ngôn ngữ (chấm xanh = đủ tiêu đề + tóm tắt), tóm tắt, 3 ý "Thông tin nhanh", **nội dung soạn bằng Markdown** (`MarkdownEditor`: H, B, I, danh sách, trích dẫn, link, ảnh từ link, tải ảnh lên → blob: tạm; tab Xem trước dùng đúng component `Markdown` của trang bài viết); thiết lập chung (chuyên mục, ngày, Tin nổi bật, ảnh bìa); xem trước thẻ bài. "Đăng bài" chỉ kiểm tra đủ 4 ngôn ngữ + ngày + ảnh.
   - **Chuyên mục** (`CategoryManager`): bảng tên (4 ngôn ngữ) + mã + số bài; thêm (mã `a-z0-9-` không trùng + tên đủ 4 ngôn ngữ), sửa tên, xoá (xác nhận ngay trên dòng; không cho xoá khi còn bài).
-  - Chữ giao diện trong dictionary `admin` (`nav`, `list`, `login`, `categories`, `editor`).
+  - **Chấm điểm SEO khi soạn** (`lib/seo.ts` → `analyzeSeo`): chấm lại theo từng phím gõ, riêng cho từng ngôn ngữ. Điểm hiện ở tab ngôn ngữ, ở khung `SeoPanel` (dính bên phải: điểm 0–100, ô **từ khoá chính**, nhóm Cần sửa / Nên cải thiện / Gợi ý thêm / Đạt; bấm vào mục chưa đạt thì nhảy tới ô `seo-field-<field>` cần sửa) và ở cột SEO của danh sách bài. `SerpPreview` (dưới nội dung): ô **tiêu đề SEO** và **mô tả meta** (để trống thì dùng tiêu đề / tóm tắt; bộ đếm độ dài) + khung xem trước kết quả Google máy tính/điện thoại.
+    - **Nguồn của từng mục phải trung thực** (`source` trong mỗi `SeoCheck`, hiện thành nhãn trong khung):
+      - `"google"` (nhãn "Google ↗", link tới `GOOGLE_DOCS`): có trong tài liệu chính thức Google Search Central. **Chỉ các mục này tính điểm** (`WEIGHTS`): có mô tả meta, tiêu đề/mô tả không dài quá chỗ hiển thị, ≥ 2 tiêu đề mục, ảnh bìa, ảnh trong bài có alt, link nội bộ, không nhồi nhét từ khoá (mật độ > 2,5%). Điểm = điểm đạt / tổng điểm các tiêu chí áp dụng.
+      - `"convention"` (nhãn "Thông lệ"): thông lệ Yoast / Rank Math mà Google không quy định (mọi mục về từ khoá chính, số từ tối thiểu, mật độ thấp, đoạn văn dài, có ảnh trong bài, tiêu đề/mô tả ngắn, trùng từ khoá). Chưa đạt thì `status: "tip"` (nhóm "Gợi ý thêm"), **không bao giờ trừ điểm**.
+      - Thêm tiêu chí mới: chỉ gắn `"google"` khi có trang tài liệu Google nói rõ (kiểm tra link còn sống), còn lại là `"convention"`. Không viết "theo Google" cho ngưỡng số: Google không giới hạn độ dài tiêu đề/mô tả (chỉ cắt cho vừa màn hình) và không có số từ hay mật độ từ khoá lý tưởng.
+    - Ngưỡng số đều là tham khảo: độ dài theo **độ rộng** (chữ Hàn/Trung tính 2; tiêu đề gồm hậu tố ` | Blessed Hotel` 30–60, mô tả 120–160), số từ (`Intl.Segmenter`, ngưỡng tự ước lượng từng ngôn ngữ trong `WORDS`), mật độ = số lần / tổng số từ như Yoast.
+    - Tìm từ khoá không phân biệt hoa/thường nhưng phân biệt dấu tiếng Việt; vi/en khớp nguyên từ, ko chỉ chặn đầu từ (trợ từ dính phía sau), zh không có ranh giới từ.
+    - Từ khoá chính mẫu của bài có sẵn: `news[slug].focusKeyword` trong dictionary. Khi làm thật: lưu `focus_keyword`, `seo_title`, `meta_description` theo từng ngôn ngữ, trang bài viết dùng `seo_title` / `meta_description` (nếu có) cho `<title>` và `<meta description>` (hiện dùng tiêu đề + tóm tắt). Màu tiêu đề Google trong khung xem trước: token `serp-title`, `serp-text` (chỉ dùng ở đây).
+  - Chữ giao diện trong dictionary `admin` (`nav`, `list`, `login`, `categories`, `editor`, `seo`).
   - Khi làm thật: tài khoản thật (mật khẩu băm, phiên ký/mã hoá), API + database lưu bài (theo `id`, nội dung Markdown từng ngôn ngữ) và chuyên mục, API tải ảnh; thay `news`/`newsCategories` trong `site.ts` + `news[slug]`/`newsCategories` trong dictionary bằng dữ liệu từ database.
 - **Nội dung bài viết là Markdown**: trang bài viết lấy `post.markdown` (hiện chuyển từ `body` trong dictionary bằng `bodyToMarkdown`), tách khối bằng `parseMarkdown` rồi hiển thị bằng `Markdown`; tiêu đề `##` được đánh số và làm mục lục (neo `section-N`), `###` là tiêu đề nhỏ, ảnh một dòng riêng thành ảnh lớn có chú thích (= mô tả ảnh).
 - **Đặt phòng**: link các kênh nằm ở `bookingChannels` trong `site.ts` (nhãn/ghi chú trong dictionary `booking.channels`). Muốn mở menu đặt phòng từ một nút bất kỳ thì dùng `OpenBookingButton` (gọi `openBooking()` trong `components/booking/events.ts`).
@@ -182,7 +192,7 @@ Quy ước kỹ thuật:
 
 ## Quy ước code
 
-- Mặc định **Server Component**; chỉ thêm `"use client"` khi cần state/event (`Header`, `LanguageSwitcher`, `HeroSlideshow`, `RoomTypes`, `RoomCard`, `Carousel`, `RoomGallery`, `RoomDetails`, `PhotoScroller`, `MenuViewer`, `PostEditor`, `CountUp`, `BookingFab`, `OpenBookingButton`). Client component nhận chữ đã dịch qua props.
+- Mặc định **Server Component**; chỉ thêm `"use client"` khi cần state/event (`Header`, `LanguageSwitcher`, `HeroSlideshow`, `RoomTypes`, `RoomCard`, `Carousel`, `RoomGallery`, `RoomDetails`, `PhotoScroller`, `MenuViewer`, `PostEditor`, `SeoPanel`, `SerpPreview`, `CountUp`, `BookingFab`, `OpenBookingButton`). Client component nhận chữ đã dịch qua props.
 - Với `cacheComponents`, không gọi `new Date()`/`Math.random()`/API runtime trong Server Component lúc render — tính ở client (`useEffect`) hoặc bọc `<Suspense>`.
 - Chữ hiển thị lấy từ dictionary (xem mục i18n); dữ liệu không phụ thuộc ngôn ngữ lấy từ `src/lib/site.ts`, ghép qua `src/lib/content.ts`. Không hard-code nội dung trong component.
 - Mỗi trang export `generateMetadata` dùng `pageMetadata()` (`title` ngắn; layout gắn hậu tố `| Blessed Hotel`). `NEXT_PUBLIC_SITE_URL` = domain thật cho canonical/hreflang/OG (mặc định `http://localhost:3000`).

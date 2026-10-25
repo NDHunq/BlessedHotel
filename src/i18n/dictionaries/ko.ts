@@ -356,6 +356,7 @@ export const ko: Dictionary = {
       featured: "추천",
       edit: "수정",
       view: "보기",
+      seo: "SEO",
     },
     login: {
       metaTitle: "로그인",
@@ -446,6 +447,73 @@ export const ko: Dictionary = {
       missingSettings: "게시일과 대표 이미지를 선택해 주세요.",
       listSeparator: ", ",
     },
+    /** Khung chấm điểm SEO trong trình soạn bài (lib/seo.ts) */
+    seo: {
+      title: "SEO",
+      score: "SEO 점수",
+      tabScore: "SEO 점수 {score}/100",
+      ratingGood: "좋음",
+      ratingWarn: "보통",
+      ratingBad: "개선 필요",
+      keyword: "핵심 키워드",
+      keywordHint: "고객이 검색할 때 입력하는 문구입니다. 예: 푸꾸옥 브런치",
+      problems: "수정 필요",
+      improvements: "개선 권장",
+      passed: "통과",
+      snippet: "Google 검색 미리보기",
+      snippetHint: "비워 두면 글 제목과 요약을 사용합니다.",
+      seoTitle: "SEO 제목",
+      metaDescription: "메타 설명",
+      desktop: "데스크톱",
+      mobile: "모바일",
+      width: "표시 길이",
+      goTo: "수정할 위치로 이동",
+      tips: "추가 제안",
+      sourceGoogle: "Google",
+      sourceGoogleTitle: "이 항목에 대한 Google 공식 권장 사항 보기",
+      sourceConvention: "관례",
+      sourceConventionTitle: "Yoast / Rank Math의 관례이며 Google 규칙이 아닙니다. 제안일 뿐 점수를 깎지 않습니다.",
+      disclaimer: "Google 라벨이 붙은 항목만 점수에 반영되며, 라벨을 누르면 공식 문서를 볼 수 있습니다. \"관례\" 항목은 Yoast / Rank Math 기준의 제안입니다. Google은 길이를 제한하지 않으므로 모든 수치 기준은 참고용입니다. Google 순위 점수가 아닙니다.",
+      messages: {
+        keywordMissing: "키워드 관련 항목을 평가하려면 핵심 키워드를 입력하세요.",
+        titleShort: "SEO 제목이 조금 짧습니다({n}/{max}). 구체적인 내용을 더해 보세요.",
+        titleLong: "SEO 제목이 너무 깁니다({n}/{max}). Google에서 잘려 보입니다.",
+        titleGood: "SEO 제목 길이가 적당합니다({n}/{max}).",
+        titleKeywordMissing: "SEO 제목에 핵심 키워드가 없습니다.",
+        titleKeywordLate: "핵심 키워드를 SEO 제목 앞쪽으로 옮기세요.",
+        titleKeywordGood: "SEO 제목 앞쪽에 핵심 키워드가 있습니다.",
+        metaMissing: "메타 설명이 없고 요약도 비어 있습니다.",
+        metaShort: "메타 설명이 조금 짧습니다({n}, 권장 {min}~{max}).",
+        metaLong: "메타 설명이 너무 깁니다({n}/{max}). Google에서 잘려 보입니다.",
+        metaGood: "메타 설명 길이가 적당합니다({n}).",
+        metaKeywordMissing: "메타 설명에 핵심 키워드가 없습니다.",
+        metaKeywordGood: "메타 설명에 핵심 키워드가 있습니다.",
+        introKeywordMissing: "본문 첫 문단에 핵심 키워드가 없습니다.",
+        introKeywordGood: "본문 첫 문단에 핵심 키워드가 있습니다.",
+        lengthBad: "본문이 너무 짧습니다({n}단어). 최소 {min}단어를 권장합니다.",
+        lengthWarn: "본문이 조금 짧습니다({n}단어). 최소 {min}단어를 권장합니다.",
+        lengthGood: "본문 길이가 충분합니다({n}단어).",
+        densityNone: "본문에 핵심 키워드가 없습니다.",
+        densityLow: "키워드가 {n}회({pct}%) 나와 조금 적습니다. 0.5~2.5%를 권장합니다.",
+        densityHigh: "키워드가 {n}회({pct}%) 나와 너무 많습니다. 키워드 남용으로 보일 수 있습니다.",
+        densityGood: "키워드 밀도가 적당합니다: {n}회({pct}%).",
+        headingsFew: "본문을 소제목(##)이 있는 2개 이상의 단락으로 나누세요.",
+        headingsGood: "본문에 소제목이 {n}개 있습니다.",
+        headingKeywordMissing: "핵심 키워드가 들어간 소제목이 없습니다.",
+        headingKeywordGood: "핵심 키워드가 들어간 소제목이 있습니다.",
+        coverMissing: "대표 이미지가 없습니다(링크 공유와 검색 결과에 표시됩니다).",
+        coverGood: "대표 이미지가 있습니다.",
+        imagesNone: "본문에 이미지를 1장 이상 넣으세요.",
+        imagesAltMissing: "본문 이미지 {n}장에 설명(alt)이 없습니다.",
+        imagesGood: "본문의 모든 이미지에 설명이 있습니다.",
+        linksNone: "웹사이트의 다른 페이지(객실, 다이닝, 다른 글)로 연결되는 링크가 없습니다.",
+        linksGood: "웹사이트의 다른 페이지로 연결되는 링크가 {n}개 있습니다.",
+        paragraphsLong: "너무 긴 문단이 {n}개 있습니다. 모바일에서 읽기 쉽게 나누세요.",
+        paragraphsGood: "문단 길이가 읽기 좋습니다.",
+        keywordDuplicate: "이 키워드는 이미 “{title}” 글에 사용 중입니다. 두 글이 서로 순위를 다투게 됩니다.",
+        keywordUnique: "다른 글과 겹치지 않는 핵심 키워드입니다.",
+      },
+    },
   },
 
   newsPage: {
@@ -489,6 +557,8 @@ export const ko: Dictionary = {
   news: {
     "spa-mua-thu": {
       title: "가을 스파 패키지: 특별한 가격으로 완벽한 휴식",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "푸꾸옥 스파",
       excerpt: "허브티와 함께하는 90분 트리트먼트, 11월 말까지 진행됩니다.",
       keyPoints: ["90분 코스: 족욕, 60분 마사지, 페이스 마스크", "생강 꿀차와 제철 과일 제공", "11월 말까지 매일 10:00 – 20:00"],
       body: [
@@ -510,6 +580,8 @@ export const ko: Dictionary = {
     },
     "brunch-cuoi-tuan": {
       title: "Blessed Bistro 선데이 브런치 오픈",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "푸꾸옥 브런치",
       excerpt: "60가지가 넘는 아시아·서양 요리, 키즈 플레이 공간, 매주 일요일 라이브 음악.",
       keyPoints: ["매주 일요일 11:00 – 14:30, Blessed Bistro", "60가지 이상의 요리와 푸꾸옥 해산물 코너", "6세 미만 어린이 무료"],
       body: [
@@ -529,6 +601,8 @@ export const ko: Dictionary = {
     },
     "hoang-hon-ho-boi": {
       title: "월말 선셋 풀 파티",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "푸꾸옥 풀파티",
       excerpt: "매월 마지막 토요일 저녁, 인피니티 풀에서 DJ, 칵테일, 바비큐를 즐기세요.",
       keyPoints: ["매월 마지막 토요일 저녁", "17:00 칵테일, 18:30 바비큐, 22:00까지 DJ", "투숙객 무료 입장"],
       body: [
@@ -546,6 +620,8 @@ export const ko: Dictionary = {
     },
     "kinh-nghiem-du-lich-phu-quoc": {
       title: "푸꾸옥 3박 4일 여행 가이드",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "푸꾸옥 여행",
       excerpt: "추천 일정, 꼭 먹어 봐야 할 음식, 섬에서 가장 아름다운 노을 명소.",
       keyPoints: ["1–2일차: 선셋 타운, 야시장, 4개 섬 투어", "3–4일차: 섬 북부, 후추 농장, 기념품 쇼핑", "하루 전 요청 시 컨시어지가 차량·투어·레스토랑 예약"],
       body: [
@@ -570,6 +646,8 @@ export const ko: Dictionary = {
     },
     "uu-dai-luu-tru-dai-ngay": {
       title: "오래 머물수록 더 큰 혜택",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "장기 투숙 할인",
       excerpt: "호텔에 직접 예약 시 5박 이상 최대 25% 할인.",
       keyPoints: ["5박 이상 15%, 7박 이상 25% 할인", "매일 조식과 세탁 서비스 포함", "핫라인 또는 Zalo 직접 예약 시에만 적용"],
       body: [
@@ -589,6 +667,8 @@ export const ko: Dictionary = {
     },
     "yoga-san-thuong": {
       title: "루프톱 선라이즈 요가",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "푸꾸옥 요가",
       excerpt: "매일 아침 6:00, 투숙객을 위한 무료 요가 클래스로 섬의 아침 햇살을 맞이하세요.",
       keyPoints: ["매일 아침 6:00 루프톱", "초보자도 가능한 45분 클래스", "투숙객 무료, 매트와 물 제공"],
       body: [

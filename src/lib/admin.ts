@@ -13,6 +13,10 @@ export type DraftContent = {
   keyPoints: string[];
   /** Nội dung bài dạng Markdown (xem lib/markdown.ts) */
   body: string;
+  /** SEO (lib/seo.ts): từ khoá chính; tiêu đề SEO và mô tả meta để trống thì dùng `title` / `excerpt` */
+  focusKeyword: string;
+  seoTitle: string;
+  metaDescription: string;
 };
 
 export type PostDraft = {
@@ -23,7 +27,15 @@ export type PostDraft = {
   content: Record<Locale, DraftContent>;
 };
 
-const emptyContent = (): DraftContent => ({ title: "", excerpt: "", keyPoints: ["", "", ""], body: "" });
+const emptyContent = (): DraftContent => ({
+  title: "",
+  excerpt: "",
+  keyPoints: ["", "", ""],
+  body: "",
+  focusKeyword: "",
+  seoTitle: "",
+  metaDescription: "",
+});
 
 /** Bài trống cho "Viết bài mới" */
 export const newPostDraft = (): PostDraft => ({
@@ -46,6 +58,9 @@ export async function getPostDraft(id: number): Promise<PostDraft | undefined> {
         excerpt: text.excerpt,
         keyPoints: [...text.keyPoints],
         body: bodyToMarkdown(text.body),
+        focusKeyword: text.focusKeyword,
+        seoTitle: "",
+        metaDescription: "",
       };
       return [l, content] as const;
     }),
@@ -57,4 +72,18 @@ export async function getPostDraft(id: number): Promise<PostDraft | undefined> {
     image: post.image,
     content: Object.fromEntries(entries) as Record<Locale, DraftContent>,
   };
+}
+
+export type KeywordIndex = Record<Locale, { id: number; keyword: string; title: string }[]>;
+
+/** Từ khoá chính của mọi bài theo từng ngôn ngữ (bỏ bài `excludeId`), để trình soạn cảnh báo trùng từ khoá */
+export async function getKeywordIndex(excludeId?: number): Promise<KeywordIndex> {
+  const entries = await Promise.all(
+    locales.map(async (l) => {
+      const dict = await getDictionary(l);
+      const list = news.filter((p) => p.id !== excludeId).map((p) => ({ id: p.id, keyword: dict.news[p.slug].focusKeyword, title: dict.news[p.slug].title }));
+      return [l, list] as const;
+    }),
+  );
+  return Object.fromEntries(entries) as KeywordIndex;
 }

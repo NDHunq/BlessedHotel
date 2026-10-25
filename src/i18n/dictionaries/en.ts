@@ -359,6 +359,7 @@ export const en: Dictionary = {
       featured: "Featured",
       edit: "Edit",
       view: "View",
+      seo: "SEO",
     },
     login: {
       metaTitle: "Sign in",
@@ -449,6 +450,73 @@ export const en: Dictionary = {
       missingSettings: "Please choose a publish date and a cover image.",
       listSeparator: ", ",
     },
+    /** Khung chấm điểm SEO trong trình soạn bài (lib/seo.ts) */
+    seo: {
+      title: "SEO",
+      score: "SEO score",
+      tabScore: "SEO score {score}/100",
+      ratingGood: "Good",
+      ratingWarn: "Fair",
+      ratingBad: "Needs work",
+      keyword: "Focus keyword",
+      keywordHint: "The phrase guests type when searching, e.g. Phu Quoc brunch.",
+      problems: "Problems",
+      improvements: "Improvements",
+      passed: "Passed",
+      snippet: "Google preview",
+      snippetHint: "Leave blank to use the post title and excerpt.",
+      seoTitle: "SEO title",
+      metaDescription: "Meta description",
+      desktop: "Desktop",
+      mobile: "Mobile",
+      width: "Display length",
+      goTo: "Go to the field to fix",
+      tips: "Suggestions",
+      sourceGoogle: "Google",
+      sourceGoogleTitle: "Open Google's official guidance for this check",
+      sourceConvention: "Convention",
+      sourceConventionTitle: "A Yoast / Rank Math convention, not a Google rule. A suggestion only; it never lowers the score.",
+      disclaimer: "Only checks labelled Google count toward the score; click the label to read the official documentation. \"Convention\" checks follow Yoast / Rank Math and are suggestions only. All numeric thresholds are guides, since Google sets no length limits. This is not a Google ranking score.",
+      messages: {
+        keywordMissing: "Enter a focus keyword to score the keyword checks.",
+        titleShort: "The SEO title is a little short ({n}/{max}); add a specific detail.",
+        titleLong: "The SEO title is too long ({n}/{max}); Google will cut it off.",
+        titleGood: "The SEO title length is just right ({n}/{max}).",
+        titleKeywordMissing: "The SEO title does not contain the focus keyword.",
+        titleKeywordLate: "Move the focus keyword closer to the start of the SEO title.",
+        titleKeywordGood: "The focus keyword appears near the start of the SEO title.",
+        metaMissing: "There is no meta description and the excerpt is empty.",
+        metaShort: "The meta description is a little short ({n}; aim for {min} to {max}).",
+        metaLong: "The meta description is too long ({n}/{max}); Google will cut it off.",
+        metaGood: "The meta description length is just right ({n}).",
+        metaKeywordMissing: "The meta description does not contain the focus keyword.",
+        metaKeywordGood: "The meta description contains the focus keyword.",
+        introKeywordMissing: "The opening paragraph does not mention the focus keyword.",
+        introKeywordGood: "The focus keyword appears in the opening paragraph.",
+        lengthBad: "The text is too short ({n} words); aim for at least {min} words.",
+        lengthWarn: "The text is a little short ({n} words); aim for at least {min} words.",
+        lengthGood: "Good text length ({n} words).",
+        densityNone: "The focus keyword does not appear in the text.",
+        densityLow: "The keyword appears {n} times ({pct}%), a little low. Aim for about 0.5 to 2.5%.",
+        densityHigh: "The keyword appears {n} times ({pct}%), too often; it may look like keyword stuffing.",
+        densityGood: "Good keyword density: {n} times ({pct}%).",
+        headingsFew: "Split the text into at least 2 sections with headings (##).",
+        headingsGood: "The text has {n} section headings.",
+        headingKeywordMissing: "No section heading contains the focus keyword.",
+        headingKeywordGood: "A section heading contains the focus keyword.",
+        coverMissing: "There is no cover image (shown when the link is shared and in search results).",
+        coverGood: "A cover image is set.",
+        imagesNone: "Add at least 1 image to the text.",
+        imagesAltMissing: "{n} images in the text have no description (alt).",
+        imagesGood: "Every image in the text has a description.",
+        linksNone: "There are no links to other pages of the website (rooms, dining, other posts).",
+        linksGood: "There are {n} links to other pages of the website.",
+        paragraphsLong: "{n} paragraphs are too long; split them so they read well on phones.",
+        paragraphsGood: "Paragraphs are an easy length to read.",
+        keywordDuplicate: "This keyword is already used for “{title}”; the two posts will compete with each other.",
+        keywordUnique: "The focus keyword is not used by any other post.",
+      },
+    },
   },
 
   newsPage: {
@@ -492,6 +560,8 @@ export const en: Dictionary = {
   news: {
     "spa-mua-thu": {
       title: "Autumn spa package: full relaxation at a special price",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "Phu Quoc spa",
       excerpt: "Enjoy a 90-minute treatment with herbal tea, available until the end of November.",
       keyPoints: ["90-minute treatment: foot soak, 60-minute massage, face mask", "Ginger honey tea and seasonal fruit included", "Daily 10:00 – 20:00 until the end of November"],
       body: [
@@ -517,6 +587,8 @@ export const en: Dictionary = {
     },
     "brunch-cuoi-tuan": {
       title: "Introducing Sunday Brunch at Blessed Bistro",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "Phu Quoc brunch",
       excerpt: "Over 60 Asian and Western dishes, a kids' play area and live music every Sunday.",
       keyPoints: ["Every Sunday, 11:00 – 14:30 at Blessed Bistro", "60+ dishes and a fresh Phu Quoc seafood counter", "Children under 6 eat free"],
       body: [
@@ -538,6 +610,8 @@ export const en: Dictionary = {
     },
     "hoang-hon-ho-boi": {
       title: "Sunset Pool Party at the end of the month",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "Phu Quoc pool party",
       excerpt: "DJ, cocktails and BBQ by the infinity pool on the last Saturday evening of every month.",
       keyPoints: ["Last Saturday evening of every month", "Cocktails from 17:00, barbecue from 18:30, DJ until 22:00", "Free entry for hotel guests"],
       body: [
@@ -557,6 +631,8 @@ export const en: Dictionary = {
     },
     "kinh-nghiem-du-lich-phu-quoc": {
       title: "Phu Quoc in 4 days and 3 nights",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "Phu Quoc travel guide",
       excerpt: "A suggested itinerary, dishes worth trying and the best sunset spots on the island.",
       keyPoints: ["Days 1–2: Sunset Town, night market, 4-island tour", "Days 3–4: the north, a pepper farm, gift shopping", "Concierge books cars, tours and restaurants with a day's notice"],
       body: [
@@ -583,6 +659,8 @@ export const en: Dictionary = {
     },
     "uu-dai-luu-tru-dai-ngay": {
       title: "Stay longer, save more",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "long stay offer",
       excerpt: "Up to 25% off stays of 5 nights or more when you book directly with us.",
       keyPoints: ["15% off 5+ nights, 25% off 7+ nights", "Daily breakfast and laundry included", "Direct bookings by hotline or Zalo only"],
       body: [
@@ -606,6 +684,8 @@ export const en: Dictionary = {
     },
     "yoga-san-thuong": {
       title: "Sunrise yoga on the rooftop",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "Phu Quoc yoga",
       excerpt: "A free yoga class for hotel guests at 6:00 every morning, greeting the early sun on the island.",
       keyPoints: ["6:00 every morning on the rooftop", "45-minute class, beginner friendly", "Free for hotel guests; mats and water provided"],
       body: [

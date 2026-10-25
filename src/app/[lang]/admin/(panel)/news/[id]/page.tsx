@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import PostEditor from "@/components/admin/PostEditor";
 import { getI18n } from "@/i18n/server";
-import { getPostDraft } from "@/lib/admin";
+import { getKeywordIndex, getPostDraft } from "@/lib/admin";
 import { news, newsCategories } from "@/lib/site";
 
 // Cache Components: tạo sẵn trang sửa cho mọi bài; id lạ → notFound()
@@ -15,6 +15,7 @@ export default async function AdminEditPostPage({ params }: PageProps<"/[lang]/a
   const { t, locale, href } = await getI18n();
   const draft = await getPostDraft(Number(id));
   if (!draft) notFound();
+  const keywordIndex = await getKeywordIndex(Number(id));
 
   return (
     <PostEditor
@@ -25,7 +26,9 @@ export default async function AdminEditPostPage({ params }: PageProps<"/[lang]/a
       uiLocale={locale}
       categories={newsCategories.map((c) => ({ id: c, label: t.newsCategories[c] }))}
       backHref={href("/admin")}
+      keywordIndex={keywordIndex}
       labels={t.admin.editor}
+      seoLabels={t.admin.seo}
     />
   );
 }

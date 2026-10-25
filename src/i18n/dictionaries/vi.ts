@@ -364,6 +364,7 @@ export const vi = {
       featured: "Nổi bật",
       edit: "Sửa",
       view: "Xem",
+      seo: "SEO",
     },
     login: {
       metaTitle: "Đăng nhập",
@@ -454,6 +455,73 @@ export const vi = {
       missingSettings: "Vui lòng chọn ngày đăng và ảnh bìa.",
       listSeparator: ", ",
     },
+    /** Khung chấm điểm SEO trong trình soạn bài (lib/seo.ts) */
+    seo: {
+      title: "SEO",
+      score: "Điểm SEO",
+      tabScore: "Điểm SEO {score}/100",
+      ratingGood: "Tốt",
+      ratingWarn: "Tạm được",
+      ratingBad: "Cần cải thiện",
+      keyword: "Từ khoá chính",
+      keywordHint: "Cụm từ khách hay gõ khi tìm, VD: brunch phú quốc.",
+      problems: "Cần sửa",
+      improvements: "Nên cải thiện",
+      passed: "Đạt",
+      snippet: "Hiển thị trên Google",
+      snippetHint: "Để trống thì dùng tiêu đề và tóm tắt của bài.",
+      seoTitle: "Tiêu đề SEO",
+      metaDescription: "Mô tả meta",
+      desktop: "Máy tính",
+      mobile: "Điện thoại",
+      width: "Độ dài hiển thị",
+      goTo: "Đi tới chỗ cần sửa",
+      tips: "Gợi ý thêm",
+      sourceGoogle: "Google",
+      sourceGoogleTitle: "Mở khuyến nghị chính thức của Google cho mục này",
+      sourceConvention: "Thông lệ",
+      sourceConventionTitle: "Thông lệ của Yoast / Rank Math, Google không quy định. Chỉ là gợi ý, không trừ điểm.",
+      disclaimer: "Chỉ các mục có nhãn Google được tính điểm, bấm nhãn để xem tài liệu chính thức. Mục \"Thông lệ\" theo Yoast / Rank Math, chỉ là gợi ý. Các ngưỡng số đều là tham khảo vì Google không giới hạn độ dài. Đây không phải điểm xếp hạng của Google.",
+      messages: {
+        keywordMissing: "Nhập từ khoá chính để chấm các mục liên quan đến từ khoá.",
+        titleShort: "Tiêu đề SEO hơi ngắn ({n}/{max}), có thể thêm chi tiết cụ thể.",
+        titleLong: "Tiêu đề SEO quá dài ({n}/{max}), Google sẽ cắt bớt.",
+        titleGood: "Độ dài tiêu đề SEO vừa đẹp ({n}/{max}).",
+        titleKeywordMissing: "Tiêu đề SEO chưa có từ khoá chính.",
+        titleKeywordLate: "Nên đưa từ khoá chính lên gần đầu tiêu đề SEO.",
+        titleKeywordGood: "Tiêu đề SEO có từ khoá chính ở gần đầu.",
+        metaMissing: "Chưa có mô tả meta và phần tóm tắt cũng đang trống.",
+        metaShort: "Mô tả meta hơi ngắn ({n}, nên {min} đến {max}).",
+        metaLong: "Mô tả meta quá dài ({n}/{max}), Google sẽ cắt bớt.",
+        metaGood: "Độ dài mô tả meta vừa đẹp ({n}).",
+        metaKeywordMissing: "Mô tả meta chưa có từ khoá chính.",
+        metaKeywordGood: "Mô tả meta có từ khoá chính.",
+        introKeywordMissing: "Đoạn mở đầu của nội dung chưa nhắc tới từ khoá chính.",
+        introKeywordGood: "Từ khoá chính có ngay ở đoạn mở đầu.",
+        lengthBad: "Nội dung quá ngắn ({n} từ), nên có ít nhất {min} từ.",
+        lengthWarn: "Nội dung hơi ngắn ({n} từ), nên có ít nhất {min} từ.",
+        lengthGood: "Độ dài nội dung tốt ({n} từ).",
+        densityNone: "Từ khoá chính chưa xuất hiện trong nội dung.",
+        densityLow: "Từ khoá xuất hiện {n} lần ({pct}%), hơi ít. Nên khoảng 0,5 đến 2,5%.",
+        densityHigh: "Từ khoá xuất hiện {n} lần ({pct}%), quá dày, dễ bị coi là nhồi từ khoá.",
+        densityGood: "Mật độ từ khoá hợp lý: {n} lần ({pct}%).",
+        headingsFew: "Nên chia nội dung thành ít nhất 2 mục có tiêu đề (##).",
+        headingsGood: "Nội dung có {n} tiêu đề mục.",
+        headingKeywordMissing: "Chưa có tiêu đề mục nào chứa từ khoá chính.",
+        headingKeywordGood: "Có tiêu đề mục chứa từ khoá chính.",
+        coverMissing: "Chưa có ảnh bìa (ảnh hiện khi chia sẻ link và trên kết quả tìm kiếm).",
+        coverGood: "Đã có ảnh bìa.",
+        imagesNone: "Nên thêm ít nhất 1 ảnh minh hoạ vào nội dung.",
+        imagesAltMissing: "{n} ảnh trong nội dung chưa có mô tả (alt).",
+        imagesGood: "Mọi ảnh trong nội dung đều có mô tả.",
+        linksNone: "Chưa có link tới trang khác của website (phòng, ẩm thực, bài viết khác).",
+        linksGood: "Có {n} link tới trang khác của website.",
+        paragraphsLong: "{n} đoạn văn quá dài, nên tách nhỏ cho dễ đọc trên điện thoại.",
+        paragraphsGood: "Các đoạn văn có độ dài dễ đọc.",
+        keywordDuplicate: "Từ khoá này đã dùng cho bài “{title}”, hai bài sẽ tranh hạng với nhau.",
+        keywordUnique: "Từ khoá chính chưa trùng với bài nào khác.",
+      },
+    },
   },
 
   newsPage: {
@@ -498,6 +566,8 @@ export const vi = {
   news: {
     "spa-mua-thu": {
       title: "Gói spa mùa thu: thư giãn trọn vẹn với giá đặc biệt",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "spa phú quốc",
       excerpt: "Tận hưởng liệu trình 90 phút cùng trà thảo mộc, áp dụng đến hết tháng 11.",
       keyPoints: ["Liệu trình 90 phút: ngâm chân, massage 60 phút, đắp mặt nạ", "Mời trà gừng mật ong và trái cây theo mùa", "Áp dụng 10:00 – 20:00 mỗi ngày đến hết tháng 11"],
       body: [
@@ -523,6 +593,8 @@ export const vi = {
     },
     "brunch-cuoi-tuan": {
       title: "Ra mắt Sunday Brunch tại Blessed Bistro",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "brunch phú quốc",
       excerpt: "Hơn 60 món Á Âu, khu vui chơi cho trẻ em và nhạc sống mỗi Chủ nhật.",
       keyPoints: ["Mỗi Chủ nhật, 11:00 – 14:30 tại Blessed Bistro", "Hơn 60 món, quầy hải sản tươi Phú Quốc", "Trẻ em dưới 6 tuổi được miễn phí"],
       body: [
@@ -544,6 +616,8 @@ export const vi = {
     },
     "hoang-hon-ho-boi": {
       title: "Pool Party hoàng hôn cuối tháng",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "pool party phú quốc",
       excerpt: "DJ, cocktail và BBQ bên hồ bơi vô cực vào tối thứ Bảy cuối cùng mỗi tháng.",
       keyPoints: ["Tối thứ Bảy cuối cùng mỗi tháng", "Cocktail từ 17:00, tiệc nướng từ 18:30, DJ đến 22:00", "Khách lưu trú vào cửa miễn phí"],
       body: [
@@ -563,6 +637,8 @@ export const vi = {
     },
     "kinh-nghiem-du-lich-phu-quoc": {
       title: "Kinh nghiệm du lịch Phú Quốc 4 ngày 3 đêm",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "kinh nghiệm du lịch phú quốc",
       excerpt: "Lịch trình gợi ý, món ngon nên thử và những điểm ngắm hoàng hôn đẹp nhất đảo.",
       keyPoints: ["Ngày 1–2: Thị trấn Hoàng Hôn, chợ đêm, tour 4 đảo", "Ngày 3–4: bắc đảo, vườn tiêu, mua quà", "Concierge đặt xe, tour, nhà hàng nếu nhắn trước một ngày"],
       body: [
@@ -589,6 +665,8 @@ export const vi = {
     },
     "uu-dai-luu-tru-dai-ngay": {
       title: "Ở càng lâu, ưu đãi càng lớn",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "ưu đãi lưu trú dài ngày",
       excerpt: "Giảm đến 25% cho kỳ nghỉ từ 5 đêm trở lên khi liên hệ đặt phòng trực tiếp.",
       keyPoints: ["Giảm 15% từ 5 đêm, 25% từ 7 đêm", "Bao gồm bữa sáng và giặt ủi hằng ngày", "Chỉ áp dụng khi đặt trực tiếp qua hotline hoặc Zalo"],
       body: [
@@ -614,6 +692,8 @@ export const vi = {
     },
     "yoga-san-thuong": {
       title: "Yoga bình minh trên sân thượng",
+      /** Từ khoá chính (SEO) */
+      focusKeyword: "yoga phú quốc",
       excerpt: "Lớp yoga miễn phí cho khách lưu trú lúc 6:00 sáng mỗi ngày, đón nắng sớm trên đảo.",
       keyPoints: ["6:00 sáng mỗi ngày trên sân thượng", "Lớp 45 phút, phù hợp người mới bắt đầu", "Miễn phí cho khách lưu trú, có sẵn thảm và nước"],
       body: [
@@ -641,6 +721,8 @@ export type Dictionary = Omit<typeof vi, "news"> & {
 
 export type NewsText = {
   title: string;
+  /** Từ khoá chính (SEO), dùng cho bộ chấm SEO ở trang quản trị */
+  focusKeyword: string;
   excerpt: string;
   /** 3 ý chính hiện trong khung "Thông tin nhanh" */
   keyPoints: string[];

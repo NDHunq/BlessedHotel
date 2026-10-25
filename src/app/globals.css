@@ -30,6 +30,9 @@
   --color-cream: #fbf8f2;
   /* Nền thẻ xám ấm (thẻ "Khám phá", tin tức) */
   --color-sand: #f6f4f0;
+  /* Chỉ dùng trong khung "Xem trước trên Google" ở trang quản trị: màu tiêu đề và chữ của kết quả tìm kiếm Google */
+  --color-serp-title: #1a0dab;
+  --color-serp-text: #4d5156;
 
   /* Font theo bộ của site tham khảo (xem CLAUDE.md).
      Các font này không có chữ Hàn/Trung → --font-cjk-* (đặt theo <html lang>, xem bên dưới) làm dự phòng */

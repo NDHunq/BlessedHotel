@@ -1,11 +1,12 @@
 import PostEditor from "@/components/admin/PostEditor";
 import { getI18n } from "@/i18n/server";
-import { newPostDraft } from "@/lib/admin";
+import { getKeywordIndex, newPostDraft } from "@/lib/admin";
 import { newsCategories } from "@/lib/site";
 
 /** Viết bài mới (bản demo, chưa lưu) */
 export default async function AdminNewPostPage() {
   const { t, locale, href } = await getI18n();
+  const keywordIndex = await getKeywordIndex();
 
   return (
     <PostEditor
@@ -13,7 +14,9 @@ export default async function AdminNewPostPage() {
       uiLocale={locale}
       categories={newsCategories.map((id) => ({ id, label: t.newsCategories[id] }))}
       backHref={href("/admin")}
+      keywordIndex={keywordIndex}
       labels={t.admin.editor}
+      seoLabels={t.admin.seo}
     />
   );
 }
