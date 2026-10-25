@@ -16,7 +16,7 @@ export default async function FeaturedNews({ posts }: { posts: LocalizedNewsPost
       <SideTitle>{t.newsPage.featured}</SideTitle>
       <div className="mt-6 grid gap-4 md:grid-cols-3 md:grid-rows-2 md:gap-5">
         <Link href={main.href} className="group relative block aspect-[4/3] overflow-hidden rounded-2xl md:col-span-2 md:row-span-2 md:aspect-auto md:min-h-[440px]">
-          <Image src={main.image} alt="" fill priority sizes="(min-width: 768px) 66vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+          <Image src={main.image} alt="" fill priority unoptimized={!main.optimize} sizes="(min-width: 768px) 66vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-8">
             <p className="text-sm text-white/80">
@@ -31,8 +31,8 @@ export default async function FeaturedNews({ posts }: { posts: LocalizedNewsPost
         </Link>
 
         {side.slice(0, 2).map((post) => (
-          <Link key={post.slug} href={post.href} className="group relative block aspect-[16/10] overflow-hidden rounded-2xl md:aspect-auto">
-            <Image src={post.image} alt="" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+          <Link key={post.id} href={post.href} className="group relative block aspect-[16/10] overflow-hidden rounded-2xl md:aspect-auto">
+            <Image src={post.image} alt="" fill unoptimized={!post.optimize} sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-5 text-white">
               <p className="text-xs text-white/80">

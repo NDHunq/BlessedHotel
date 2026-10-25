@@ -339,7 +339,6 @@ export const en: Dictionary = {
   admin: {
     metaTitle: "Admin",
     badge: "Admin",
-    demoNotice: "Demo only: not connected to a server, changes are not saved.",
     nav: {
       posts: "Posts",
       newPost: "New post",
@@ -360,6 +359,8 @@ export const en: Dictionary = {
       edit: "Edit",
       view: "View",
       seo: "SEO",
+      draft: "Draft",
+      empty: "No posts yet. Click “New post” to get started.",
     },
     login: {
       metaTitle: "Sign in",
@@ -373,6 +374,7 @@ export const en: Dictionary = {
       submitting: "Signing in…",
       error: "Incorrect username or password.",
       backToSite: "Back to website",
+      locked: "Too many failed sign-in attempts. Please try again in {n} minutes.",
     },
     categories: {
       title: "Categories",
@@ -394,9 +396,11 @@ export const en: Dictionary = {
       inUse: "“{name}” still has {n} posts. Move them to another category before deleting it.",
       missingNames: "Please enter the category name in all 4 languages.",
       invalidId: "The ID may only contain lowercase a-z, numbers and hyphens, and must not already exist.",
-      added: "Category added (demo only, not saved to a server).",
-      updated: "Category updated (demo only, not saved to a server).",
-      deleted: "Category deleted (demo only, not saved to a server).",
+      added: "Category added.",
+      updated: "Category updated.",
+      deleted: "Category deleted.",
+      sessionExpired: "Your session has expired. Please sign in again.",
+      serverError: "Something went wrong on the server. Please try again later.",
     },
     editor: {
       newTitle: "New post",
@@ -444,11 +448,27 @@ export const en: Dictionary = {
       saveDraft: "Save draft",
       publish: "Publish",
       update: "Update",
-      draftSaved: "Draft saved (demo only, not saved to a server).",
-      published: "The post is valid and ready to publish. This is a demo, so nothing was saved.",
+      draftSaved: "Draft saved. Drafts are not shown on the website.",
+      published: "Saved and published. The post is now live on the website.",
       missingLanguages: "Title or excerpt is missing in: {langs}.",
-      missingSettings: "Please choose a publish date and a cover image.",
+      missingSettings: "A published post needs a publish date and a cover image.",
       listSeparator: ", ",
+      unpublished: "Moved back to draft. The post is no longer shown on the website.",
+      unpublish: "Move to draft",
+      saving: "Saving…",
+      statusDraft: "Draft",
+      statusPublished: "Published",
+      unsaved: "Unsaved changes",
+      delete: "Delete post",
+      confirmDelete: "Delete this post permanently?",
+      cancel: "Cancel",
+      uploading: "Uploading image…",
+      uploadType: "Only JPG, PNG, WebP, AVIF or GIF images are accepted.",
+      uploadSize: "The image is too large (10MB max).",
+      sessionExpired: "Your session has expired. Please sign in again (your unsaved text is still on this page).",
+      serverError: "Something went wrong on the server. Please try again later.",
+      invalid: "Some data is invalid: check the category, publish date and cover image link (it must start with https:// or /).",
+      notFound: "This post no longer exists.",
     },
     /** Khung chấm điểm SEO trong trình soạn bài (lib/seo.ts) */
     seo: {
@@ -535,15 +555,6 @@ export const en: Dictionary = {
     ctaBody: "Call or message us on Zalo for the best rate.",
   },
 
-  /** Nhãn chuyên mục tin tức, khoá theo id trong site.ts `newsCategories` */
-  newsCategories: {
-    offer: "Offers",
-    dining: "Dining",
-    event: "Events",
-    guide: "Travel guide",
-    wellness: "Wellness",
-  },
-
   article: {
     tableOfContents: "Contents",
     keyPoints: "At a glance",
@@ -555,151 +566,5 @@ export const en: Dictionary = {
     moreArticles: "More articles",
     ctaTitle: "Want to book or ask a question?",
     ctaBody: "Call, message us on Zalo or book quickly on our partner platforms.",
-  },
-
-  news: {
-    "spa-mua-thu": {
-      title: "Autumn spa package: full relaxation at a special price",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "Phu Quoc spa",
-      excerpt: "Enjoy a 90-minute treatment with herbal tea, available until the end of November.",
-      keyPoints: ["90-minute treatment: foot soak, 60-minute massage, face mask", "Ginger honey tea and seasonal fruit included", "Daily 10:00 – 20:00 until the end of November"],
-      body: [
-        {
-          paragraphs: [
-            "Autumn in Phu Quoc brings softer sunshine and calmer seas. It is also when Blessed Spa launches its 90-minute relaxation package for hotel guests and visitors.",
-          ],
-        },
-        {
-          heading: "What the package includes",
-          paragraphs: [
-            "The treatment begins with a herbal foot soak, followed by a 60-minute full-body massage with lemongrass oil, and ends with a hydrating face mask.",
-            "Afterwards, enjoy ginger honey tea and a plate of seasonal fruit in the relaxation lounge.",
-          ],
-        },
-        {
-          heading: "When it's available",
-          paragraphs: [
-            "The offer runs daily from 10:00 to 20:00 until the end of November. Please book ahead at the front desk or via Zalo to get your preferred time.",
-          ],
-        },
-      ],
-    },
-    "brunch-cuoi-tuan": {
-      title: "Introducing Sunday Brunch at Blessed Bistro",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "Phu Quoc brunch",
-      excerpt: "Over 60 Asian and Western dishes, a kids' play area and live music every Sunday.",
-      keyPoints: ["Every Sunday, 11:00 – 14:30 at Blessed Bistro", "60+ dishes and a fresh Phu Quoc seafood counter", "Children under 6 eat free"],
-      body: [
-        { paragraphs: ["From this Sunday, Blessed Bistro opens its Sunday Brunch with more than 60 Asian and Western dishes, served from 11:00 to 14:30."] },
-        {
-          heading: "The menu",
-          paragraphs: [
-            "A fresh seafood counter offers Phu Quoc oysters, prawns and crab. Alongside it you'll find a grill station, noodles made to order, desserts and a Vietnamese drip coffee bar.",
-            "Each week, the head chef adds two specials based on what's in season.",
-          ],
-        },
-        {
-          heading: "For the whole family",
-          paragraphs: [
-            "There is a supervised kids' play area and gentle acoustic music throughout. Children under 6 eat free when accompanied by an adult.",
-          ],
-        },
-      ],
-    },
-    "hoang-hon-ho-boi": {
-      title: "Sunset Pool Party at the end of the month",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "Phu Quoc pool party",
-      excerpt: "DJ, cocktails and BBQ by the infinity pool on the last Saturday evening of every month.",
-      keyPoints: ["Last Saturday evening of every month", "Cocktails from 17:00, barbecue from 18:30, DJ until 22:00", "Free entry for hotel guests"],
-      body: [
-        {
-          paragraphs: [
-            "On the last Saturday evening of every month, the Blessed Hotel infinity pool becomes the place to watch the sunset, with a DJ, cocktails and an outdoor barbecue.",
-          ],
-        },
-        {
-          heading: "The programme",
-          paragraphs: [
-            "From 17:00, the poolside bar serves Olea Café signature cocktails. The barbecue starts at 18:30 with seafood and charcoal-grilled meats.",
-            "The DJ plays until 22:00. Entry is free for hotel guests; visitors are kindly asked to reserve in advance.",
-          ],
-        },
-      ],
-    },
-    "kinh-nghiem-du-lich-phu-quoc": {
-      title: "Phu Quoc in 4 days and 3 nights",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "Phu Quoc travel guide",
-      excerpt: "A suggested itinerary, dishes worth trying and the best sunset spots on the island.",
-      keyPoints: ["Days 1–2: Sunset Town, night market, 4-island tour", "Days 3–4: the north, a pepper farm, gift shopping", "Concierge books cars, tours and restaurants with a day's notice"],
-      body: [
-        {
-          paragraphs: [
-            "Four days is just enough to relax and explore Phu Quoc without rushing. Here is the itinerary our concierge team often suggests to first-time visitors.",
-          ],
-        },
-        {
-          heading: "Days 1 and 2: the south of the island",
-          paragraphs: [
-            "On day one, check in and walk to the beach to watch the sunset at Sunset Town. In the evening, head to the night market for grilled seafood.",
-            "On day two, take a 4-island speedboat tour, snorkel over the coral and have lunch on an island. Come back in the afternoon to relax by the hotel pool.",
-          ],
-        },
-        {
-          heading: "Days 3 and 4: the north and shopping",
-          paragraphs: [
-            "On day three, head north for a swim and a visit to a pepper farm. On your last day, pick up fish sauce, pepper and pearls as gifts before heading to the airport.",
-            "Our concierge can book cars, tours and restaurants for you. Just message us a day ahead.",
-          ],
-        },
-      ],
-    },
-    "uu-dai-luu-tru-dai-ngay": {
-      title: "Stay longer, save more",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "long stay offer",
-      excerpt: "Up to 25% off stays of 5 nights or more when you book directly with us.",
-      keyPoints: ["15% off 5+ nights, 25% off 7+ nights", "Daily breakfast and laundry included", "Direct bookings by hotline or Zalo only"],
-      body: [
-        {
-          paragraphs: ["If you're planning to stay in Phu Quoc for 5 nights or more, book directly with the hotel for a better rate."],
-        },
-        {
-          heading: "The offer",
-          paragraphs: [
-            "15% off stays of 5 nights and 25% off stays of 7 nights. The offer includes daily breakfast and laundry for two sets of clothes per day.",
-            "Long-stay guests also enjoy early check-in and late check-out when available.",
-          ],
-        },
-        {
-          heading: "How to book",
-          paragraphs: [
-            "Call our hotline or message us on Zalo with your arrival date, departure date and number of guests. The offer does not apply to bookings made through online travel platforms.",
-          ],
-        },
-      ],
-    },
-    "yoga-san-thuong": {
-      title: "Sunrise yoga on the rooftop",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "Phu Quoc yoga",
-      excerpt: "A free yoga class for hotel guests at 6:00 every morning, greeting the early sun on the island.",
-      keyPoints: ["6:00 every morning on the rooftop", "45-minute class, beginner friendly", "Free for hotel guests; mats and water provided"],
-      body: [
-        {
-          paragraphs: ["Every morning at 6:00, the Blessed Hotel rooftop hosts a gentle 45-minute yoga class, free for hotel guests."],
-        },
-        {
-          heading: "The class",
-          paragraphs: [
-            "The class suits beginners and focuses on breathing and stretching. Mats, towels and water are provided.",
-            "After the session, head down to Blessed Bistro for breakfast or to the pool while the sun is still soft.",
-          ],
-        },
-      ],
-    },
   },
 };

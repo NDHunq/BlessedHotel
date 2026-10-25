@@ -10,7 +10,7 @@ type Labels = Pick<Dictionary["admin"]["editor"], "body" | "bodyHint" | "write" 
 /**
  * Ô soạn Markdown: thanh công cụ (tiêu đề, đậm, nghiêng, danh sách, trích dẫn, link, ảnh từ link, tải ảnh lên)
  * chèn cú pháp vào vị trí con trỏ; tab "Xem trước" hiển thị đúng như trang bài viết (component `Markdown`).
- * Ảnh tải lên chỉ là blob: tạm trên trình duyệt (bản demo); làm thật cần API tải ảnh lên máy chủ.
+ * Ảnh tải lên qua `onUpload` (Server Action lưu ảnh, trả về URL) rồi chèn vào vị trí con trỏ.
  */
 export default function MarkdownEditor({
   value,
@@ -18,9 +18,14 @@ export default function MarkdownEditor({
   lang,
   labels,
   id,
+  onUpload,
+  uploading = false,
 }: {
   value: string;
   onChange: (value: string) => void;
+  /** Tải ảnh lên máy chủ, trả về URL (lỗi → null, nơi gọi tự báo lỗi) */
+  onUpload: (file: File) => Promise<string | null>;
+  uploading?: boolean;
   /** Mã ngôn ngữ HTML của nội dung đang soạn */
   lang: string;
   labels: Labels;
@@ -66,8 +71,11 @@ export default function MarkdownEditor({
     onChange(`${before}${before ? "\n\n" : ""}![${alt}](${src})${after ? "\n\n" : ""}${after}`);
   };
 
-  const pickFile = (file: File | undefined) => {
-    if (file) insertImage(URL.createObjectURL(file), file.name.replace(/\.[^.]+$/, ""));
+  const pickFile = async (file: File | undefined) => {
+    if (!file) return;
+    const url = await onUpload(file);
+    // Tên file làm mô tả ảnh tạm, người viết nên sửa lại cho đúng nội dung ảnh
+    if (url) insertImage(url, file.name.replace(/\.[^.]+$/, ""));
   };
 
   const tool = "grid h-8 min-w-8 place-items-center rounded-md px-1.5 text-ink-soft hover:bg-white hover:text-ink";
@@ -127,12 +135,21 @@ export default function MarkdownEditor({
                   <path d="m21 15-5-5-9 9" />
                 </svg>
               </button>
-              <label className={`${tool} cursor-pointer`} title={tb.upload}>
+              <label className={`${tool} ${uploading ? "pointer-events-none opacity-50" : "cursor-pointer"}`} title={tb.upload}>
                 <span className="sr-only">{tb.upload}</span>
                 <svg {...icon}>
                   <path d="M12 16V4M7 9l5-5 5 5M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
                 </svg>
-                <input type="file" accept="image/*" className="sr-only" onChange={(e) => pickFile(e.target.files?.[0])} />
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/avif,image/gif"
+                  className="sr-only"
+                  disabled={uploading}
+                  onChange={(e) => {
+                    pickFile(e.target.files?.[0]);
+                    e.target.value = "";
+                  }}
+                />
               </label>
             </div>
           )}

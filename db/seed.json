@@ -1,0 +1,434 @@
+{
+  "categories": [
+    {
+      "id": "offer",
+      "position": 0,
+      "names": {
+        "vi": "Ưu đãi",
+        "en": "Offers",
+        "ko": "프로모션",
+        "zh": "优惠"
+      }
+    },
+    {
+      "id": "dining",
+      "position": 1,
+      "names": {
+        "vi": "Ẩm thực",
+        "en": "Dining",
+        "ko": "다이닝",
+        "zh": "餐饮"
+      }
+    },
+    {
+      "id": "event",
+      "position": 2,
+      "names": {
+        "vi": "Sự kiện",
+        "en": "Events",
+        "ko": "이벤트",
+        "zh": "活动"
+      }
+    },
+    {
+      "id": "guide",
+      "position": 3,
+      "names": {
+        "vi": "Cẩm nang",
+        "en": "Travel guide",
+        "ko": "여행 가이드",
+        "zh": "旅行攻略"
+      }
+    },
+    {
+      "id": "wellness",
+      "position": 4,
+      "names": {
+        "vi": "Sức khỏe",
+        "en": "Wellness",
+        "ko": "웰니스",
+        "zh": "养生"
+      }
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "legacySlug": "yoga-san-thuong",
+      "category": "wellness",
+      "date": "2026-08-15",
+      "featured": false,
+      "image": "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&w=1600&q=80",
+      "status": "published",
+      "translations": {
+        "vi": {
+          "title": "Yoga bình minh trên sân thượng",
+          "excerpt": "Lớp yoga miễn phí cho khách lưu trú lúc 6:00 sáng mỗi ngày, đón nắng sớm trên đảo.",
+          "keyPoints": [
+            "6:00 sáng mỗi ngày trên sân thượng",
+            "Lớp 45 phút, phù hợp người mới bắt đầu",
+            "Miễn phí cho khách lưu trú, có sẵn thảm và nước"
+          ],
+          "body": "Mỗi sáng lúc 6:00, sân thượng của Blessed Hotel có một lớp yoga nhẹ nhàng kéo dài 45 phút, miễn phí cho khách lưu trú.\n\n## Lớp học\n\nLớp phù hợp cả người mới bắt đầu, tập trung vào hít thở và giãn cơ. Thảm, khăn và nước được chuẩn bị sẵn.\n\nSau buổi tập, bạn có thể xuống Blessed Bistro ăn sáng hoặc ra hồ bơi khi nắng còn dịu.",
+          "focusKeyword": "yoga phú quốc",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "en": {
+          "title": "Sunrise yoga on the rooftop",
+          "excerpt": "A free yoga class for hotel guests at 6:00 every morning, greeting the early sun on the island.",
+          "keyPoints": [
+            "6:00 every morning on the rooftop",
+            "45-minute class, beginner friendly",
+            "Free for hotel guests; mats and water provided"
+          ],
+          "body": "Every morning at 6:00, the Blessed Hotel rooftop hosts a gentle 45-minute yoga class, free for hotel guests.\n\n## The class\n\nThe class suits beginners and focuses on breathing and stretching. Mats, towels and water are provided.\n\nAfter the session, head down to Blessed Bistro for breakfast or to the pool while the sun is still soft.",
+          "focusKeyword": "Phu Quoc yoga",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "ko": {
+          "title": "루프톱 선라이즈 요가",
+          "excerpt": "매일 아침 6:00, 투숙객을 위한 무료 요가 클래스로 섬의 아침 햇살을 맞이하세요.",
+          "keyPoints": [
+            "매일 아침 6:00 루프톱",
+            "초보자도 가능한 45분 클래스",
+            "투숙객 무료, 매트와 물 제공"
+          ],
+          "body": "매일 아침 6:00, 블레스드 호텔 루프톱에서 투숙객을 위한 45분 무료 요가 클래스가 열립니다.\n\n## 클래스 안내\n\n초보자도 참여할 수 있으며 호흡과 스트레칭에 집중합니다. 매트, 타월, 물이 준비되어 있습니다.\n\n수업 후에는 Blessed Bistro에서 아침 식사를 하거나, 햇살이 부드러울 때 수영장으로 향해 보세요.",
+          "focusKeyword": "푸꾸옥 요가",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "zh": {
+          "title": "屋顶日出瑜伽",
+          "excerpt": "每天早上 6:00 为住客提供免费瑜伽课，迎接海岛清晨的阳光。",
+          "keyPoints": [
+            "每天早上 6:00，酒店屋顶",
+            "45 分钟课程，适合初学者",
+            "住客免费，提供瑜伽垫和饮用水"
+          ],
+          "body": "每天早上 6:00，Blessed Hotel 屋顶都会开设一节 45 分钟的舒缓瑜伽课，住客可免费参加。\n\n## 课程介绍\n\n课程适合初学者，注重呼吸与拉伸。现场提供瑜伽垫、毛巾和饮用水。\n\n课后您可以到 Blessed Bistro 享用早餐，或趁阳光还柔和时去泳池。",
+          "focusKeyword": "富国岛瑜伽",
+          "seoTitle": "",
+          "metaDescription": ""
+        }
+      }
+    },
+    {
+      "id": 2,
+      "legacySlug": "uu-dai-luu-tru-dai-ngay",
+      "category": "offer",
+      "date": "2026-08-30",
+      "featured": false,
+      "image": "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=1600&q=80",
+      "status": "published",
+      "translations": {
+        "vi": {
+          "title": "Ở càng lâu, ưu đãi càng lớn",
+          "excerpt": "Giảm đến 25% cho kỳ nghỉ từ 5 đêm trở lên khi liên hệ đặt phòng trực tiếp.",
+          "keyPoints": [
+            "Giảm 15% từ 5 đêm, 25% từ 7 đêm",
+            "Bao gồm bữa sáng và giặt ủi hằng ngày",
+            "Chỉ áp dụng khi đặt trực tiếp qua hotline hoặc Zalo"
+          ],
+          "body": "Nếu bạn có kế hoạch ở Phú Quốc từ 5 đêm trở lên, hãy liên hệ đặt phòng trực tiếp với khách sạn để nhận mức giá tốt hơn.\n\n## Ưu đãi\n\nGiảm 15% cho kỳ nghỉ từ 5 đêm và 25% cho kỳ nghỉ từ 7 đêm. Ưu đãi đã bao gồm bữa sáng hằng ngày và giặt ủi hai bộ quần áo mỗi ngày.\n\nKhách lưu trú dài ngày được nhận phòng sớm và trả phòng muộn nếu còn phòng.\n\n## Cách đặt\n\nGọi hotline hoặc nhắn Zalo cho chúng tôi, kèm ngày đến, ngày đi và số khách. Ưu đãi không áp dụng khi đặt qua các nền tảng đặt phòng trực tuyến.",
+          "focusKeyword": "ưu đãi lưu trú dài ngày",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "en": {
+          "title": "Stay longer, save more",
+          "excerpt": "Up to 25% off stays of 5 nights or more when you book directly with us.",
+          "keyPoints": [
+            "15% off 5+ nights, 25% off 7+ nights",
+            "Daily breakfast and laundry included",
+            "Direct bookings by hotline or Zalo only"
+          ],
+          "body": "If you're planning to stay in Phu Quoc for 5 nights or more, book directly with the hotel for a better rate.\n\n## The offer\n\n15% off stays of 5 nights and 25% off stays of 7 nights. The offer includes daily breakfast and laundry for two sets of clothes per day.\n\nLong-stay guests also enjoy early check-in and late check-out when available.\n\n## How to book\n\nCall our hotline or message us on Zalo with your arrival date, departure date and number of guests. The offer does not apply to bookings made through online travel platforms.",
+          "focusKeyword": "long stay offer",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "ko": {
+          "title": "오래 머물수록 더 큰 혜택",
+          "excerpt": "호텔에 직접 예약 시 5박 이상 최대 25% 할인.",
+          "keyPoints": [
+            "5박 이상 15%, 7박 이상 25% 할인",
+            "매일 조식과 세탁 서비스 포함",
+            "핫라인 또는 Zalo 직접 예약 시에만 적용"
+          ],
+          "body": "푸꾸옥에서 5박 이상 머무를 계획이라면 호텔에 직접 예약하고 더 좋은 요금을 받으세요.\n\n## 혜택\n\n5박 이상 15%, 7박 이상 25% 할인됩니다. 매일 조식과 하루 2벌 세탁 서비스가 포함됩니다.\n\n장기 투숙객은 객실 사정에 따라 얼리 체크인과 레이트 체크아웃도 가능합니다.\n\n## 예약 방법\n\n핫라인으로 전화하시거나 Zalo로 도착일, 출발일, 인원을 알려 주세요. 온라인 예약 플랫폼을 통한 예약에는 적용되지 않습니다.",
+          "focusKeyword": "장기 투숙 할인",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "zh": {
+          "title": "住得越久，优惠越多",
+          "excerpt": "直接向酒店预订，入住 5 晚及以上最高可享 25% 折扣。",
+          "keyPoints": [
+            "入住 5 晚享 85 折，7 晚享 75 折",
+            "含每日早餐和洗衣服务",
+            "仅限通过热线或 Zalo 直接预订"
+          ],
+          "body": "如果您计划在富国岛入住 5 晚或以上，请直接向酒店预订以获得更优惠的价格。\n\n## 优惠内容\n\n入住 5 晚享 85 折，入住 7 晚享 75 折。优惠包含每日早餐及每天两套衣物洗烫服务。\n\n长住客人还可视房态享受提前入住和延迟退房。\n\n## 预订方式\n\n请致电热线或通过 Zalo 告知入住日期、离店日期和人数。通过在线旅行平台预订不适用此优惠。",
+          "focusKeyword": "长住优惠",
+          "seoTitle": "",
+          "metaDescription": ""
+        }
+      }
+    },
+    {
+      "id": 3,
+      "legacySlug": "kinh-nghiem-du-lich-phu-quoc",
+      "category": "guide",
+      "date": "2026-09-12",
+      "featured": true,
+      "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1600&q=80",
+      "status": "published",
+      "translations": {
+        "vi": {
+          "title": "Kinh nghiệm du lịch Phú Quốc 4 ngày 3 đêm",
+          "excerpt": "Lịch trình gợi ý, món ngon nên thử và những điểm ngắm hoàng hôn đẹp nhất đảo.",
+          "keyPoints": [
+            "Ngày 1–2: Thị trấn Hoàng Hôn, chợ đêm, tour 4 đảo",
+            "Ngày 3–4: bắc đảo, vườn tiêu, mua quà",
+            "Concierge đặt xe, tour, nhà hàng nếu nhắn trước một ngày"
+          ],
+          "body": "Bốn ngày là vừa đủ để vừa nghỉ ngơi vừa khám phá Phú Quốc mà không bị vội. Dưới đây là lịch trình đội ngũ concierge của chúng tôi hay gợi ý cho khách lần đầu đến đảo.\n\n## Ngày 1 và 2: Nam đảo\n\nNgày đầu, nhận phòng và đi bộ ra biển ngắm hoàng hôn ở khu Thị trấn Hoàng Hôn. Buổi tối ghé chợ đêm để thử hải sản nướng.\n\nNgày thứ hai, đi tour 4 đảo bằng ca nô, lặn ngắm san hô và ăn trưa trên đảo. Chiều về nghỉ ở hồ bơi khách sạn.\n\n## Ngày 3 và 4: Bắc đảo và mua sắm\n\nNgày thứ ba, đi về phía bắc đảo để tắm biển và ghé một vườn tiêu. Ngày cuối, mua nước mắm, tiêu và ngọc trai làm quà trước khi ra sân bay.\n\nConcierge có thể đặt xe, tour và nhà hàng giúp bạn. Chỉ cần nhắn trước một ngày.",
+          "focusKeyword": "kinh nghiệm du lịch phú quốc",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "en": {
+          "title": "Phu Quoc in 4 days and 3 nights",
+          "excerpt": "A suggested itinerary, dishes worth trying and the best sunset spots on the island.",
+          "keyPoints": [
+            "Days 1–2: Sunset Town, night market, 4-island tour",
+            "Days 3–4: the north, a pepper farm, gift shopping",
+            "Concierge books cars, tours and restaurants with a day's notice"
+          ],
+          "body": "Four days is just enough to relax and explore Phu Quoc without rushing. Here is the itinerary our concierge team often suggests to first-time visitors.\n\n## Days 1 and 2: the south of the island\n\nOn day one, check in and walk to the beach to watch the sunset at Sunset Town. In the evening, head to the night market for grilled seafood.\n\nOn day two, take a 4-island speedboat tour, snorkel over the coral and have lunch on an island. Come back in the afternoon to relax by the hotel pool.\n\n## Days 3 and 4: the north and shopping\n\nOn day three, head north for a swim and a visit to a pepper farm. On your last day, pick up fish sauce, pepper and pearls as gifts before heading to the airport.\n\nOur concierge can book cars, tours and restaurants for you. Just message us a day ahead.",
+          "focusKeyword": "Phu Quoc travel guide",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "ko": {
+          "title": "푸꾸옥 3박 4일 여행 가이드",
+          "excerpt": "추천 일정, 꼭 먹어 봐야 할 음식, 섬에서 가장 아름다운 노을 명소.",
+          "keyPoints": [
+            "1–2일차: 선셋 타운, 야시장, 4개 섬 투어",
+            "3–4일차: 섬 북부, 후추 농장, 기념품 쇼핑",
+            "하루 전 요청 시 컨시어지가 차량·투어·레스토랑 예약"
+          ],
+          "body": "4일이면 서두르지 않고 쉬면서 푸꾸옥을 둘러보기에 충분합니다. 처음 섬을 찾는 손님께 저희 컨시어지 팀이 자주 추천하는 일정을 소개합니다.\n\n## 1–2일차: 섬 남부\n\n첫날은 체크인 후 선셋 타운 해변까지 걸어가 노을을 감상하세요. 저녁에는 야시장에서 해산물 구이를 맛보세요.\n\n둘째 날은 스피드보트로 4개 섬 투어를 하며 스노클링을 즐기고 섬에서 점심을 먹습니다. 오후에는 호텔 수영장에서 휴식을 취하세요.\n\n## 3–4일차: 섬 북부와 쇼핑\n\n셋째 날은 북쪽으로 이동해 해수욕을 즐기고 후추 농장을 방문하세요. 마지막 날에는 공항으로 가기 전 피시 소스, 후추, 진주를 선물로 구입해 보세요.\n\n컨시어지가 차량, 투어, 레스토랑 예약을 도와드립니다. 하루 전에 메시지만 보내 주세요.",
+          "focusKeyword": "푸꾸옥 여행",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "zh": {
+          "title": "富国岛四天三晚旅行攻略",
+          "excerpt": "推荐行程、必尝美食以及岛上最美的日落观赏点。",
+          "keyPoints": [
+            "第 1–2 天：日落小镇、夜市、四岛游",
+            "第 3–4 天：北岛、胡椒园、购买伴手礼",
+            "提前一天告知，礼宾部可代订车辆、游览和餐厅"
+          ],
+          "body": "四天时间刚好可以不慌不忙地休息并游览富国岛。以下是我们礼宾团队常为首次来岛的客人推荐的行程。\n\n## 第 1–2 天：南岛\n\n第一天办理入住后，步行到日落小镇海滩观赏日落。晚上去夜市品尝烤海鲜。\n\n第二天乘快艇参加四岛游，浮潜看珊瑚并在岛上享用午餐。下午回酒店泳池休息。\n\n## 第 3–4 天：北岛与购物\n\n第三天前往岛北部游泳，并参观胡椒园。最后一天在前往机场前，买些鱼露、胡椒和珍珠作为伴手礼。\n\n礼宾部可为您预订车辆、游览项目和餐厅，只需提前一天告诉我们。",
+          "focusKeyword": "富国岛旅游攻略",
+          "seoTitle": "",
+          "metaDescription": ""
+        }
+      }
+    },
+    {
+      "id": 4,
+      "legacySlug": "hoang-hon-ho-boi",
+      "category": "event",
+      "date": "2026-09-25",
+      "featured": false,
+      "image": "https://images.unsplash.com/photo-1600011689032-8b628b8a8747?auto=format&fit=crop&w=1600&q=80",
+      "status": "published",
+      "translations": {
+        "vi": {
+          "title": "Pool Party hoàng hôn cuối tháng",
+          "excerpt": "DJ, cocktail và BBQ bên hồ bơi vô cực vào tối thứ Bảy cuối cùng mỗi tháng.",
+          "keyPoints": [
+            "Tối thứ Bảy cuối cùng mỗi tháng",
+            "Cocktail từ 17:00, tiệc nướng từ 18:30, DJ đến 22:00",
+            "Khách lưu trú vào cửa miễn phí"
+          ],
+          "body": "Vào tối thứ Bảy cuối cùng mỗi tháng, hồ bơi vô cực của Blessed Hotel trở thành nơi đón hoàng hôn với DJ, cocktail và tiệc nướng ngoài trời.\n\n## Chương trình\n\nTừ 17:00, quầy bar bên hồ phục vụ cocktail đặc trưng của Olea Café. Tiệc nướng bắt đầu lúc 18:30 với hải sản và thịt nướng than hoa.\n\nDJ chơi nhạc đến 22:00. Khách lưu trú được vào cửa miễn phí, khách bên ngoài vui lòng đặt chỗ trước.",
+          "focusKeyword": "pool party phú quốc",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "en": {
+          "title": "Sunset Pool Party at the end of the month",
+          "excerpt": "DJ, cocktails and BBQ by the infinity pool on the last Saturday evening of every month.",
+          "keyPoints": [
+            "Last Saturday evening of every month",
+            "Cocktails from 17:00, barbecue from 18:30, DJ until 22:00",
+            "Free entry for hotel guests"
+          ],
+          "body": "On the last Saturday evening of every month, the Blessed Hotel infinity pool becomes the place to watch the sunset, with a DJ, cocktails and an outdoor barbecue.\n\n## The programme\n\nFrom 17:00, the poolside bar serves Olea Café signature cocktails. The barbecue starts at 18:30 with seafood and charcoal-grilled meats.\n\nThe DJ plays until 22:00. Entry is free for hotel guests; visitors are kindly asked to reserve in advance.",
+          "focusKeyword": "Phu Quoc pool party",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "ko": {
+          "title": "월말 선셋 풀 파티",
+          "excerpt": "매월 마지막 토요일 저녁, 인피니티 풀에서 DJ, 칵테일, 바비큐를 즐기세요.",
+          "keyPoints": [
+            "매월 마지막 토요일 저녁",
+            "17:00 칵테일, 18:30 바비큐, 22:00까지 DJ",
+            "투숙객 무료 입장"
+          ],
+          "body": "매월 마지막 토요일 저녁, 블레스드 호텔의 인피니티 풀이 DJ, 칵테일, 야외 바비큐와 함께하는 노을 명소로 변신합니다.\n\n## 프로그램\n\n17:00부터 풀사이드 바에서 Olea Café의 시그니처 칵테일을 제공합니다. 바비큐는 18:30에 시작하며 해산물과 숯불구이가 준비됩니다.\n\nDJ 공연은 22:00까지 이어집니다. 투숙객은 무료 입장이며, 외부 방문객은 사전 예약을 부탁드립니다.",
+          "focusKeyword": "푸꾸옥 풀파티",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "zh": {
+          "title": "月末日落泳池派对",
+          "excerpt": "每月最后一个周六晚上，在无边泳池畔享受 DJ、鸡尾酒和烧烤。",
+          "keyPoints": [
+            "每月最后一个周六晚上",
+            "17:00 鸡尾酒，18:30 烧烤，DJ 至 22:00",
+            "住客免费入场"
+          ],
+          "body": "每月最后一个周六晚上，Blessed Hotel 的无边泳池将化身观赏日落的好去处，伴有 DJ、鸡尾酒和户外烧烤。\n\n## 活动安排\n\n17:00 起，池畔酒吧供应 Olea Café 招牌鸡尾酒。烧烤于 18:30 开始，提供海鲜和炭烤肉类。\n\nDJ 演出持续至 22:00。住客免费入场，外部访客请提前预订。",
+          "focusKeyword": "富国岛泳池派对",
+          "seoTitle": "",
+          "metaDescription": ""
+        }
+      }
+    },
+    {
+      "id": 5,
+      "legacySlug": "brunch-cuoi-tuan",
+      "category": "dining",
+      "date": "2026-10-02",
+      "featured": true,
+      "image": "https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=1600&q=80",
+      "status": "published",
+      "translations": {
+        "vi": {
+          "title": "Ra mắt Sunday Brunch tại Blessed Bistro",
+          "excerpt": "Hơn 60 món Á Âu, khu vui chơi cho trẻ em và nhạc sống mỗi Chủ nhật.",
+          "keyPoints": [
+            "Mỗi Chủ nhật, 11:00 – 14:30 tại Blessed Bistro",
+            "Hơn 60 món, quầy hải sản tươi Phú Quốc",
+            "Trẻ em dưới 6 tuổi được miễn phí"
+          ],
+          "body": "Từ Chủ nhật này, Blessed Bistro mở Sunday Brunch với hơn 60 món Á Âu, phục vụ từ 11:00 đến 14:30.\n\n## Thực đơn\n\nQuầy hải sản tươi có hàu, tôm và ghẹ Phú Quốc. Bên cạnh là góc món nướng, mì làm tại chỗ, bánh ngọt và quầy cà phê phin.\n\nMỗi tuần, bếp trưởng chọn thêm hai món đặc biệt theo nguyên liệu trong mùa.\n\n## Cho cả gia đình\n\nKhu vui chơi trẻ em có người trông, cùng nhạc acoustic nhẹ suốt buổi. Trẻ em dưới 6 tuổi được miễn phí khi đi cùng người lớn.",
+          "focusKeyword": "brunch phú quốc",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "en": {
+          "title": "Introducing Sunday Brunch at Blessed Bistro",
+          "excerpt": "Over 60 Asian and Western dishes, a kids' play area and live music every Sunday.",
+          "keyPoints": [
+            "Every Sunday, 11:00 – 14:30 at Blessed Bistro",
+            "60+ dishes and a fresh Phu Quoc seafood counter",
+            "Children under 6 eat free"
+          ],
+          "body": "From this Sunday, Blessed Bistro opens its Sunday Brunch with more than 60 Asian and Western dishes, served from 11:00 to 14:30.\n\n## The menu\n\nA fresh seafood counter offers Phu Quoc oysters, prawns and crab. Alongside it you'll find a grill station, noodles made to order, desserts and a Vietnamese drip coffee bar.\n\nEach week, the head chef adds two specials based on what's in season.\n\n## For the whole family\n\nThere is a supervised kids' play area and gentle acoustic music throughout. Children under 6 eat free when accompanied by an adult.",
+          "focusKeyword": "Phu Quoc brunch",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "ko": {
+          "title": "Blessed Bistro 선데이 브런치 오픈",
+          "excerpt": "60가지가 넘는 아시아·서양 요리, 키즈 플레이 공간, 매주 일요일 라이브 음악.",
+          "keyPoints": [
+            "매주 일요일 11:00 – 14:30, Blessed Bistro",
+            "60가지 이상의 요리와 푸꾸옥 해산물 코너",
+            "6세 미만 어린이 무료"
+          ],
+          "body": "이번 일요일부터 Blessed Bistro에서 60가지가 넘는 아시아·서양 요리로 구성된 선데이 브런치를 11:00부터 14:30까지 운영합니다.\n\n## 메뉴\n\n신선한 해산물 코너에는 푸꾸옥산 굴, 새우, 게가 준비됩니다. 그 옆에는 그릴 스테이션, 즉석 면 요리, 디저트, 베트남 핀 커피 바가 있습니다.\n\n매주 헤드 셰프가 제철 재료로 두 가지 스페셜 메뉴를 추가합니다.\n\n## 온 가족을 위해\n\n보호자가 상주하는 키즈 플레이 공간과 잔잔한 어쿠스틱 음악이 함께합니다. 성인과 동반한 6세 미만 어린이는 무료입니다.",
+          "focusKeyword": "푸꾸옥 브런치",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "zh": {
+          "title": "Blessed Bistro 推出周日早午餐",
+          "excerpt": "60 多道亚洲与西式菜肴、儿童游乐区，每周日还有现场音乐。",
+          "keyPoints": [
+            "每周日 11:00 – 14:30，Blessed Bistro 餐厅",
+            "60 多道菜品及富国岛新鲜海鲜台",
+            "6 岁以下儿童免费"
+          ],
+          "body": "从本周日起，Blessed Bistro 推出周日早午餐，提供 60 多道亚洲与西式菜肴，供应时间为 11:00 至 14:30。\n\n## 菜单\n\n新鲜海鲜台提供富国岛生蚝、虾和螃蟹。旁边还有烧烤台、现做面食、甜点和越南滴漏咖啡吧。\n\n主厨每周还会根据时令食材加推两道特色菜。\n\n## 适合全家\n\n设有专人看护的儿童游乐区，全程伴有轻柔的原声音乐。6 岁以下儿童在成人陪同下免费用餐。",
+          "focusKeyword": "富国岛早午餐",
+          "seoTitle": "",
+          "metaDescription": ""
+        }
+      }
+    },
+    {
+      "id": 6,
+      "legacySlug": "spa-mua-thu",
+      "category": "offer",
+      "date": "2026-10-10",
+      "featured": true,
+      "image": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1600&q=80",
+      "status": "published",
+      "translations": {
+        "vi": {
+          "title": "Gói spa mùa thu: thư giãn trọn vẹn với giá đặc biệt",
+          "excerpt": "Tận hưởng liệu trình 90 phút cùng trà thảo mộc, áp dụng đến hết tháng 11.",
+          "keyPoints": [
+            "Liệu trình 90 phút: ngâm chân, massage 60 phút, đắp mặt nạ",
+            "Mời trà gừng mật ong và trái cây theo mùa",
+            "Áp dụng 10:00 – 20:00 mỗi ngày đến hết tháng 11"
+          ],
+          "body": "Mùa thu ở Phú Quốc là lúc nắng dịu và biển lặng hơn. Đây cũng là thời điểm Blessed Spa ra mắt gói thư giãn 90 phút dành riêng cho khách lưu trú và khách ghé thăm.\n\n## Gói spa gồm những gì\n\nLiệu trình bắt đầu bằng ngâm chân thảo mộc, tiếp theo là 60 phút massage toàn thân với tinh dầu sả chanh và kết thúc bằng đắp mặt nạ dưỡng ẩm.\n\nSau liệu trình, bạn được mời trà gừng mật ong và một đĩa trái cây theo mùa tại phòng thư giãn.\n\n## Thời gian áp dụng\n\nƯu đãi áp dụng mỗi ngày từ 10:00 đến 20:00, đến hết tháng 11. Vui lòng đặt lịch trước tại quầy lễ tân hoặc qua Zalo để chọn được khung giờ mong muốn.",
+          "focusKeyword": "spa phú quốc",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "en": {
+          "title": "Autumn spa package: full relaxation at a special price",
+          "excerpt": "Enjoy a 90-minute treatment with herbal tea, available until the end of November.",
+          "keyPoints": [
+            "90-minute treatment: foot soak, 60-minute massage, face mask",
+            "Ginger honey tea and seasonal fruit included",
+            "Daily 10:00 – 20:00 until the end of November"
+          ],
+          "body": "Autumn in Phu Quoc brings softer sunshine and calmer seas. It is also when Blessed Spa launches its 90-minute relaxation package for hotel guests and visitors.\n\n## What the package includes\n\nThe treatment begins with a herbal foot soak, followed by a 60-minute full-body massage with lemongrass oil, and ends with a hydrating face mask.\n\nAfterwards, enjoy ginger honey tea and a plate of seasonal fruit in the relaxation lounge.\n\n## When it's available\n\nThe offer runs daily from 10:00 to 20:00 until the end of November. Please book ahead at the front desk or via Zalo to get your preferred time.",
+          "focusKeyword": "Phu Quoc spa",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "ko": {
+          "title": "가을 스파 패키지: 특별한 가격으로 완벽한 휴식",
+          "excerpt": "허브티와 함께하는 90분 트리트먼트, 11월 말까지 진행됩니다.",
+          "keyPoints": [
+            "90분 코스: 족욕, 60분 마사지, 페이스 마스크",
+            "생강 꿀차와 제철 과일 제공",
+            "11월 말까지 매일 10:00 – 20:00"
+          ],
+          "body": "푸꾸옥의 가을은 햇살이 부드럽고 바다가 잔잔해지는 계절입니다. 이 시기에 맞춰 블레스드 스파가 투숙객과 방문객을 위한 90분 릴랙스 패키지를 선보입니다.\n\n## 패키지 구성\n\n허브 족욕으로 시작해 레몬그라스 오일을 사용한 60분 전신 마사지, 보습 마스크로 마무리합니다.\n\n트리트먼트 후에는 휴식 라운지에서 생강 꿀차와 제철 과일을 즐기실 수 있습니다.\n\n## 운영 기간\n\n11월 말까지 매일 10:00부터 20:00까지 진행됩니다. 원하는 시간을 예약하시려면 프런트 또는 Zalo로 미리 문의해 주세요.",
+          "focusKeyword": "푸꾸옥 스파",
+          "seoTitle": "",
+          "metaDescription": ""
+        },
+        "zh": {
+          "title": "秋季水疗套餐：特惠价格，全身放松",
+          "excerpt": "享受 90 分钟疗程与草本茶，活动截至 11 月底。",
+          "keyPoints": [
+            "90 分钟疗程：足浴、60 分钟按摩、面膜",
+            "附赠姜蜜茶和时令水果",
+            "每天 10:00 – 20:00，截至 11 月底"
+          ],
+          "body": "富国岛的秋天阳光柔和、海面平静。Blessed Spa 也在此时为住客和访客推出 90 分钟放松套餐。\n\n## 套餐内容\n\n疗程以草本足浴开始，随后是 60 分钟香茅精油全身按摩，最后以保湿面膜收尾。\n\n疗程结束后，您可在休息室享用姜蜜茶和一盘时令水果。\n\n## 活动时间\n\n活动每天 10:00 至 20:00 进行，截至 11 月底。请提前通过前台或 Zalo 预约，以便选择心仪时段。",
+          "focusKeyword": "富国岛水疗",
+          "seoTitle": "",
+          "metaDescription": ""
+        }
+      }
+    }
+  ]
+}

@@ -17,15 +17,25 @@ Website giới thiệu cho **một** khách sạn (Blessed Hotel, Phú Quốc). 
 - **Tailwind CSS v4** — cấu hình bằng `@theme` trong `src/app/globals.css`, **không có** `tailwind.config.*`.
 - Font qua `next/font/google` (xem bảng dưới). Không dùng thư viện UI/icon — icon là SVG inline.
 - **yet-another-react-lightbox** (plugin Zoom, Thumbnails, Counter, Captions): trình xem ảnh phòng trong `RoomGallery` và thực đơn dạng ảnh trong `MenuViewer`.
+- **PostgreSQL 17** + **Drizzle ORM** (driver `postgres`): tin tức, chuyên mục, ảnh tải lên. Máy dev chạy database bằng Docker (`docker-compose.yml`; trên Mac này là **Colima**, không dùng Docker Desktop/OrbStack vì điều khoản bản quyền thương mại). `aws4fetch` để tải ảnh lên Cloudflare R2.
 
 ## Lệnh
 
 ```bash
-npm run dev     # http://localhost:3000
-npm run build   # build production (bắt buộc pass trước khi xong việc)
-npm run lint    # ESLint (bắt buộc sạch)
-npm start       # chạy bản build
+npm run dev            # http://localhost:3000 (cần database đang chạy)
+npm run build          # build production (bắt buộc pass trước khi xong việc). KHÔNG cần database (xem "Dữ liệu tin tức")
+npm run lint           # ESLint (bắt buộc sạch)
+npm start              # chạy bản build
+
+npm run db:up          # bật PostgreSQL trong Docker (Mac: chạy `colima start` trước nếu máy vừa khởi động)
+npm run db:migrate     # áp dụng migration trong drizzle/
+npm run db:seed        # nạp db/seed.json (5 chuyên mục, 6 bài) vào database TRỐNG; đã có bài thì bỏ qua
+npm run db:generate    # sau khi sửa src/lib/db/schema.ts: tạo file migration mới trong drizzle/ (commit file này)
+npm run db:studio      # giao diện xem/sửa database (Drizzle Studio)
+npm run hash-password  # tạo ADMIN_PASSWORD_HASH cho .env (nhập mật khẩu khi được hỏi)
 ```
+
+**Chạy lần đầu trên máy mới**: cài Docker (`brew install colima docker docker-compose`, `colima start`) → `cp .env.example .env.local` rồi điền `ADMIN_PASSWORD_HASH` (`npm run hash-password`, máy dev có thể `ALLOW_WEAK=1`) và `SESSION_SECRET` (`openssl rand -base64 48`) → `npm install` → `npm run db:up && npm run db:migrate && npm run db:seed` → `npm run dev`. `.env.local` / `.env` không bao giờ commit (có `.env.example` làm mẫu).
 
 ## Cấu trúc
 
@@ -39,10 +49,11 @@ src/
       (site)/page.tsx   # trang chủ
       (site)/about/ rooms/ dining/ experiences/ news/   # mỗi tab menu là 1 trang (đường dẫn tiếng Việt cũ: redirect 308 trong next.config.ts)
       (site)/news/[id]/ # chi tiết bài viết theo mã số `id` (generateStaticParams từ `news`; id lạ → notFound())
-      admin/            # trang quản trị (layout riêng, noindex, BẢN DEMO chưa lưu); actions.ts = Server Action login/logout
-      admin/login/      # đăng nhập (giả lập)
+      admin/            # trang quản trị (layout riêng, noindex); actions.ts = mọi Server Action (đăng nhập, lưu/xoá bài, tải ảnh, chuyên mục)
+      admin/login/      # đăng nhập
       admin/(panel)/    # cần đăng nhập: danh sách bài · news/new · news/[id] (sửa) · categories (chuyên mục)
       not-found.tsx     # 404 trong một ngôn ngữ (tự bọc SiteChrome vì nằm ngoài nhóm (site))
+    media/[...key]/     # route phục vụ ảnh tải lên khi STORAGE_DRIVER=local (chặn đi ra ngoài thư mục ảnh)
     global-not-found.tsx # 404 cho URL không khớp route nào (hiện 4 ngôn ngữ; bật `experimental.globalNotFound`)
     globals.css         # design tokens (@theme), font dự phòng CJK theo :lang
   i18n/
@@ -65,12 +76,22 @@ src/
                         #   VenueCard (thẻ ngang nhà hàng/spa/gym: PhotoScroller cuộn ảnh + giờ mở cửa, điện thoại, MenuViewer "Xem menu", nút đặt bàn/đặt chỗ)
                         #   RoomGallery (bên ngoài 3 ảnh xếp chồng nghiêng lộn xộn kiểu xấp ảnh, không ghi số lượng → trình xem ảnh đủ ảnh: next/prev, zoom, vuốt, phím ←/→, bộ đếm)
   lib/
-    site.ts             # dữ liệu KHÔNG phụ thuộc ngôn ngữ: ảnh, giá, số liệu, link, id/slug (không chứa chữ hiển thị)
-    admin-auth.ts       # đăng nhập giả lập: tài khoản demo DEMO_ADMIN (ghi đè bằng env ADMIN_USERNAME/ADMIN_PASSWORD), tên + giá trị cookie phiên
-    markdown.ts         # Markdown đơn giản cho nội dung bài: parseMarkdown → khối, parseInline, bodyToMarkdown, safeUrl
+    site.ts             # dữ liệu KHÔNG phụ thuộc ngôn ngữ: ảnh, giá, số liệu, link, id/slug (không chứa chữ hiển thị). Tin tức KHÔNG nằm ở đây (database)
+    db/schema.ts        # bảng database (Drizzle): categories, category_translations, posts, post_translations, media
+    db/index.ts         # getDb(): kết nối PostgreSQL (DATABASE_URL), tạo khi dùng lần đầu
+    news.ts             # đọc/ghi tin tức + chuyên mục: get* cho trang công khai (cache, thẻ NEWS_TAG), admin* cho trang quản trị, write*/remove*
+    auth.ts             # đăng nhập 1 tài khoản (ADMIN_USERNAME + ADMIN_PASSWORD_HASH scrypt), khoá tạm khi sai nhiều lần, requireAdmin()
+    session.ts          # cookie phiên có chữ ký HMAC (SESSION_SECRET), dùng chung cho proxy.ts và server
+    storage.ts          # lưu ảnh tải lên: thư mục UPLOAD_DIR hoặc Cloudflare R2 (STORAGE_DRIVER), nhận dạng ảnh theo byte đầu file
+    images.ts           # canOptimizeImage(): ảnh từ nguồn lạ hiển thị next/image `unoptimized` thay vì làm lỗi trang
+    markdown.ts         # Markdown đơn giản cho nội dung bài: parseMarkdown → khối, parseInline, safeUrl
     seo.ts              # analyzeSeo(): chấm điểm SEO bài viết theo từng ngôn ngữ (hàm thuần, chạy cả client lẫn server)
-    admin.ts            # PostDraft cho trình soạn: newPostDraft(), getPostDraft(id) (nạp nội dung bài từ cả 4 dictionary), getKeywordIndex() (từ khoá các bài để kiểm tra trùng)
-    content.ts          # ghép site.ts + dictionary → getRooms/getNews/getNav/… (chữ đã dịch + href có tiền tố ngôn ngữ)
+    admin.ts            # kiểu PostDraft cho trình soạn, newPostDraft(), sanitizeDraft() (kiểm tra dữ liệu gửi lên Server Action)
+    content.ts          # ghép site.ts + dictionary → getRooms/getNav/… (chữ đã dịch + href có tiền tố ngôn ngữ); getNews/getNewsCategories (async, từ database)
+drizzle/                # migration SQL do `npm run db:generate` tạo (commit cùng thay đổi schema); scripts/migrate.mjs áp dụng
+scripts/                # migrate.mjs, seed.mjs, hash-password.mjs (chạy bằng Node, không qua Next)
+db/seed.json            # dữ liệu ban đầu: 5 chuyên mục + 6 bài đủ 4 ngôn ngữ (chỉ dùng cho database trống)
+docker-compose.yml      # PostgreSQL cho máy dev (cổng 127.0.0.1:5432)
 public/menus/           # ảnh từng trang thực đơn <slug>-<n>.svg (ẢNH TẠM, thay bằng menu thật; khai báo trong `menu` của venue ở site.ts)
 public/brands/          # logo Zalo, Traveloka, Agoda, Klook; social/ = icon Facebook, Instagram, TikTok, Zalo (Simple Icons)
 public/flags/           # quốc kỳ vuông vn/gb/kr/cn (flag-icons, MIT) cho LanguageSwitcher, hiển thị cắt tròn; mã cờ ở `localeMeta[locale].flag`
@@ -84,17 +105,20 @@ public/flags/           # quốc kỳ vuông vn/gb/kr/cn (flag-icons, MIT) cho L
 - **`VenueCard`**: ảnh `gallery` cuộn ngang (mũi tên, vuốt, bộ đếm); "Xem menu" chỉ hiện khi venue có `menu` (mở popup ảnh lật trang, zoom); nút đặt hiện khi trang truyền `reserveLabel`, link lấy từ `reserveUrl` (mở tab mới). **`reserveUrl` đang để trống** (chờ đối tác làm trang đặt bàn) → tạm thời nút gọi số `phone` của venue. Nhãn chung trong dictionary `venue`.
 - **Trang Các hạng phòng**: mỗi phòng hiển thị `RoomGallery` với `room.gallery` (3–4 ảnh có `alt` dùng làm chú thích; ảnh đầu trùng `room.image`). Cạnh nút "Đặt phòng này" có nút "Xem thêm" (`RoomDetails`) mở modal kiểu Vinpearl: tên khách sạn + nút đóng → băng ảnh có chấm → tên phòng, mô tả → lưới "Tiện ích" (id trong `rooms[].facilities` ở `site.ts` = tiện ích riêng + `baseFacilities`; nhãn trong dictionary `roomFacilities`).
 - **Trang con**: `PageHero` (ảnh dưới header trong suốt + breadcrumb + tiêu đề) → nội dung → `BookingCta` (trừ Tin tức).
-- **Tin tức** (bố cục tham khảo trang tin Vinpearl vinpearl.com/vi/news/travel-guide): mỗi bài có `category` (id: offer | dining | event | guide | wellness), ngày, ảnh, `featured` trong `news` (`site.ts`); chữ (tiêu đề, tóm tắt, `keyPoints` = 3 ý chính, `body` = các mục `heading?` + `paragraphs`) trong dictionary `news[slug]`, nhãn chuyên mục trong `newsCategories`.
+- **Tin tức** (bố cục tham khảo trang tin Vinpearl vinpearl.com/vi/news/travel-guide): **dữ liệu nằm trong database** (xem "Dữ liệu tin tức" bên dưới), không nằm trong `site.ts` hay dictionary. Mỗi bài: chuyên mục (mã chữ, VD offer), trạng thái nháp/đã đăng, ngày, ảnh bìa, `featured`; mỗi ngôn ngữ: tiêu đề, tóm tắt, `keyPoints` (3 ý chính), nội dung Markdown, 3 trường SEO. Tên chuyên mục theo ngôn ngữ cũng trong database. Trang công khai chỉ hiện bài đã đăng, có ngày và có tiêu đề ở ngôn ngữ đang xem.
   - **Danh sách `/news`**: `PageHero` → hàng ô chuyên mục có ảnh (ô "Tất cả" + 5 chuyên mục; bấm để lọc) → "Tin nổi bật" (`featured`: 1 bài lớn chữ đè ảnh + nút, 2 bài nhỏ xếp chồng) → 2 cột: "Tin mới nhất" (lưới 2 cột: ảnh, tiêu đề, ngày · chuyên mục, tóm tắt; lọc theo chuyên mục + từ khoá ngay trên trang) + thanh bên 340px (ô tìm kiếm, `RoomsMiniList`, `SideBookingCta`). Tiêu đề khối dùng `SideTitle`.
   - **Chi tiết `/news/[id]`**: nền trắng, header đặc. Cột bài: breadcrumb (Trang chủ › Tin tức › chuyên mục) → `h1` → ngày + thời gian đọc + nhãn chuyên mục → đoạn mở đầu → "Mục lục" thu gọn (`<details>`, mục đánh số 1, 2… neo `section-N`) → khung viền gold "Thông tin nhanh" (`keyPoints`) → ảnh 16:9 có chú thích → các mục (tiêu đề đánh số) → khối liên hệ đặt phòng. Thanh bên dính khi cuộn: "Bài viết dành cho bạn" (`PostMiniList`), `RoomsMiniList`, `SideBookingCta`. Không hiển thị lượt xem (không có số thật).
-  - Với `cacheComponents`, slug không tồn tại vẫn trả HTTP 200 nhưng hiển thị trang 404 + `noindex` (do streaming), đây là hành vi của Next, không phải lỗi.
+  - Bài không tồn tại / chưa đăng vẫn trả HTTP 200 nhưng hiển thị trang 404 + `noindex` (nội dung bài nằm trong `<Suspense>`, `notFound()` xảy ra khi đang stream), đây là hành vi của Next, không phải lỗi.
+  - Link cũ `/<lang>/tin-tuc/<slug>` của 6 bài ban đầu redirect 308 về `/news/<id>` (bảng `legacyNewsSlugs` trong `next.config.ts`).
 - **Trang Giới thiệu** (bố cục theo modernvillagelifestyle.vn/vi/ve-mvillage; dữ liệu `about` trong `site.ts`): banner toàn màn hình (khẩu hiệu mảnh + chữ "Blessed" serif lớn, `h1` ẩn) → section nền `surface` có 2 vòng tròn trang trí mờ: tiêu đề căn giữa có cụm tô màu (`philosophy.title` = `before` + `highlight` + `after`, để mỗi ngôn ngữ tự đặt vị trí cụm tô màu), 2 đoạn giới thiệu (`philosophy.body`), `Stats` hàng ngang, 4 thẻ ảnh dọc chữ nằm trên ảnh (`pillars`) → ảnh tràn viền + chữ trái, tiêu đề trộn chữ mảnh/đậm (`closing`).
 - **Footer** (dùng chung `Container`): hàng trên: logo + khẩu hiệu (trái) · icon mạng xã hội 22px (phải). Hàng chính 4 cột: Liên hệ (hotline, email, địa chỉ) · Khám phá · Đặt phòng · Vị trí (bản đồ). Tiêu đề cột `text-sm` chữ hoa `brand-400`, link 15px `white/80`. Dòng cuối: bản quyền + giấy phép 13px. **Không có nhóm "Chính sách"** (đã bỏ theo yêu cầu).
-- **Trang quản trị `/<lang>/admin`** (BẢN DEMO: đăng nhập giả lập, mọi thay đổi chỉ nằm trên trình duyệt, chưa lưu): không link từ website, `robots: noindex` trong `admin/layout.tsx`, không dùng `pageMetadata`.
-  - **Đăng nhập**: `proxy.ts` chặn mọi `/<lang>/admin/...` khi thiếu cookie phiên → `/<lang>/admin/login?next=…`; đã đăng nhập mà mở trang đăng nhập → vào `/admin`. `LoginForm` gửi Server Action `login` (so với `DEMO_ADMIN` trong `lib/admin-auth.ts`, đúng thì đặt cookie httpOnly 8 giờ, quay về `next` nếu thuộc khu admin). Nút Đăng xuất = Server Action `logout`. Tài khoản demo xem trong `lib/admin-auth.ts`.
-  - **Khung `(panel)`**: logo + nhãn Quản trị, Bài viết, Chuyên mục, Xem website, đổi ngôn ngữ giao diện, Đăng xuất + dòng báo bản demo.
-  - **Bài viết**: bảng danh sách → `PostEditor`: tab 4 ngôn ngữ (chấm xanh = đủ tiêu đề + tóm tắt), tóm tắt, 3 ý "Thông tin nhanh", **nội dung soạn bằng Markdown** (`MarkdownEditor`: H, B, I, danh sách, trích dẫn, link, ảnh từ link, tải ảnh lên → blob: tạm; tab Xem trước dùng đúng component `Markdown` của trang bài viết); thiết lập chung (chuyên mục, ngày, Tin nổi bật, ảnh bìa); xem trước thẻ bài. "Đăng bài" chỉ kiểm tra đủ 4 ngôn ngữ + ngày + ảnh.
-  - **Chuyên mục** (`CategoryManager`): bảng tên (4 ngôn ngữ) + mã + số bài; thêm (mã `a-z0-9-` không trùng + tên đủ 4 ngôn ngữ), sửa tên, xoá (xác nhận ngay trên dòng; không cho xoá khi còn bài).
+- **Trang quản trị `/<lang>/admin`**: không link từ website, `robots: noindex` trong `admin/layout.tsx`, không dùng `pageMetadata`. Mọi thay đổi lưu thẳng vào database.
+  - **Đăng nhập** (1 tài khoản, không có bảng user): `ADMIN_USERNAME` + `ADMIN_PASSWORD_HASH` (scrypt, tạo bằng `npm run hash-password`) trong biến môi trường; đổi mật khẩu = sửa `.env` rồi khởi động lại. Đúng → cookie httpOnly `blessed_admin` ký HMAC bằng `SESSION_SECRET` (`lib/session.ts`), hạn 8 giờ. Sai 5 lần trong 15 phút → khoá 15 phút theo IP (`cf-connecting-ip` / `x-forwarded-for`, lưu trong bộ nhớ: đủ cho 1 server). `proxy.ts` chặn mọi `/<lang>/admin/...` khi cookie không hợp lệ → `/<lang>/admin/login?next=…` (riêng request Server Action được cho qua để action tự trả lỗi "unauthorized"); đã đăng nhập mà mở trang đăng nhập → vào `/admin`.
+  - **Server Action** (`admin/actions.ts`): mọi action trừ `login` chạy trong `guarded()` → `requireAdmin()` trước tiên (Server Action có thể bị gọi thẳng), lỗi trả về mã (`unauthorized`, `server`…) để giao diện báo, không làm hỏng trang. `next/root-params` không dùng được trong Server Action: ngôn ngữ gửi kèm form khi cần chuyển trang. Dữ liệu gửi lên luôn kiểm tra lại ở server (`sanitizeDraft`, mã chuyên mục, ảnh). Ghi xong gọi `updateTag(NEWS_TAG)`.
+  - **Khung `(panel)`**: logo + nhãn Quản trị, Bài viết, Chuyên mục, Xem website, đổi ngôn ngữ giao diện, Đăng xuất; nội dung trang trong `<Suspense>` (đọc database lúc có request).
+  - **Bài viết**: bảng danh sách (cả nháp và đã đăng, nhãn trạng thái, điểm SEO; "Xem" chỉ hiện với bài đã đăng) → `PostEditor`: tab 4 ngôn ngữ (chấm xanh = đủ tiêu đề + tóm tắt), tóm tắt, 3 ý "Thông tin nhanh", **nội dung soạn bằng Markdown** (`MarkdownEditor`: H, B, I, danh sách, trích dẫn, link, ảnh từ link, tải ảnh lên máy chủ; tab Xem trước dùng đúng component `Markdown` của trang bài viết); thiết lập chung (chuyên mục, ngày, Tin nổi bật, ảnh bìa: dán link hoặc tải lên); xem trước thẻ bài. Nút: bài mới/nháp = **Lưu nháp** + **Đăng bài**; bài đã đăng = **Chuyển về nháp** + **Cập nhật**; bài đã lưu có **Xoá bài** (xác nhận ngay tại chỗ). Lưu nháp được khi còn thiếu; đăng cần đủ tiêu đề + tóm tắt 4 ngôn ngữ, ngày và ảnh bìa (kiểm tra cả ở server). Bài mới lưu lần đầu → chuyển sang trang sửa `/admin/news/<id>`. Còn thay đổi chưa lưu → nhãn "Có thay đổi chưa lưu" + trình duyệt hỏi lại khi đóng tab.
+  - **Chuyên mục** (`CategoryManager`): bảng tên (4 ngôn ngữ) + mã + số bài; thêm (mã `a-z0-9-` không trùng + tên đủ 4 ngôn ngữ), sửa tên, xoá (xác nhận ngay trên dòng; không cho xoá khi còn bài, kiểm tra cả ở server).
+  - **Ảnh tải lên** (`lib/storage.ts`): JPEG/PNG/WebP/AVIF/GIF ≤ 10MB, loại ảnh nhận theo byte đầu file (không tin loại file trình duyệt khai báo; không nhận SVG). `STORAGE_DRIVER=local` → `UPLOAD_DIR/<năm>/<tháng>/<uuid>.<đuôi>`, xem qua `/media/...`; `r2` → Cloudflare R2, xem qua `R2_PUBLIC_URL` (tên miền này tự thêm vào `images.remotePatterns` lúc build). Mỗi ảnh ghi 1 dòng bảng `media`. Giới hạn body Server Action/proxy 11MB trong `next.config.ts`.
   - **Chấm điểm SEO khi soạn** (`lib/seo.ts` → `analyzeSeo`): chấm lại theo từng phím gõ, riêng cho từng ngôn ngữ. Điểm hiện ở tab ngôn ngữ, ở khung `SeoPanel` (dính bên phải: điểm 0–100, ô **từ khoá chính**, nhóm Cần sửa / Nên cải thiện / Gợi ý thêm / Đạt; bấm vào mục chưa đạt thì nhảy tới ô `seo-field-<field>` cần sửa) và ở cột SEO của danh sách bài. `SerpPreview` (dưới nội dung): ô **tiêu đề SEO** và **mô tả meta** (để trống thì dùng tiêu đề / tóm tắt; bộ đếm độ dài) + khung xem trước kết quả Google máy tính/điện thoại.
     - **Nguồn của từng mục phải trung thực** (`source` trong mỗi `SeoCheck`, hiện thành nhãn trong khung):
       - `"google"` (nhãn "Google ↗", link tới `GOOGLE_DOCS`): có trong tài liệu chính thức Google Search Central. **Chỉ các mục này tính điểm** (`WEIGHTS`): có mô tả meta, tiêu đề/mô tả không dài quá chỗ hiển thị, ≥ 2 tiêu đề mục, ảnh bìa, ảnh trong bài có alt, link nội bộ, không nhồi nhét từ khoá (mật độ > 2,5%). Điểm = điểm đạt / tổng điểm các tiêu chí áp dụng.
@@ -102,11 +126,18 @@ public/flags/           # quốc kỳ vuông vn/gb/kr/cn (flag-icons, MIT) cho L
       - Thêm tiêu chí mới: chỉ gắn `"google"` khi có trang tài liệu Google nói rõ (kiểm tra link còn sống), còn lại là `"convention"`. Không viết "theo Google" cho ngưỡng số: Google không giới hạn độ dài tiêu đề/mô tả (chỉ cắt cho vừa màn hình) và không có số từ hay mật độ từ khoá lý tưởng.
     - Ngưỡng số đều là tham khảo: độ dài theo **độ rộng** (chữ Hàn/Trung tính 2; tiêu đề gồm hậu tố ` | Blessed Hotel` 30–60, mô tả 120–160), số từ (`Intl.Segmenter`, ngưỡng tự ước lượng từng ngôn ngữ trong `WORDS`), mật độ = số lần / tổng số từ như Yoast.
     - Tìm từ khoá không phân biệt hoa/thường nhưng phân biệt dấu tiếng Việt; vi/en khớp nguyên từ, ko chỉ chặn đầu từ (trợ từ dính phía sau), zh không có ranh giới từ.
-    - Từ khoá chính mẫu của bài có sẵn: `news[slug].focusKeyword` trong dictionary. Khi làm thật: lưu `focus_keyword`, `seo_title`, `meta_description` theo từng ngôn ngữ, trang bài viết dùng `seo_title` / `meta_description` (nếu có) cho `<title>` và `<meta description>` (hiện dùng tiêu đề + tóm tắt). Màu tiêu đề Google trong khung xem trước: token `serp-title`, `serp-text` (chỉ dùng ở đây).
+    - `focus_keyword`, `seo_title`, `meta_description` lưu theo từng ngôn ngữ trong `post_translations`; trang bài viết dùng tiêu đề SEO / mô tả meta (nếu có, không thì tiêu đề / tóm tắt) cho `<title>` và `<meta description>`. Màu tiêu đề Google trong khung xem trước: token `serp-title`, `serp-text` (chỉ dùng ở đây).
   - Chữ giao diện trong dictionary `admin` (`nav`, `list`, `login`, `categories`, `editor`, `seo`).
-  - Khi làm thật: tài khoản thật (mật khẩu băm, phiên ký/mã hoá), API + database lưu bài (theo `id`, nội dung Markdown từng ngôn ngữ) và chuyên mục, API tải ảnh; thay `news`/`newsCategories` trong `site.ts` + `news[slug]`/`newsCategories` trong dictionary bằng dữ liệu từ database.
-- **Nội dung bài viết là Markdown**: trang bài viết lấy `post.markdown` (hiện chuyển từ `body` trong dictionary bằng `bodyToMarkdown`), tách khối bằng `parseMarkdown` rồi hiển thị bằng `Markdown`; tiêu đề `##` được đánh số và làm mục lục (neo `section-N`), `###` là tiêu đề nhỏ, ảnh một dòng riêng thành ảnh lớn có chú thích (= mô tả ảnh).
+- **Nội dung bài viết là Markdown**: trang bài viết lấy `post.body` (Markdown trong database), tách khối bằng `parseMarkdown` rồi hiển thị bằng `Markdown`; tiêu đề `##` được đánh số và làm mục lục (neo `section-N`), `###` là tiêu đề nhỏ, ảnh một dòng riêng thành ảnh lớn có chú thích (= mô tả ảnh).
 - **Đặt phòng**: link các kênh nằm ở `bookingChannels` trong `site.ts` (nhãn/ghi chú trong dictionary `booking.channels`). Muốn mở menu đặt phòng từ một nút bất kỳ thì dùng `OpenBookingButton` (gọi `openBooking()` trong `components/booking/events.ts`).
+
+## Dữ liệu tin tức (database)
+
+- Bảng (`src/lib/db/schema.ts`): `categories` (mã chữ, thứ tự) + `category_translations` (tên theo ngôn ngữ); `posts` (id số dùng trên URL, chuyên mục, `status` draft/published, `date`, `featured`, `cover_image`) + `post_translations` (khoá post_id + locale: tiêu đề, tóm tắt, `key_points` jsonb, `body` Markdown, `focus_keyword`, `seo_title`, `meta_description`); `media` (ảnh tải lên). Sửa schema → `npm run db:generate` → commit file trong `drizzle/` → `npm run db:migrate` (trên server chạy `scripts/migrate.mjs` khi khởi động).
+- **Build không truy cập database**: mọi hàm đọc cho trang công khai (`getPublishedPosts`, `getCategories` trong `lib/news.ts`) gọi `await connection()` trước, rồi đọc qua hàm `"use cache"` + `cacheTag(NEWS_TAG)` + `cacheLife("max")`. Kết quả cache trong bộ nhớ server tới khi Server Action gọi `updateTag(NEWS_TAG)`. Hệ quả: (1) component đọc tin tức **phải nằm trong `<Suspense>`** (có khung xương: `NewsGridSkeleton`, `ArticleSkeleton`, khung admin); (2) `generateStaticParams` của `/news/[id]` và `/admin/news/[id]` trả về id mẫu `"1"` (Cache Components bắt buộc ≥ 1 id), mọi bài render khi có người mở. Không đọc database ngoài các hàm này, không đọc database trong `"use cache"` mà thiếu `connection()` ở nơi gọi (nội dung sẽ bị đóng băng theo database lúc build).
+- Trang quản trị đọc qua `admin*` (không cache, có `connection()`).
+- Ảnh bài viết có thể là link bất kỳ → luôn truyền `unoptimized={!post.optimize}` (`canOptimizeImage`) cho `next/image`.
+- Dữ liệu ban đầu ở `db/seed.json` (6 bài, 5 chuyên mục, đủ 4 ngôn ngữ). Bài mới viết trong trang quản trị, không thêm bài vào code.
 
 ## Đa ngôn ngữ (i18n) — QUY TẮC BẮT BUỘC
 
@@ -118,7 +149,7 @@ Ngôn ngữ: `vi` (gốc, mặc định) · `en` · `ko` · `zh` (giản thể, 
 3. Không viết cứng chữ trong component/trang. Server Component: `const { t, locale, href } = await getI18n()`. Client Component: nhận chữ đã dịch qua props từ server parent (không import dictionary vào client).
 4. Link nội bộ luôn qua `href("/duong-dan")` (hoặc dữ liệu từ `lib/content.ts`, đã có tiền tố). Link ngoài, `tel:`, `mailto:` giữ nguyên.
 5. Chuỗi có biến dùng `{tên}` + `fill()`, VD `"{n} khách"` → `fill(t.ui.guests, { n: 2 })`. Không ghép chuỗi theo thứ tự tiếng Việt trong code (trật tự từ mỗi ngôn ngữ khác nhau).
-6. Nội dung theo danh sách (phòng, nhà hàng, bài viết, slide…) đặt khoá theo id/slug trong dictionary (khớp id/slug trong `site.ts`), không dùng mảng theo thứ tự.
+6. Nội dung theo danh sách (phòng, nhà hàng, slide…) đặt khoá theo id/slug trong dictionary (khớp id/slug trong `site.ts`), không dùng mảng theo thứ tự. **Ngoại lệ: bài viết và tên chuyên mục tin tức nằm trong database** (bản dịch theo `locale` trong `post_translations` / `category_translations`), người quản trị nhập đủ 4 ngôn ngữ trong trang quản trị.
 7. Số/giá/ngày định dạng bằng `formatPrice` / `formatDate` / `localeMeta[locale].intl` — không viết cứng `"vi-VN"`.
 8. Trang mới: đặt dưới `src/app/[lang]/`, export `generateMetadata` dùng `pageMetadata({ locale, path, title, description })` (tự thêm canonical + hreflang 4 ngôn ngữ).
 9. Thêm ngôn ngữ mới: thêm mã vào `locales` + `localeMeta` (`i18n/config.ts`, kèm `flag` và file `public/flags/<mã>.svg` lấy từ flag-icons `flags/1x1/`), tạo `dictionaries/<mã>.ts` kiểu `Dictionary`, khai báo trong `i18n/server.ts`, thêm vào `global-not-found.tsx` và regex redirect `/:lang(vi|en|ko|zh)/…` trong `next.config.ts`.
@@ -194,7 +225,8 @@ Quy ước kỹ thuật:
 
 - Mặc định **Server Component**; chỉ thêm `"use client"` khi cần state/event (`Header`, `LanguageSwitcher`, `HeroSlideshow`, `RoomTypes`, `RoomCard`, `Carousel`, `RoomGallery`, `RoomDetails`, `PhotoScroller`, `MenuViewer`, `PostEditor`, `SeoPanel`, `SerpPreview`, `CountUp`, `BookingFab`, `OpenBookingButton`). Client component nhận chữ đã dịch qua props.
 - Với `cacheComponents`, không gọi `new Date()`/`Math.random()`/API runtime trong Server Component lúc render — tính ở client (`useEffect`) hoặc bọc `<Suspense>`.
-- Chữ hiển thị lấy từ dictionary (xem mục i18n); dữ liệu không phụ thuộc ngôn ngữ lấy từ `src/lib/site.ts`, ghép qua `src/lib/content.ts`. Không hard-code nội dung trong component.
+- Chữ hiển thị lấy từ dictionary (xem mục i18n); dữ liệu không phụ thuộc ngôn ngữ lấy từ `src/lib/site.ts`, ghép qua `src/lib/content.ts`; tin tức từ database qua `lib/news.ts` (xem "Dữ liệu tin tức"). Không hard-code nội dung trong component.
+- Biến môi trường: mẫu đầy đủ trong `.env.example` (thêm biến mới thì thêm vào đó). Không commit `.env*`, không in giá trị bí mật ra log.
 - Mỗi trang export `generateMetadata` dùng `pageMetadata()` (`title` ngắn; layout gắn hậu tố `| Blessed Hotel`). `NEXT_PUBLIC_SITE_URL` = domain thật cho canonical/hreflang/OG (mặc định `http://localhost:3000`).
 - Link ra ngoài (OTA, Zalo) mở tab mới với `rel="noopener noreferrer"`.
 - Ảnh dùng `next/image` (`fill` + `sizes`). Host ảnh ngoài phải khai báo trong `images.remotePatterns` ở `next.config.ts` (hiện có `images.unsplash.com` — ảnh tạm, sẽ thay bằng ảnh thật trong `public/`).
@@ -202,13 +234,18 @@ Quy ước kỹ thuật:
 
 ## Dữ liệu còn là placeholder
 
-- Hotline `1900 0000`, số Zalo `0900000000` (hằng `HOTLINE`, `ZALO_PHONE` đầu `site.ts`), email, giá phòng, số phòng và các chi tiết dịch vụ/ẩm thực/tin tức (ở cả 4 bản dịch).
-- Số điện thoại, giờ mở cửa, ảnh thực đơn (`public/menus/*.svg`) của Blessed Bistro, Olea Café, Blessed Spa; `reserveUrl` (link đặt bàn/đặt chỗ) chưa có.
+- Hotline `1900 0000`, số Zalo `0900000000` (hằng `HOTLINE`, `ZALO_PHONE` đầu `site.ts`), email, giá phòng, số phòng và các chi tiết dịch vụ/ẩm thực (ở cả 4 bản dịch). 6 bài tin tức mẫu trong `db/seed.json` (sửa/xoá trong trang quản trị).
+- Số điện thoại, giờ mở cửa, ảnh thực đơn (`drizzle/                # migration SQL do `npm run db:generate` tạo (commit cùng thay đổi schema); scripts/migrate.mjs áp dụng
+scripts/                # migrate.mjs, seed.mjs, hash-password.mjs (chạy bằng Node, không qua Next)
+db/seed.json            # dữ liệu ban đầu: 5 chuyên mục + 6 bài đủ 4 ngôn ngữ (chỉ dùng cho database trống)
+docker-compose.yml      # PostgreSQL cho máy dev (cổng 127.0.0.1:5432)
+public/menus/*.svg`) của Blessed Bistro, Olea Café, Blessed Spa; `reserveUrl` (link đặt bàn/đặt chỗ) chưa có.
 - Đã là dữ liệu thật: địa chỉ (`meta.address` trong dictionary, lấy từ Google Maps), bản đồ footer (`site.mapEmbed(lang)`: nhúng theo tên "Blessed Hotel Phú Quốc", không cần API key; nhúng theo cid không hoạt động), link Traveloka/Agoda/Klook (hiện là link bản tiếng Việt cho mọi ngôn ngữ).
 - Logo chữ trong `Logo.tsx`; ảnh Unsplash trong `site.ts`.
 
 ## Việc tiếp theo
 
+- Triển khai lên VPS: Dockerfile + docker-compose bản server (web + PostgreSQL + Caddy), GitHub Actions build image rồi deploy, backup database + thư mục ảnh lên R2. Trên server: `STORAGE_DRIVER=r2` (hoặc gắn `UPLOAD_DIR` ra volume), mật khẩu admin mạnh, `SESSION_SECRET` mới, `NEXT_PUBLIC_SITE_URL` = domain thật.
 - Thay thông tin liên hệ, logo và ảnh thật.
 - SEO: sitemap.xml (4 ngôn ngữ), ảnh Open Graph; đặt `NEXT_PUBLIC_SITE_URL` khi có domain.
 - Link OTA theo ngôn ngữ (Agoda/Klook/Traveloka có bản en/ko/zh).

@@ -4,8 +4,9 @@
  */
 import { fill } from "@/i18n/config";
 import type { I18n } from "@/i18n/server";
-import { bodyToMarkdown } from "@/lib/markdown";
-import { bookingChannels, dining, experiences, explore, hero, highlights, nav, news, newsCategories, rooms, site, type Venue } from "@/lib/site";
+import { canOptimizeImage } from "@/lib/images";
+import { getCategories, getPublishedPosts } from "@/lib/news";
+import { bookingChannels, dining, experiences, explore, hero, highlights, nav, pageImages, rooms, site, type Venue } from "@/lib/site";
 
 export const getNav = ({ t, href }: I18n) => nav.map((item) => ({ label: t.nav[item.id], href: href(item.href) }));
 
@@ -60,24 +61,25 @@ export const getExperiences = (i18n: I18n) => experiences.map((e) => localizeVen
 
 export type LocalizedVenue = ReturnType<typeof localizeVenue>;
 
-export const getNews = ({ t, href }: I18n) =>
-  news.map((n) => ({
-    ...n,
-    ...t.news[n.slug],
-    /** Nội dung bài dạng Markdown (trang bài viết hiển thị bằng `Markdown`) */
-    markdown: bodyToMarkdown(t.news[n.slug].body),
-    categoryLabel: t.newsCategories[n.category],
-    href: href(`/news/${n.id}`),
-  }));
+/**
+ * Bài viết đã đăng (từ database, xem lib/news.ts) ở ngôn ngữ hiện tại, mới nhất trước, kèm href /<lang>/news/<id>.
+ * Đọc lúc có request: component gọi hàm này phải nằm trong `<Suspense>`.
+ */
+export async function getNews({ locale, href }: I18n) {
+  const list = await getPublishedPosts(locale);
+  // optimize = false: ảnh từ nguồn lạ, hiển thị bằng next/image `unoptimized`
+  return list.map((p) => ({ ...p, href: href(`/news/${p.id}`), optimize: canOptimizeImage(p.image) }));
+}
 
-export type LocalizedNewsPost = ReturnType<typeof getNews>[number];
+export type LocalizedNewsPost = Awaited<ReturnType<typeof getNews>>[number];
 
-/** Chuyên mục tin tức kèm nhãn và ảnh đại diện (ảnh bài mới nhất của chuyên mục) */
-export const getNewsCategories = ({ t }: I18n) =>
-  newsCategories.map((id) => ({
-    id,
-    label: t.newsCategories[id],
-    image: news.find((n) => n.category === id)?.image ?? news[0].image,
-  }));
+/** Chuyên mục tin tức kèm nhãn và ảnh đại diện (ảnh bài mới nhất của chuyên mục; chưa có bài thì dùng ảnh banner trang tin) */
+export async function getNewsCategories({ locale }: I18n) {
+  const list = await getCategories(locale);
+  return list.map((c) => {
+    const image = c.image || pageImages.news;
+    return { ...c, image, optimize: canOptimizeImage(image) };
+  });
+}
 
-export type LocalizedNewsCategory = ReturnType<typeof getNewsCategories>[number];
+export type LocalizedNewsCategory = Awaited<ReturnType<typeof getNewsCategories>>[number];

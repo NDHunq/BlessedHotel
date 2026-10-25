@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { defaultLocale, hasLocale, LOCALE_COOKIE, type Locale } from "@/i18n/config";
-import { ADMIN_COOKIE, ADMIN_LOGIN_PATH, ADMIN_SESSION } from "@/lib/admin-auth";
+import { ADMIN_COOKIE, ADMIN_LOGIN_PATH, verifySessionToken } from "@/lib/session";
 
 /** Ngôn ngữ cho người dùng: cookie đã chọn → ngôn ngữ trình duyệt (Accept-Language) → tiếng Việt */
 function detectLocale(request: NextRequest): Locale {
@@ -20,17 +20,20 @@ function detectLocale(request: NextRequest): Locale {
 
 /**
  * Khu quản trị /<lang>/admin/...: chưa đăng nhập → trang đăng nhập (kèm ?next= để quay lại);
- * đã đăng nhập mà mở trang đăng nhập → vào thẳng trang quản trị. (Đăng nhập giả lập, xem lib/admin-auth.ts)
+ * đã đăng nhập mà mở trang đăng nhập → vào thẳng trang quản trị. Cookie phiên có chữ ký, xem lib/session.ts
  */
 function guardAdmin(request: NextRequest, locale: string) {
   const { pathname } = request.nextUrl;
   const loginPath = `/${locale}${ADMIN_LOGIN_PATH}`;
-  const loggedIn = request.cookies.get(ADMIN_COOKIE)?.value === ADMIN_SESSION;
+  const loggedIn = verifySessionToken(request.cookies.get(ADMIN_COOKIE)?.value) !== null;
 
   if (pathname === loginPath) {
     return loggedIn ? NextResponse.redirect(new URL(`/${locale}/admin`, request.url)) : undefined;
   }
   if (loggedIn) return;
+  // Server Action tự kiểm tra đăng nhập (requireAdmin) và trả về lỗi "unauthorized" để trình soạn báo "phiên hết hạn"
+  // mà không mất nội dung đang soạn; chuyển hướng ở đây sẽ làm action hỏng không rõ lý do.
+  if (request.method === "POST" && request.headers.has("next-action")) return;
   const url = new URL(loginPath, request.url);
   url.searchParams.set("next", pathname);
   return NextResponse.redirect(url);

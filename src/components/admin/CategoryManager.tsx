@@ -1,13 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { deleteCategory, saveCategory, type CategoryResult } from "@/app/[lang]/admin/actions";
 import { fill, localeMeta, locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/vi";
 
 type Labels = Dictionary["admin"]["categories"];
 type Names = Record<Locale, string>;
-export type AdminCategory = { id: string; names: Names; posts: number };
+type AdminCategory = { id: string; names: Names; posts: number };
 type Message = { tone: "ok" | "error"; text: string };
 
 const field =
@@ -32,8 +33,8 @@ function NameFields({ names, onChange }: { names: Names; onChange: (names: Names
 }
 
 /**
- * Quản lý chuyên mục tin tức (bản demo, chỉ đổi trên trình duyệt): thêm (mã + tên 4 ngôn ngữ), sửa tên, xoá.
- * Không cho xoá chuyên mục còn bài viết.
+ * Quản lý chuyên mục tin tức: thêm (mã + tên 4 ngôn ngữ), sửa tên, xoá; lưu qua Server Action vào database.
+ * Không cho xoá chuyên mục còn bài viết (kiểm tra cả ở client và server).
  */
 export default function CategoryManager({ initial, uiLocale, labels }: { initial: AdminCategory[]; uiLocale: Locale; labels: Labels }) {
   const [items, setItems] = useState(initial);
@@ -43,6 +44,23 @@ export default function CategoryManager({ initial, uiLocale, labels }: { initial
   const [editing, setEditing] = useState<{ id: string; names: Names } | null>(null);
   const [confirming, setConfirming] = useState<string | null>(null);
   const [message, setMessage] = useState<Message | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  /** Thông báo lỗi từ Server Action */
+  const failure = (result: Exclude<CategoryResult, { ok: true }>, name = "") =>
+    setMessage({
+      tone: "error",
+      text:
+        result.error === "invalidId"
+          ? labels.invalidId
+          : result.error === "missingNames"
+            ? labels.missingNames
+            : result.error === "inUse"
+              ? fill(labels.inUse, { name, n: result.posts ?? 0 })
+              : result.error === "unauthorized"
+                ? labels.sessionExpired
+                : labels.serverError,
+    });
 
   const complete = (names: Names) => locales.every((l) => names[l].trim() !== "");
   const nameOf = (c: AdminCategory) => c.names[uiLocale] || c.id;
@@ -51,19 +69,27 @@ export default function CategoryManager({ initial, uiLocale, labels }: { initial
     const id = newId.trim();
     if (!ID_PATTERN.test(id) || items.some((c) => c.id === id)) return setMessage({ tone: "error", text: labels.invalidId });
     if (!complete(newNames)) return setMessage({ tone: "error", text: labels.missingNames });
-    setItems([...items, { id, names: newNames, posts: 0 }]);
-    setAdding(false);
-    setNewId("");
-    setNewNames(emptyNames());
-    setMessage({ tone: "ok", text: labels.added });
+    startTransition(async () => {
+      const result = await saveCategory(id, newNames, true);
+      if (!result.ok) return failure(result);
+      setItems([...items, { id, names: newNames, posts: 0 }]);
+      setAdding(false);
+      setNewId("");
+      setNewNames(emptyNames());
+      setMessage({ tone: "ok", text: labels.added });
+    });
   };
 
   const save = () => {
     if (!editing) return;
     if (!complete(editing.names)) return setMessage({ tone: "error", text: labels.missingNames });
-    setItems(items.map((c) => (c.id === editing.id ? { ...c, names: editing.names } : c)));
-    setEditing(null);
-    setMessage({ tone: "ok", text: labels.updated });
+    startTransition(async () => {
+      const result = await saveCategory(editing.id, editing.names, false);
+      if (!result.ok) return failure(result);
+      setItems(items.map((c) => (c.id === editing.id ? { ...c, names: editing.names } : c)));
+      setEditing(null);
+      setMessage({ tone: "ok", text: labels.updated });
+    });
   };
 
   const askDelete = (c: AdminCategory) => {
@@ -72,10 +98,14 @@ export default function CategoryManager({ initial, uiLocale, labels }: { initial
     setMessage(null);
   };
 
-  const remove = (id: string) => {
-    setItems(items.filter((c) => c.id !== id));
-    setConfirming(null);
-    setMessage({ tone: "ok", text: labels.deleted });
+  const remove = (c: AdminCategory) => {
+    startTransition(async () => {
+      const result = await deleteCategory(c.id);
+      setConfirming(null);
+      if (!result.ok) return failure(result, nameOf(c));
+      setItems(items.filter((x) => x.id !== c.id));
+      setMessage({ tone: "ok", text: labels.deleted });
+    });
   };
 
   const btn = "h-9 rounded-full px-4 text-sm font-medium";
@@ -121,7 +151,7 @@ export default function CategoryManager({ initial, uiLocale, labels }: { initial
             <NameFields names={newNames} onChange={setNewNames} />
           </div>
           <div className="mt-5 flex gap-2">
-            <button type="button" onClick={add} className={`${btn} bg-brand-600 text-white hover:bg-brand-700`}>
+            <button type="button" onClick={add} disabled={pending} className={`${btn} bg-brand-600 text-white hover:bg-brand-700 disabled:opacity-60`}>
               {labels.save}
             </button>
             <button type="button" onClick={() => setAdding(false)} className={`${btn} text-ink ring-1 ring-line hover:bg-surface`}>
@@ -149,7 +179,7 @@ export default function CategoryManager({ initial, uiLocale, labels }: { initial
                     <p className="mb-3 font-mono text-xs text-muted">{c.id}</p>
                     <NameFields names={editing.names} onChange={(names) => setEditing({ id: c.id, names })} />
                     <div className="mt-4 flex gap-2">
-                      <button type="button" onClick={save} className={`${btn} bg-brand-600 text-white hover:bg-brand-700`}>
+                      <button type="button" onClick={save} disabled={pending} className={`${btn} bg-brand-600 text-white hover:bg-brand-700 disabled:opacity-60`}>
                         {labels.save}
                       </button>
                       <button type="button" onClick={() => setEditing(null)} className={`${btn} text-ink ring-1 ring-line hover:bg-white`}>
@@ -175,7 +205,7 @@ export default function CategoryManager({ initial, uiLocale, labels }: { initial
                     {confirming === c.id ? (
                       <span className="inline-flex items-center gap-2">
                         <span className="text-ink">{fill(labels.confirmDelete, { name: nameOf(c) })}</span>
-                        <button type="button" onClick={() => remove(c.id)} className={`${btn} bg-red-600 text-white hover:bg-red-700`}>
+                        <button type="button" onClick={() => remove(c)} disabled={pending} className={`${btn} bg-red-600 text-white hover:bg-red-700 disabled:opacity-60`}>
                           {labels.confirm}
                         </button>
                         <button type="button" onClick={() => setConfirming(null)} className={`${btn} text-ink ring-1 ring-line hover:bg-surface`}>

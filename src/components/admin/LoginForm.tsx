@@ -2,19 +2,19 @@
 
 import { useActionState, useState } from "react";
 import { login, type LoginState } from "@/app/[lang]/admin/actions";
-import type { Locale } from "@/i18n/config";
+import { fill, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/vi";
 
 const field =
   "w-full rounded-xl bg-white px-4 py-3 text-[15px] text-ink outline-none ring-1 ring-line placeholder:text-muted focus:ring-2 focus:ring-brand-500";
 
-/** Form đăng nhập quản trị (giả lập): gửi tới Server Action `login`, sai thì báo lỗi ngay dưới form */
+/** Form đăng nhập quản trị: gửi tới Server Action `login`; sai mật khẩu hoặc bị khoá tạm thì báo ngay dưới form */
 export default function LoginForm({ locale, labels }: { locale: Locale; labels: Dictionary["admin"]["login"] }) {
   // Trang đích sau khi đăng nhập (?next= do proxy gắn) đọc lúc gửi form để trang đăng nhập vẫn là trang tĩnh
   const [state, action, pending] = useActionState(async (prev: LoginState, formData: FormData) => {
     formData.set("next", new URLSearchParams(window.location.search).get("next") ?? "");
     return login(prev, formData);
-  }, { error: false });
+  }, { error: null });
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -50,7 +50,11 @@ export default function LoginForm({ locale, labels }: { locale: Locale; labels: 
       </label>
 
       <div role="alert" aria-live="polite">
-        {state.error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-100">{labels.error}</p>}
+        {state.error && (
+          <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-100">
+            {state.error === "locked" ? fill(labels.locked, { n: state.minutes ?? 15 }) : labels.error}
+          </p>
+        )}
       </div>
 
       <button

@@ -1,31 +1,31 @@
 import { notFound } from "next/navigation";
 import PostEditor from "@/components/admin/PostEditor";
 import { getI18n } from "@/i18n/server";
-import { getKeywordIndex, getPostDraft } from "@/lib/admin";
-import { news, newsCategories } from "@/lib/site";
+import { adminGetPost, adminKeywordIndex, adminListCategories } from "@/lib/news";
 
-// Cache Components: tạo sẵn trang sửa cho mọi bài; id lạ → notFound()
+// Bài nằm trong database nên không tạo sẵn lúc build; Cache Components cần ít nhất 1 id để kiểm tra route
 export function generateStaticParams() {
-  return news.map((post) => ({ id: String(post.id) }));
+  return [{ id: "1" }];
 }
 
-/** Sửa bài có sẵn: nạp nội dung đủ 4 ngôn ngữ vào trình soạn (bản demo, chưa lưu) */
+/** Sửa bài: nạp bài (đủ 4 ngôn ngữ) từ database vào trình soạn */
 export default async function AdminEditPostPage({ params }: PageProps<"/[lang]/admin/news/[id]">) {
   const { id } = await params;
   const { t, locale, href } = await getI18n();
-  const draft = await getPostDraft(Number(id));
-  if (!draft) notFound();
-  const keywordIndex = await getKeywordIndex(Number(id));
+  const post = await adminGetPost(Number(id));
+  if (!post) notFound();
+  const [categories, keywordIndex] = await Promise.all([adminListCategories(), adminKeywordIndex(post.id)]);
+  const { id: postId, ...draft } = post;
 
   return (
     <PostEditor
       // key: chuyển sang bài khác thì làm mới trạng thái trình soạn
-      key={id}
+      key={postId}
       initial={draft}
-      postId={Number(id)}
-      uiLocale={locale}
-      categories={newsCategories.map((c) => ({ id: c, label: t.newsCategories[c] }))}
-      backHref={href("/admin")}
+      postId={postId}
+      locale={locale}
+      categories={categories.map((c) => ({ id: c.id, label: c.names[locale] || c.id }))}
+      listHref={href("/admin")}
       keywordIndex={keywordIndex}
       labels={t.admin.editor}
       seoLabels={t.admin.seo}

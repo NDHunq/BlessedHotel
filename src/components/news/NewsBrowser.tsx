@@ -4,15 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import SideTitle from "@/components/news/SideTitle";
-import type { NewsCategory } from "@/lib/site";
 
 export type BrowserPost = {
-  slug: string;
+  id: number;
   href: string;
   image: string;
+  /** false: ảnh từ nguồn lạ, hiển thị không tối ưu (xem lib/images.ts) */
+  optimize: boolean;
   title: string;
   excerpt: string;
-  category: NewsCategory;
+  category: string;
   categoryLabel: string;
   date: string;
   /** Ngày đã định dạng theo ngôn ngữ (tính ở server) */
@@ -41,14 +42,14 @@ export default function NewsBrowser({
   sidebar,
 }: {
   posts: BrowserPost[];
-  categories: { id: NewsCategory; label: string; image: string }[];
+  categories: { id: string; label: string; image: string; optimize: boolean }[];
   /** Ảnh cho ô "Tất cả" (khác ảnh các chuyên mục) */
   allImage: string;
   labels: BrowserLabels;
   featured: React.ReactNode;
   sidebar: React.ReactNode;
 }) {
-  const [category, setCategory] = useState<NewsCategory | null>(null);
+  const [category, setCategory] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -61,12 +62,15 @@ export default function NewsBrowser({
     );
   }, [posts, category, query]);
 
-  const pick = (id: NewsCategory | null) => {
+  const pick = (id: string | null) => {
     setCategory(id);
     listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const tiles = [{ id: null, label: labels.all, image: allImage }, ...categories];
+  const tiles: { id: string | null; label: string; image: string; optimize: boolean }[] = [
+    { id: null, label: labels.all, image: allImage, optimize: true },
+    ...categories,
+  ];
 
   return (
     <>
@@ -86,7 +90,7 @@ export default function NewsBrowser({
                   }`}
                 >
                   {c.image && (
-                    <Image src={c.image} alt="" fill sizes="(min-width: 768px) 16vw, 128px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <Image src={c.image} alt="" fill unoptimized={!c.optimize} sizes="(min-width: 768px) 16vw, 128px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
                   )}
                   <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                   <span className="absolute inset-x-0 bottom-0 p-3 text-center text-sm font-semibold text-white">{c.label}</span>
@@ -111,10 +115,10 @@ export default function NewsBrowser({
           ) : (
             <ul className="mt-6 grid gap-x-6 gap-y-10 sm:grid-cols-2">
               {visible.map((p) => (
-                <li key={p.slug}>
+                <li key={p.id}>
                   <Link href={p.href} className="group block">
                     <div className="relative aspect-[16/10] overflow-hidden rounded-xl">
-                      <Image src={p.image} alt="" fill sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+                      <Image src={p.image} alt="" fill unoptimized={!p.optimize} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                     </div>
                     <h3 className="mt-4 line-clamp-2 text-lg leading-snug font-semibold text-ink transition-colors group-hover:text-brand-600">{p.title}</h3>
                     <p className="mt-2 flex items-center gap-2 text-sm text-muted">

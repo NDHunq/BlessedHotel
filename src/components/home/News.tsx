@@ -1,12 +1,18 @@
+import { Suspense } from "react";
 import ArrowLink from "@/components/ui/ArrowLink";
 import Container from "@/components/ui/Container";
-import NewsGrid from "@/components/ui/NewsGrid";
+import NewsGrid, { NewsGridSkeleton } from "@/components/ui/NewsGrid";
 import { getI18n } from "@/i18n/server";
 import { getNews } from "@/lib/content";
 
+/** 3 bài mới nhất (đọc từ database lúc có request, nên nằm trong Suspense) */
+async function LatestNews() {
+  const posts = await getNews(await getI18n());
+  return <NewsGrid posts={posts.slice(0, 3)} className="mt-10" />;
+}
+
 export default async function News() {
-  const i18n = await getI18n();
-  const { t, href } = i18n;
+  const { t, href } = await getI18n();
 
   return (
     <section className="pb-20 md:pb-28">
@@ -17,7 +23,9 @@ export default async function News() {
             {t.ui.viewAll}
           </ArrowLink>
         </div>
-        <NewsGrid posts={getNews(i18n).slice(0, 3)} className="mt-10" />
+        <Suspense fallback={<NewsGridSkeleton className="mt-10" />}>
+          <LatestNews />
+        </Suspense>
       </Container>
     </section>
   );

@@ -335,7 +335,6 @@ export const zh: Dictionary = {
   admin: {
     metaTitle: "管理后台",
     badge: "管理后台",
-    demoNotice: "演示版本：尚未连接服务器，所有更改都不会被保存。",
     nav: {
       posts: "文章",
       newPost: "撰写新文章",
@@ -356,6 +355,8 @@ export const zh: Dictionary = {
       edit: "编辑",
       view: "查看",
       seo: "SEO",
+      draft: "草稿",
+      empty: "还没有文章。点击“写新文章”开始。",
     },
     login: {
       metaTitle: "登录",
@@ -369,6 +370,7 @@ export const zh: Dictionary = {
       submitting: "正在登录…",
       error: "用户名或密码不正确。",
       backToSite: "返回网站",
+      locked: "登录失败次数过多，请 {n} 分钟后再试。",
     },
     categories: {
       title: "分类",
@@ -390,9 +392,11 @@ export const zh: Dictionary = {
       inUse: "“{name}”分类下还有 {n} 篇文章。请先将文章移至其他分类后再删除。",
       missingNames: "请填写全部 4 种语言的分类名称。",
       invalidId: "代码只能包含小写字母 a-z、数字和连字符，且不能与已有代码重复。",
-      added: "分类已添加（演示版本，未保存到服务器）。",
-      updated: "分类已更新（演示版本，未保存到服务器）。",
-      deleted: "分类已删除（演示版本，未保存到服务器）。",
+      added: "已添加栏目。",
+      updated: "已更新栏目。",
+      deleted: "已删除栏目。",
+      sessionExpired: "登录已过期，请重新登录。",
+      serverError: "服务器出错，请稍后再试。",
     },
     editor: {
       newTitle: "撰写新文章",
@@ -440,11 +444,27 @@ export const zh: Dictionary = {
       saveDraft: "保存草稿",
       publish: "发布",
       update: "更新",
-      draftSaved: "草稿已保存（演示版本，未保存到服务器）。",
-      published: "文章内容完整，可以发布。这是演示版本，因此不会实际保存。",
+      draftSaved: "草稿已保存。草稿不会显示在网站上。",
+      published: "已保存并发布，文章已显示在网站上。",
       missingLanguages: "以下语言缺少标题或摘要：{langs}。",
-      missingSettings: "请选择发布日期和封面图片。",
+      missingSettings: "发布文章需要设置发布日期和封面图片。",
       listSeparator: "、",
+      unpublished: "已转为草稿，文章不再显示在网站上。",
+      unpublish: "转为草稿",
+      saving: "正在保存…",
+      statusDraft: "草稿",
+      statusPublished: "已发布",
+      unsaved: "有未保存的更改",
+      delete: "删除文章",
+      confirmDelete: "确定永久删除这篇文章？",
+      cancel: "取消",
+      uploading: "正在上传图片…",
+      uploadType: "仅支持 JPG、PNG、WebP、AVIF 或 GIF 图片。",
+      uploadSize: "图片过大，最大 10MB。",
+      sessionExpired: "登录已过期，请重新登录（正在编辑的内容仍保留在本页）。",
+      serverError: "服务器出错，请稍后再试。",
+      invalid: "数据无效：请检查栏目、发布日期和封面图片链接（须以 https:// 或 / 开头）。",
+      notFound: "这篇文章已不存在。",
     },
     /** Khung chấm điểm SEO trong trình soạn bài (lib/seo.ts) */
     seo: {
@@ -531,15 +551,6 @@ export const zh: Dictionary = {
     ctaBody: "致电或通过 Zalo 联系我们获取最优价格。",
   },
 
-  /** Nhãn chuyên mục tin tức, khoá theo id trong site.ts `newsCategories` */
-  newsCategories: {
-    offer: "优惠",
-    dining: "餐饮",
-    event: "活动",
-    guide: "旅行攻略",
-    wellness: "养生",
-  },
-
   article: {
     tableOfContents: "目录",
     keyPoints: "要点速览",
@@ -551,120 +562,5 @@ export const zh: Dictionary = {
     moreArticles: "更多文章",
     ctaTitle: "想要预订或咨询？",
     ctaBody: "致电、通过 Zalo 联系我们，或在合作平台上快速预订。",
-  },
-
-  news: {
-    "spa-mua-thu": {
-      title: "秋季水疗套餐：特惠价格，全身放松",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "富国岛水疗",
-      excerpt: "享受 90 分钟疗程与草本茶，活动截至 11 月底。",
-      keyPoints: ["90 分钟疗程：足浴、60 分钟按摩、面膜", "附赠姜蜜茶和时令水果", "每天 10:00 – 20:00，截至 11 月底"],
-      body: [
-        { paragraphs: ["富国岛的秋天阳光柔和、海面平静。Blessed Spa 也在此时为住客和访客推出 90 分钟放松套餐。"] },
-        {
-          heading: "套餐内容",
-          paragraphs: ["疗程以草本足浴开始，随后是 60 分钟香茅精油全身按摩，最后以保湿面膜收尾。", "疗程结束后，您可在休息室享用姜蜜茶和一盘时令水果。"],
-        },
-        {
-          heading: "活动时间",
-          paragraphs: ["活动每天 10:00 至 20:00 进行，截至 11 月底。请提前通过前台或 Zalo 预约，以便选择心仪时段。"],
-        },
-      ],
-    },
-    "brunch-cuoi-tuan": {
-      title: "Blessed Bistro 推出周日早午餐",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "富国岛早午餐",
-      excerpt: "60 多道亚洲与西式菜肴、儿童游乐区，每周日还有现场音乐。",
-      keyPoints: ["每周日 11:00 – 14:30，Blessed Bistro 餐厅", "60 多道菜品及富国岛新鲜海鲜台", "6 岁以下儿童免费"],
-      body: [
-        { paragraphs: ["从本周日起，Blessed Bistro 推出周日早午餐，提供 60 多道亚洲与西式菜肴，供应时间为 11:00 至 14:30。"] },
-        {
-          heading: "菜单",
-          paragraphs: [
-            "新鲜海鲜台提供富国岛生蚝、虾和螃蟹。旁边还有烧烤台、现做面食、甜点和越南滴漏咖啡吧。",
-            "主厨每周还会根据时令食材加推两道特色菜。",
-          ],
-        },
-        {
-          heading: "适合全家",
-          paragraphs: ["设有专人看护的儿童游乐区，全程伴有轻柔的原声音乐。6 岁以下儿童在成人陪同下免费用餐。"],
-        },
-      ],
-    },
-    "hoang-hon-ho-boi": {
-      title: "月末日落泳池派对",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "富国岛泳池派对",
-      excerpt: "每月最后一个周六晚上，在无边泳池畔享受 DJ、鸡尾酒和烧烤。",
-      keyPoints: ["每月最后一个周六晚上", "17:00 鸡尾酒，18:30 烧烤，DJ 至 22:00", "住客免费入场"],
-      body: [
-        { paragraphs: ["每月最后一个周六晚上，Blessed Hotel 的无边泳池将化身观赏日落的好去处，伴有 DJ、鸡尾酒和户外烧烤。"] },
-        {
-          heading: "活动安排",
-          paragraphs: [
-            "17:00 起，池畔酒吧供应 Olea Café 招牌鸡尾酒。烧烤于 18:30 开始，提供海鲜和炭烤肉类。",
-            "DJ 演出持续至 22:00。住客免费入场，外部访客请提前预订。",
-          ],
-        },
-      ],
-    },
-    "kinh-nghiem-du-lich-phu-quoc": {
-      title: "富国岛四天三晚旅行攻略",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "富国岛旅游攻略",
-      excerpt: "推荐行程、必尝美食以及岛上最美的日落观赏点。",
-      keyPoints: ["第 1–2 天：日落小镇、夜市、四岛游", "第 3–4 天：北岛、胡椒园、购买伴手礼", "提前一天告知，礼宾部可代订车辆、游览和餐厅"],
-      body: [
-        { paragraphs: ["四天时间刚好可以不慌不忙地休息并游览富国岛。以下是我们礼宾团队常为首次来岛的客人推荐的行程。"] },
-        {
-          heading: "第 1–2 天：南岛",
-          paragraphs: [
-            "第一天办理入住后，步行到日落小镇海滩观赏日落。晚上去夜市品尝烤海鲜。",
-            "第二天乘快艇参加四岛游，浮潜看珊瑚并在岛上享用午餐。下午回酒店泳池休息。",
-          ],
-        },
-        {
-          heading: "第 3–4 天：北岛与购物",
-          paragraphs: [
-            "第三天前往岛北部游泳，并参观胡椒园。最后一天在前往机场前，买些鱼露、胡椒和珍珠作为伴手礼。",
-            "礼宾部可为您预订车辆、游览项目和餐厅，只需提前一天告诉我们。",
-          ],
-        },
-      ],
-    },
-    "uu-dai-luu-tru-dai-ngay": {
-      title: "住得越久，优惠越多",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "长住优惠",
-      excerpt: "直接向酒店预订，入住 5 晚及以上最高可享 25% 折扣。",
-      keyPoints: ["入住 5 晚享 85 折，7 晚享 75 折", "含每日早餐和洗衣服务", "仅限通过热线或 Zalo 直接预订"],
-      body: [
-        { paragraphs: ["如果您计划在富国岛入住 5 晚或以上，请直接向酒店预订以获得更优惠的价格。"] },
-        {
-          heading: "优惠内容",
-          paragraphs: ["入住 5 晚享 85 折，入住 7 晚享 75 折。优惠包含每日早餐及每天两套衣物洗烫服务。", "长住客人还可视房态享受提前入住和延迟退房。"],
-        },
-        {
-          heading: "预订方式",
-          paragraphs: ["请致电热线或通过 Zalo 告知入住日期、离店日期和人数。通过在线旅行平台预订不适用此优惠。"],
-        },
-      ],
-    },
-    "yoga-san-thuong": {
-      title: "屋顶日出瑜伽",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "富国岛瑜伽",
-      excerpt: "每天早上 6:00 为住客提供免费瑜伽课，迎接海岛清晨的阳光。",
-      keyPoints: ["每天早上 6:00，酒店屋顶", "45 分钟课程，适合初学者", "住客免费，提供瑜伽垫和饮用水"],
-      body: [
-        { paragraphs: ["每天早上 6:00，Blessed Hotel 屋顶都会开设一节 45 分钟的舒缓瑜伽课，住客可免费参加。"] },
-        {
-          heading: "课程介绍",
-          paragraphs: ["课程适合初学者，注重呼吸与拉伸。现场提供瑜伽垫、毛巾和饮用水。", "课后您可以到 Blessed Bistro 享用早餐，或趁阳光还柔和时去泳池。"],
-        },
-      ],
-    },
   },
 };

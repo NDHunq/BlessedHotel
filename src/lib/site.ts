@@ -83,7 +83,7 @@ export const explore = [
   { id: "dining", href: "/dining#blessed-bistro", image: unsplash("photo-1414235077428-338989a2e8c0", 1000) },
   { id: "spa", href: "/experiences#spa", image: unsplash("photo-1540555700478-4be289fbecef", 1000) },
   { id: "story", href: "/about", image: unsplash("photo-1520250497591-112f2f40a3f4", 1000) },
-  // Bài "Sunday Brunch" (id 5 trong `news`)
+  // Bài "Sunday Brunch" (bài id 5 trong database; đổi link nếu bài này bị xoá)
   { id: "news", href: "/news/5", image: unsplash("photo-1544148103-0773bf10d330", 1000) },
 ] as const;
 
@@ -292,22 +292,3 @@ export const experiences = [
     ],
   },
 ] as const satisfies readonly Venue[];
-
-export type NewsCategory = "offer" | "dining" | "event" | "guide" | "wellness";
-
-/** Chuyên mục tin tức theo thứ tự hiển thị (nhãn: dictionary `newsCategories`) */
-export const newsCategories: NewsCategory[] = ["offer", "dining", "event", "guide", "wellness"];
-
-/**
- * Bài viết, mới nhất trước; `featured` = hiện ở khối "Tin nổi bật".
- * `id`: mã bài (số, không đổi, sau này là khoá trong CMS/database), dùng trong URL `/news/<id>`.
- * `slug`: khoá chữ trong dictionary `news[slug]` (không xuất hiện trên URL; URL cũ /tin-tuc/<slug> được redirect về /news/<id>).
- */
-export const news = [
-  { id: 6, slug: "spa-mua-thu", category: "offer", date: "2026-10-10", featured: true, image: unsplash("photo-1507652313519-d4e9174996dd", 1600) },
-  { id: 5, slug: "brunch-cuoi-tuan", category: "dining", date: "2026-10-02", featured: true, image: unsplash("photo-1544148103-0773bf10d330", 1600) },
-  { id: 4, slug: "hoang-hon-ho-boi", category: "event", date: "2026-09-25", featured: false, image: unsplash("photo-1600011689032-8b628b8a8747", 1600) },
-  { id: 3, slug: "kinh-nghiem-du-lich-phu-quoc", category: "guide", date: "2026-09-12", featured: true, image: unsplash("photo-1551882547-ff40c63fe5fa", 1600) },
-  { id: 2, slug: "uu-dai-luu-tru-dai-ngay", category: "offer", date: "2026-08-30", featured: false, image: unsplash("photo-1584132967334-10e028bd69f7", 1600) },
-  { id: 1, slug: "yoga-san-thuong", category: "wellness", date: "2026-08-15", featured: false, image: unsplash("photo-1445019980597-93fa8acb246c", 1600) },
-] as const satisfies readonly { id: number; slug: string; category: NewsCategory; date: string; featured: boolean; image: string }[];

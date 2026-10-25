@@ -111,10 +111,3 @@ function plain(n: Inline): string {
 export function blocksText(blocks: Block[]): string[] {
   return blocks.flatMap((b) => (b.type === "list" ? b.items.map(inlineText) : b.type === "image" ? [] : [inlineText(b.text)]));
 }
-
-/** Nội dung bài dạng cũ (mục: tiêu đề + đoạn văn) → Markdown. Dùng tới khi bài được lưu sẵn dạng Markdown trong database */
-export function bodyToMarkdown(body: readonly { heading?: string; paragraphs: readonly string[] }[]) {
-  return body
-    .flatMap((s) => [...(s.heading ? [`## ${s.heading}`] : []), ...s.paragraphs])
-    .join("\n\n");
-}

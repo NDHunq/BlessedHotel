@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { logout } from "@/app/[lang]/admin/actions";
 import { LanguageMenu } from "@/components/layout/LanguageSwitcher";
 import Logo from "@/components/layout/Logo";
@@ -7,8 +8,7 @@ import { getI18n } from "@/i18n/server";
 
 /**
  * Khung các trang quản trị sau khi đăng nhập: thanh trên (logo + nhãn Quản trị, Bài viết, Chuyên mục,
- * Xem website, đổi ngôn ngữ giao diện, Đăng xuất) và dòng báo bản demo.
- * TODO: khi làm thật cần API + database để lưu bài và chuyên mục.
+ * Xem website, đổi ngôn ngữ giao diện, Đăng xuất). Nội dung trang đọc database lúc có request nên nằm trong Suspense.
  */
 export default async function AdminPanelLayout({ children }: LayoutProps<"/[lang]/admin">) {
   const { t, locale, href } = await getI18n();
@@ -51,9 +51,19 @@ export default async function AdminPanelLayout({ children }: LayoutProps<"/[lang
           </Link>
         </Container>
       </header>
-      <p className="bg-accent-soft px-4 py-2 text-center text-sm text-ink">{t.admin.demoNotice}</p>
       <main className="flex-1 pt-8 pb-24 md:pt-10">
-        <Container>{children}</Container>
+        <Container>
+          <Suspense
+            fallback={
+              <div className="space-y-4" aria-hidden>
+                <div className="h-9 w-56 animate-pulse rounded-lg bg-line/70" />
+                <div className="h-64 w-full animate-pulse rounded-2xl bg-white ring-1 ring-line" />
+              </div>
+            }
+          >
+            {children}
+          </Suspense>
+        </Container>
       </main>
     </>
   );

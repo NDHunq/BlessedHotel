@@ -2,16 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState, useTransition } from "react";
+import { deletePost, savePost, uploadImage, type SavePostResult } from "@/app/[lang]/admin/actions";
 import MarkdownEditor from "@/components/admin/MarkdownEditor";
 import SeoPanel from "@/components/admin/SeoPanel";
 import SerpPreview from "@/components/admin/SerpPreview";
 import { fill, localeMeta, locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/vi";
 import { formatDate } from "@/i18n/format";
-import type { DraftContent, KeywordIndex, PostDraft } from "@/lib/admin";
+import { isContentComplete, type DraftContent, type KeywordIndex, type PostDraft } from "@/lib/admin";
+import type { PostStatus } from "@/lib/news";
 import { analyzeSeo, ratingColor, type SeoResult } from "@/lib/seo";
-import type { NewsCategory } from "@/lib/site";
 
 type Labels = Dictionary["admin"]["editor"];
 type SeoLabels = Dictionary["admin"]["seo"];
@@ -20,40 +22,54 @@ type Message = { tone: "ok" | "error"; text: string };
 const field =
   "w-full rounded-xl bg-white px-4 py-2.5 text-[15px] text-ink outline-none ring-1 ring-line placeholder:text-muted focus:ring-2 focus:ring-brand-500";
 
-/** Bài đủ để đăng ở một ngôn ngữ khi có tiêu đề và tóm tắt */
-const isComplete = (c: DraftContent) => c.title.trim() !== "" && c.excerpt.trim() !== "";
-
 /**
- * Trình soạn bài (bản demo, không lưu): tab nội dung theo 4 ngôn ngữ (nội dung soạn bằng Markdown), thiết lập chung, xem trước thẻ bài.
+ * Trình soạn bài: tab nội dung theo 4 ngôn ngữ (nội dung soạn bằng Markdown), thiết lập chung, xem trước thẻ bài.
  * SEO: chấm điểm ngay khi gõ cho từng ngôn ngữ (`analyzeSeo`, điểm hiện cạnh tab), khung `SeoPanel` dính bên phải, `SerpPreview` dưới nội dung.
- * "Đăng bài" kiểm tra đủ 4 ngôn ngữ + ngày + ảnh bìa rồi báo kết quả; chưa gửi lên máy chủ.
+ * Lưu qua Server Action `savePost`: bài nháp lưu được khi còn thiếu; "Đăng bài" cần đủ tiêu đề + tóm tắt 4 ngôn ngữ, ngày và ảnh bìa
+ * (kiểm tra lại ở server). Ảnh bìa / ảnh trong bài tải lên qua `uploadImage`. Rời trang khi chưa lưu thì trình duyệt hỏi lại.
  */
 export default function PostEditor({
   initial,
   postId,
-  uiLocale,
+  locale,
   categories,
-  backHref,
+  listHref,
   keywordIndex,
   labels,
   seoLabels,
 }: {
   initial: PostDraft;
-  /** Có id → đang sửa bài cũ */
+  /** Có id → đang sửa bài đã lưu */
   postId?: number;
   /** Ngôn ngữ giao diện admin (tab nội dung mở sẵn theo ngôn ngữ này) */
-  uiLocale: Locale;
-  categories: { id: NewsCategory; label: string }[];
-  backHref: string;
+  locale: Locale;
+  categories: { id: string; label: string }[];
+  /** Trang danh sách bài (/<lang>/admin) */
+  listHref: string;
   /** Từ khoá chính của các bài khác (kiểm tra trùng) */
   keywordIndex: KeywordIndex;
   labels: Labels;
   seoLabels: SeoLabels;
 }) {
+  const router = useRouter();
   const [draft, setDraft] = useState(initial);
-  const [tab, setTab] = useState<Locale>(uiLocale);
+  /** Trạng thái đã lưu trong database (khác `draft.status` khi chưa bấm lưu) */
+  const [savedStatus, setSavedStatus] = useState<PostStatus | null>(postId ? initial.status : null);
+  const [dirty, setDirty] = useState(false);
+  const [tab, setTab] = useState<Locale>(locale);
   const [message, setMessage] = useState<Message | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [pending, startTransition] = useTransition();
+  const [uploading, setUploading] = useState(false);
   const content = draft.content[tab];
+
+  // Cảnh báo khi đóng tab / tải lại trang lúc còn thay đổi chưa lưu
+  useEffect(() => {
+    if (!dirty) return;
+    const warn = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
 
   // Chấm lại cả 4 ngôn ngữ mỗi khi bài thay đổi (chỉ là xử lý chuỗi, đủ nhanh để chạy theo từng phím gõ)
   const seo = useMemo(
@@ -82,48 +98,132 @@ export default function PostEditor({
 
   const update = (patch: Partial<PostDraft>) => {
     setDraft((d) => ({ ...d, ...patch }));
+    setDirty(true);
     setMessage(null);
   };
   const updateContent = (patch: Partial<DraftContent>) =>
     update({ content: { ...draft.content, [tab]: { ...content, ...patch } } });
 
-  const pickFile = (file: File | undefined) => {
-    if (file) update({ image: URL.createObjectURL(file) });
+  const errorText = (error: string) =>
+    error === "unauthorized" ? labels.sessionExpired : error === "type" ? labels.uploadType : error === "size" ? labels.uploadSize : labels.serverError;
+
+  /** Tải ảnh lên máy chủ, trả về URL (lỗi thì báo và trả về null) */
+  const upload = async (file: File) => {
+    setUploading(true);
+    setMessage({ tone: "ok", text: labels.uploading });
+    const form = new FormData();
+    form.set("file", file);
+    try {
+      const result = await uploadImage(form);
+      if (result.ok) {
+        setMessage(null);
+        return result.url;
+      }
+      setMessage({ tone: "error", text: errorText(result.error) });
+    } catch {
+      setMessage({ tone: "error", text: labels.serverError });
+    } finally {
+      setUploading(false);
+    }
+    return null;
   };
 
-  const publish = () => {
-    const missing = locales.filter((l) => !isComplete(draft.content[l]));
-    if (missing.length > 0) {
-      setTab(missing[0]);
-      setMessage({ tone: "error", text: fill(labels.missingLanguages, { langs: missing.map((l) => localeMeta[l].label).join(labels.listSeparator) }) });
-    } else if (!draft.date || !draft.image) {
-      setMessage({ tone: "error", text: labels.missingSettings });
-    } else {
-      setMessage({ tone: "ok", text: labels.published });
-    }
+  const pickCover = async (file: File | undefined) => {
+    if (!file) return;
+    const url = await upload(file);
+    if (url) update({ image: url });
   };
+
+  const save = (status: PostStatus) =>
+    startTransition(async () => {
+      let result: SavePostResult;
+      try {
+        result = await savePost(postId ?? null, { ...draft, status });
+      } catch {
+        result = { ok: false, error: "server" };
+      }
+      if (!result.ok) {
+        if (result.error === "missingLanguages") {
+          setTab(result.locales[0]);
+          setMessage({ tone: "error", text: fill(labels.missingLanguages, { langs: result.locales.map((l) => localeMeta[l].label).join(labels.listSeparator) }) });
+        } else {
+          const text = { missingSettings: labels.missingSettings, invalid: labels.invalid, notFound: labels.notFound }[result.error as string];
+          setMessage({ tone: "error", text: text ?? errorText(result.error) });
+        }
+        return;
+      }
+      setDraft((d) => ({ ...d, status }));
+      setSavedStatus(status);
+      setDirty(false);
+      setMessage({ tone: "ok", text: status === "draft" ? (savedStatus === "published" ? labels.unpublished : labels.draftSaved) : labels.published });
+      // Bài mới: chuyển sang trang sửa của bài vừa tạo
+      if (!postId) router.replace(`${listHref}/news/${result.id}`);
+    });
+
+  const remove = () =>
+    startTransition(async () => {
+      const result = await deletePost(postId!).catch(() => ({ ok: false as const, error: "server" as const }));
+      if (!result.ok) {
+        setConfirmDelete(false);
+        return setMessage({ tone: "error", text: errorText(result.error) });
+      }
+      setDirty(false);
+      router.push(listHref);
+    });
 
   const categoryLabel = categories.find((c) => c.id === draft.category)?.label;
+  const isPublished = savedStatus === "published";
+  const busy = pending || uploading;
+  const secondary = "h-10 rounded-full px-5 text-sm font-medium text-ink ring-1 ring-line hover:bg-white disabled:opacity-60";
 
   return (
     <div>
-      <Link href={backHref} className="text-sm font-medium text-ink-soft hover:text-brand-600">
+      <Link href={listHref} className="text-sm font-medium text-ink-soft hover:text-brand-600">
         ← {labels.back}
       </Link>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-4">
-        <h1 className="font-display text-3xl font-semibold tracking-[-0.01em] text-ink">
-          {postId ? fill(labels.editTitle, { id: postId }) : labels.newTitle}
-        </h1>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="font-display text-3xl font-semibold tracking-[-0.01em] text-ink">
+            {postId ? fill(labels.editTitle, { id: postId }) : labels.newTitle}
+          </h1>
+          {savedStatus && (
+            <span
+              className={`rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ${
+                isPublished ? "bg-emerald-50 text-emerald-700 ring-emerald-100" : "bg-surface text-ink-soft ring-line"
+              }`}
+            >
+              {isPublished ? labels.statusPublished : labels.statusDraft}
+            </span>
+          )}
+          {dirty && <span className="text-xs text-muted">{labels.unsaved}</span>}
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          {postId &&
+            (confirmDelete ? (
+              <span className="inline-flex items-center gap-2 text-sm">
+                <span className="text-ink">{labels.confirmDelete}</span>
+                <button type="button" onClick={remove} disabled={busy} className="h-10 rounded-full bg-red-600 px-5 font-medium text-white hover:bg-red-700 disabled:opacity-60">
+                  {labels.delete}
+                </button>
+                <button type="button" onClick={() => setConfirmDelete(false)} className={secondary}>
+                  {labels.cancel}
+                </button>
+              </span>
+            ) : (
+              <button type="button" onClick={() => setConfirmDelete(true)} disabled={busy} className="h-10 rounded-full px-4 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-60">
+                {labels.delete}
+              </button>
+            ))}
+          <button type="button" onClick={() => save("draft")} disabled={busy} className={secondary}>
+            {isPublished ? labels.unpublish : labels.saveDraft}
+          </button>
           <button
             type="button"
-            onClick={() => setMessage({ tone: "ok", text: labels.draftSaved })}
-            className="h-10 rounded-full px-5 text-sm font-medium text-ink ring-1 ring-line hover:bg-white"
+            onClick={() => save("published")}
+            disabled={busy}
+            className="h-10 rounded-full bg-brand-600 px-5 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-60"
           >
-            {labels.saveDraft}
-          </button>
-          <button type="button" onClick={publish} className="h-10 rounded-full bg-brand-600 px-5 text-sm font-medium text-white hover:bg-brand-700">
-            {postId ? labels.update : labels.publish}
+            {pending ? labels.saving : isPublished ? labels.update : labels.publish}
           </button>
         </div>
       </div>
@@ -147,7 +247,7 @@ export default function PostEditor({
           <p className="mt-0.5 text-sm text-muted">{labels.languageHint}</p>
           <div role="tablist" aria-label={labels.contentLanguage} className="mt-4 flex flex-wrap gap-2">
             {locales.map((l) => {
-              const done = isComplete(draft.content[l]);
+              const done = isContentComplete(draft.content[l]);
               return (
                 <button
                   key={l}
@@ -214,6 +314,8 @@ export default function PostEditor({
               id="seo-field-body"
               value={content.body}
               onChange={(body) => updateContent({ body })}
+              onUpload={upload}
+              uploading={uploading}
               lang={localeMeta[tab].htmlLang}
               labels={labels}
             />
@@ -242,7 +344,7 @@ export default function PostEditor({
               <span className="text-sm text-ink-soft">{labels.category}</span>
               <select
                 value={draft.category}
-                onChange={(e) => update({ category: e.target.value as NewsCategory })}
+                onChange={(e) => update({ category: e.target.value })}
                 className={`${field} mt-1.5 appearance-none`}
               >
                 {categories.map((c) => (
@@ -269,15 +371,28 @@ export default function PostEditor({
               <p className="text-sm text-ink-soft">{labels.cover}</p>
               <input
                 id="seo-field-cover"
-                value={draft.image.startsWith("blob:") ? "" : draft.image}
+                value={draft.image}
                 onChange={(e) => update({ image: e.target.value })}
                 placeholder={labels.coverUrl}
                 aria-label={labels.coverUrl}
                 className={`${field} mt-1.5 text-sm`}
               />
-              <label className="mt-2 inline-flex cursor-pointer items-center rounded-full px-4 py-2 text-sm font-medium text-ink ring-1 ring-line hover:bg-surface">
-                {labels.coverUpload}
-                <input type="file" accept="image/*" className="sr-only" onChange={(e) => pickFile(e.target.files?.[0])} />
+              <label
+                className={`mt-2 inline-flex items-center rounded-full px-4 py-2 text-sm font-medium text-ink ring-1 ring-line hover:bg-surface ${
+                  uploading ? "pointer-events-none opacity-60" : "cursor-pointer"
+                }`}
+              >
+                {uploading ? labels.uploading : labels.coverUpload}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/avif,image/gif"
+                  className="sr-only"
+                  disabled={uploading}
+                  onChange={(e) => {
+                    pickCover(e.target.files?.[0]);
+                    e.target.value = "";
+                  }}
+                />
               </label>
             </div>
           </section>
@@ -290,7 +405,7 @@ export default function PostEditor({
             <div lang={localeMeta[tab].htmlLang} className="mt-4 overflow-hidden rounded-2xl bg-sand">
               <div className="relative grid aspect-[16/10] place-items-center bg-line text-sm text-muted">
                 {draft.image ? (
-                  // Ảnh xem trước có thể là link bất kỳ hoặc ảnh chọn từ máy (blob:), next/image không tối ưu được
+                  // Ảnh bìa có thể là link bất kỳ admin dán vào, next/image không tối ưu được mọi nguồn
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={draft.image} alt="" className="absolute inset-0 size-full object-cover" />
                 ) : (

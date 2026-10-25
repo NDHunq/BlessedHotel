@@ -344,7 +344,6 @@ export const vi = {
   admin: {
     metaTitle: "Quản trị",
     badge: "Quản trị",
-    demoNotice: "Bản demo: chưa kết nối máy chủ, mọi thay đổi sẽ không được lưu.",
     nav: {
       posts: "Bài viết",
       newPost: "Viết bài mới",
@@ -365,6 +364,8 @@ export const vi = {
       edit: "Sửa",
       view: "Xem",
       seo: "SEO",
+      draft: "Nháp",
+      empty: "Chưa có bài viết nào. Bấm “Viết bài mới” để bắt đầu.",
     },
     login: {
       metaTitle: "Đăng nhập",
@@ -378,6 +379,7 @@ export const vi = {
       submitting: "Đang đăng nhập…",
       error: "Tên đăng nhập hoặc mật khẩu không đúng.",
       backToSite: "Về website",
+      locked: "Đăng nhập sai quá nhiều lần. Vui lòng thử lại sau {n} phút.",
     },
     categories: {
       title: "Chuyên mục",
@@ -399,9 +401,11 @@ export const vi = {
       inUse: "Chuyên mục “{name}” đang có {n} bài. Hãy chuyển các bài sang chuyên mục khác trước khi xoá.",
       missingNames: "Vui lòng nhập tên chuyên mục đủ 4 ngôn ngữ.",
       invalidId: "Mã chỉ gồm chữ thường a-z, số, dấu gạch nối và không trùng mã đã có.",
-      added: "Đã thêm chuyên mục (bản demo, chưa lưu lên máy chủ).",
-      updated: "Đã cập nhật chuyên mục (bản demo, chưa lưu lên máy chủ).",
-      deleted: "Đã xoá chuyên mục (bản demo, chưa lưu lên máy chủ).",
+      added: "Đã thêm chuyên mục.",
+      updated: "Đã cập nhật chuyên mục.",
+      deleted: "Đã xoá chuyên mục.",
+      sessionExpired: "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.",
+      serverError: "Máy chủ đang gặp lỗi, vui lòng thử lại sau.",
     },
     editor: {
       newTitle: "Viết bài mới",
@@ -449,11 +453,27 @@ export const vi = {
       saveDraft: "Lưu nháp",
       publish: "Đăng bài",
       update: "Cập nhật",
-      draftSaved: "Đã lưu nháp (bản demo, chưa lưu lên máy chủ).",
-      published: "Bài viết hợp lệ, sẵn sàng đăng. Đây là bản demo nên bài chưa được lưu.",
+      draftSaved: "Đã lưu nháp. Bài nháp không hiện trên website.",
+      published: "Đã lưu và đăng bài, bài viết đang hiện trên website.",
       missingLanguages: "Còn thiếu tiêu đề hoặc tóm tắt ở: {langs}.",
-      missingSettings: "Vui lòng chọn ngày đăng và ảnh bìa.",
+      missingSettings: "Bài đăng cần có ngày đăng và ảnh bìa.",
       listSeparator: ", ",
+      unpublished: "Đã chuyển bài về nháp, bài không còn hiện trên website.",
+      unpublish: "Chuyển về nháp",
+      saving: "Đang lưu…",
+      statusDraft: "Nháp",
+      statusPublished: "Đã đăng",
+      unsaved: "Có thay đổi chưa lưu",
+      delete: "Xoá bài",
+      confirmDelete: "Xoá vĩnh viễn bài này?",
+      cancel: "Huỷ",
+      uploading: "Đang tải ảnh lên…",
+      uploadType: "Chỉ nhận ảnh JPG, PNG, WebP, AVIF hoặc GIF.",
+      uploadSize: "Ảnh quá lớn, tối đa 10MB.",
+      sessionExpired: "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại (nội dung đang soạn vẫn còn trên trang).",
+      serverError: "Máy chủ đang gặp lỗi, vui lòng thử lại sau.",
+      invalid: "Dữ liệu chưa hợp lệ: kiểm tra chuyên mục, ngày đăng và đường dẫn ảnh bìa (phải bắt đầu bằng https:// hoặc /).",
+      notFound: "Bài viết này không còn tồn tại.",
     },
     /** Khung chấm điểm SEO trong trình soạn bài (lib/seo.ts) */
     seo: {
@@ -540,15 +560,6 @@ export const vi = {
     ctaBody: "Gọi hoặc nhắn Zalo để nhận giá tốt nhất.",
   },
 
-  /** Nhãn chuyên mục tin tức, khoá theo id trong site.ts `newsCategories` */
-  newsCategories: {
-    offer: "Ưu đãi",
-    dining: "Ẩm thực",
-    event: "Sự kiện",
-    guide: "Cẩm nang",
-    wellness: "Sức khỏe",
-  },
-
   article: {
     tableOfContents: "Mục lục",
     keyPoints: "Thông tin nhanh",
@@ -561,170 +572,7 @@ export const vi = {
     ctaTitle: "Muốn đặt phòng hoặc hỏi thêm?",
     ctaBody: "Gọi, nhắn Zalo hoặc đặt nhanh qua các nền tảng.",
   },
-
-  /** Bài viết, khoá theo slug (slug giữ nguyên cho mọi ngôn ngữ) */
-  news: {
-    "spa-mua-thu": {
-      title: "Gói spa mùa thu: thư giãn trọn vẹn với giá đặc biệt",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "spa phú quốc",
-      excerpt: "Tận hưởng liệu trình 90 phút cùng trà thảo mộc, áp dụng đến hết tháng 11.",
-      keyPoints: ["Liệu trình 90 phút: ngâm chân, massage 60 phút, đắp mặt nạ", "Mời trà gừng mật ong và trái cây theo mùa", "Áp dụng 10:00 – 20:00 mỗi ngày đến hết tháng 11"],
-      body: [
-        {
-          paragraphs: [
-            "Mùa thu ở Phú Quốc là lúc nắng dịu và biển lặng hơn. Đây cũng là thời điểm Blessed Spa ra mắt gói thư giãn 90 phút dành riêng cho khách lưu trú và khách ghé thăm.",
-          ],
-        },
-        {
-          heading: "Gói spa gồm những gì",
-          paragraphs: [
-            "Liệu trình bắt đầu bằng ngâm chân thảo mộc, tiếp theo là 60 phút massage toàn thân với tinh dầu sả chanh và kết thúc bằng đắp mặt nạ dưỡng ẩm.",
-            "Sau liệu trình, bạn được mời trà gừng mật ong và một đĩa trái cây theo mùa tại phòng thư giãn.",
-          ],
-        },
-        {
-          heading: "Thời gian áp dụng",
-          paragraphs: [
-            "Ưu đãi áp dụng mỗi ngày từ 10:00 đến 20:00, đến hết tháng 11. Vui lòng đặt lịch trước tại quầy lễ tân hoặc qua Zalo để chọn được khung giờ mong muốn.",
-          ],
-        },
-      ],
-    },
-    "brunch-cuoi-tuan": {
-      title: "Ra mắt Sunday Brunch tại Blessed Bistro",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "brunch phú quốc",
-      excerpt: "Hơn 60 món Á Âu, khu vui chơi cho trẻ em và nhạc sống mỗi Chủ nhật.",
-      keyPoints: ["Mỗi Chủ nhật, 11:00 – 14:30 tại Blessed Bistro", "Hơn 60 món, quầy hải sản tươi Phú Quốc", "Trẻ em dưới 6 tuổi được miễn phí"],
-      body: [
-        { paragraphs: ["Từ Chủ nhật này, Blessed Bistro mở Sunday Brunch với hơn 60 món Á Âu, phục vụ từ 11:00 đến 14:30."] },
-        {
-          heading: "Thực đơn",
-          paragraphs: [
-            "Quầy hải sản tươi có hàu, tôm và ghẹ Phú Quốc. Bên cạnh là góc món nướng, mì làm tại chỗ, bánh ngọt và quầy cà phê phin.",
-            "Mỗi tuần, bếp trưởng chọn thêm hai món đặc biệt theo nguyên liệu trong mùa.",
-          ],
-        },
-        {
-          heading: "Cho cả gia đình",
-          paragraphs: [
-            "Khu vui chơi trẻ em có người trông, cùng nhạc acoustic nhẹ suốt buổi. Trẻ em dưới 6 tuổi được miễn phí khi đi cùng người lớn.",
-          ],
-        },
-      ],
-    },
-    "hoang-hon-ho-boi": {
-      title: "Pool Party hoàng hôn cuối tháng",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "pool party phú quốc",
-      excerpt: "DJ, cocktail và BBQ bên hồ bơi vô cực vào tối thứ Bảy cuối cùng mỗi tháng.",
-      keyPoints: ["Tối thứ Bảy cuối cùng mỗi tháng", "Cocktail từ 17:00, tiệc nướng từ 18:30, DJ đến 22:00", "Khách lưu trú vào cửa miễn phí"],
-      body: [
-        {
-          paragraphs: [
-            "Vào tối thứ Bảy cuối cùng mỗi tháng, hồ bơi vô cực của Blessed Hotel trở thành nơi đón hoàng hôn với DJ, cocktail và tiệc nướng ngoài trời.",
-          ],
-        },
-        {
-          heading: "Chương trình",
-          paragraphs: [
-            "Từ 17:00, quầy bar bên hồ phục vụ cocktail đặc trưng của Olea Café. Tiệc nướng bắt đầu lúc 18:30 với hải sản và thịt nướng than hoa.",
-            "DJ chơi nhạc đến 22:00. Khách lưu trú được vào cửa miễn phí, khách bên ngoài vui lòng đặt chỗ trước.",
-          ],
-        },
-      ],
-    },
-    "kinh-nghiem-du-lich-phu-quoc": {
-      title: "Kinh nghiệm du lịch Phú Quốc 4 ngày 3 đêm",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "kinh nghiệm du lịch phú quốc",
-      excerpt: "Lịch trình gợi ý, món ngon nên thử và những điểm ngắm hoàng hôn đẹp nhất đảo.",
-      keyPoints: ["Ngày 1–2: Thị trấn Hoàng Hôn, chợ đêm, tour 4 đảo", "Ngày 3–4: bắc đảo, vườn tiêu, mua quà", "Concierge đặt xe, tour, nhà hàng nếu nhắn trước một ngày"],
-      body: [
-        {
-          paragraphs: [
-            "Bốn ngày là vừa đủ để vừa nghỉ ngơi vừa khám phá Phú Quốc mà không bị vội. Dưới đây là lịch trình đội ngũ concierge của chúng tôi hay gợi ý cho khách lần đầu đến đảo.",
-          ],
-        },
-        {
-          heading: "Ngày 1 và 2: Nam đảo",
-          paragraphs: [
-            "Ngày đầu, nhận phòng và đi bộ ra biển ngắm hoàng hôn ở khu Thị trấn Hoàng Hôn. Buổi tối ghé chợ đêm để thử hải sản nướng.",
-            "Ngày thứ hai, đi tour 4 đảo bằng ca nô, lặn ngắm san hô và ăn trưa trên đảo. Chiều về nghỉ ở hồ bơi khách sạn.",
-          ],
-        },
-        {
-          heading: "Ngày 3 và 4: Bắc đảo và mua sắm",
-          paragraphs: [
-            "Ngày thứ ba, đi về phía bắc đảo để tắm biển và ghé một vườn tiêu. Ngày cuối, mua nước mắm, tiêu và ngọc trai làm quà trước khi ra sân bay.",
-            "Concierge có thể đặt xe, tour và nhà hàng giúp bạn. Chỉ cần nhắn trước một ngày.",
-          ],
-        },
-      ],
-    },
-    "uu-dai-luu-tru-dai-ngay": {
-      title: "Ở càng lâu, ưu đãi càng lớn",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "ưu đãi lưu trú dài ngày",
-      excerpt: "Giảm đến 25% cho kỳ nghỉ từ 5 đêm trở lên khi liên hệ đặt phòng trực tiếp.",
-      keyPoints: ["Giảm 15% từ 5 đêm, 25% từ 7 đêm", "Bao gồm bữa sáng và giặt ủi hằng ngày", "Chỉ áp dụng khi đặt trực tiếp qua hotline hoặc Zalo"],
-      body: [
-        {
-          paragraphs: [
-            "Nếu bạn có kế hoạch ở Phú Quốc từ 5 đêm trở lên, hãy liên hệ đặt phòng trực tiếp với khách sạn để nhận mức giá tốt hơn.",
-          ],
-        },
-        {
-          heading: "Ưu đãi",
-          paragraphs: [
-            "Giảm 15% cho kỳ nghỉ từ 5 đêm và 25% cho kỳ nghỉ từ 7 đêm. Ưu đãi đã bao gồm bữa sáng hằng ngày và giặt ủi hai bộ quần áo mỗi ngày.",
-            "Khách lưu trú dài ngày được nhận phòng sớm và trả phòng muộn nếu còn phòng.",
-          ],
-        },
-        {
-          heading: "Cách đặt",
-          paragraphs: [
-            "Gọi hotline hoặc nhắn Zalo cho chúng tôi, kèm ngày đến, ngày đi và số khách. Ưu đãi không áp dụng khi đặt qua các nền tảng đặt phòng trực tuyến.",
-          ],
-        },
-      ],
-    },
-    "yoga-san-thuong": {
-      title: "Yoga bình minh trên sân thượng",
-      /** Từ khoá chính (SEO) */
-      focusKeyword: "yoga phú quốc",
-      excerpt: "Lớp yoga miễn phí cho khách lưu trú lúc 6:00 sáng mỗi ngày, đón nắng sớm trên đảo.",
-      keyPoints: ["6:00 sáng mỗi ngày trên sân thượng", "Lớp 45 phút, phù hợp người mới bắt đầu", "Miễn phí cho khách lưu trú, có sẵn thảm và nước"],
-      body: [
-        {
-          paragraphs: [
-            "Mỗi sáng lúc 6:00, sân thượng của Blessed Hotel có một lớp yoga nhẹ nhàng kéo dài 45 phút, miễn phí cho khách lưu trú.",
-          ],
-        },
-        {
-          heading: "Lớp học",
-          paragraphs: [
-            "Lớp phù hợp cả người mới bắt đầu, tập trung vào hít thở và giãn cơ. Thảm, khăn và nước được chuẩn bị sẵn.",
-            "Sau buổi tập, bạn có thể xuống Blessed Bistro ăn sáng hoặc ra hồ bơi khi nắng còn dịu.",
-          ],
-        },
-      ],
-    },
-  },
 };
 
 /** Cấu trúc bắt buộc cho mọi ngôn ngữ (en/ko/zh phải có đủ các key này) */
-export type Dictionary = Omit<typeof vi, "news"> & {
-  news: Record<keyof typeof vi.news, NewsText>;
-};
-
-export type NewsText = {
-  title: string;
-  /** Từ khoá chính (SEO), dùng cho bộ chấm SEO ở trang quản trị */
-  focusKeyword: string;
-  excerpt: string;
-  /** 3 ý chính hiện trong khung "Thông tin nhanh" */
-  keyPoints: string[];
-  body: { heading?: string; paragraphs: string[] }[];
-};
+export type Dictionary = typeof vi;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import OpenBookingButton from "@/components/booking/OpenBookingButton";
 import PostMiniList from "@/components/news/PostMiniList";
 import RoomsMiniList from "@/components/news/RoomsMiniList";
@@ -15,19 +16,28 @@ import { pageMetadata } from "@/i18n/metadata";
 import { getI18n } from "@/i18n/server";
 import { getNews } from "@/lib/content";
 import { blocksText, inlineText, parseMarkdown } from "@/lib/markdown";
-import { news } from "@/lib/site";
 
-// Cache Components: tạo sẵn trang tĩnh cho mọi bài (mỗi ngôn ngữ); URL là /news/<id>, id lạ → notFound()
+/*
+ * Bài viết nằm trong database nên không tạo sẵn lúc build (build không truy cập database). Cache Components bắt buộc
+ * trả về ít nhất 1 id: "1" chỉ để Next kiểm tra route; mọi bài được render khi có người mở rồi cache lại (lib/news.ts).
+ */
 export function generateStaticParams() {
-  return news.map((post) => ({ id: String(post.id) }));
+  return [{ id: "1" }];
 }
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/news/[id]">): Promise<Metadata> {
   const { id } = await params;
   const i18n = await getI18n();
-  const post = getNews(i18n).find((p) => String(p.id) === id);
+  const post = (await getNews(i18n)).find((p) => String(p.id) === id);
   if (!post) return {};
-  return pageMetadata({ locale: i18n.locale, path: `/news/${id}`, title: post.title, description: post.excerpt, image: post.image });
+  // Tiêu đề SEO / mô tả meta nhập ở trang quản trị; để trống thì dùng tiêu đề và tóm tắt
+  return pageMetadata({
+    locale: i18n.locale,
+    path: `/news/${id}`,
+    title: post.seoTitle || post.title,
+    description: post.metaDescription || post.excerpt,
+    image: post.image,
+  });
 }
 
 /** id neo cho tiêu đề "##" thứ i (không lấy từ tiêu đề vì tiếng Hàn/Trung không chuyển được thành chữ Latin) */
@@ -38,15 +48,24 @@ const anchorId = (i: number) => `section-${i + 1}`;
  * cột bài (breadcrumb, tiêu đề, ngày + thời gian đọc, đoạn mở đầu, Mục lục thu gọn, khung "Thông tin nhanh",
  * ảnh có chú thích, các mục đánh số, khối đặt phòng) + thanh bên dính (bài dành cho bạn, hạng phòng, đặt phòng).
  */
-export default async function NewsArticlePage({ params }: PageProps<"/[lang]/news/[id]">) {
+export default function NewsArticlePage({ params }: PageProps<"/[lang]/news/[id]">) {
+  return (
+    <Suspense fallback={<ArticleSkeleton />}>
+      <Article params={params} />
+    </Suspense>
+  );
+}
+
+/** Nội dung bài (đọc từ database lúc có request); id không có hoặc bài chưa đăng → trang 404 */
+async function Article({ params }: Pick<PageProps<"/[lang]/news/[id]">, "params">) {
   const { id } = await params;
   const i18n = await getI18n();
   const { t, locale, href } = i18n;
-  const all = getNews(i18n);
+  const all = await getNews(i18n);
   const post = all.find((p) => String(p.id) === id);
   if (!post) notFound();
 
-  const blocks = parseMarkdown(post.markdown);
+  const blocks = parseMarkdown(post.body);
   const allText = [post.excerpt, ...post.keyPoints, ...blocksText(blocks)];
   // Tiêu đề "##" được đánh số 1, 2, 3… (dùng chung cho Mục lục và tiêu đề trong bài)
   const toc = blocks
@@ -124,7 +143,7 @@ export default async function NewsArticlePage({ params }: PageProps<"/[lang]/new
 
         <figure className="mt-10">
           <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
-            <Image src={post.image} alt={post.title} fill priority sizes="(min-width: 1024px) 760px, 100vw" className="object-cover" />
+            <Image src={post.image} alt={post.title} fill priority unoptimized={!post.optimize} sizes="(min-width: 1024px) 760px, 100vw" className="object-cover" />
           </div>
           <figcaption className="mt-3 text-center text-sm text-muted italic">{post.title}</figcaption>
         </figure>
@@ -150,6 +169,26 @@ export default async function NewsArticlePage({ params }: PageProps<"/[lang]/new
         <RoomsMiniList />
         <SideBookingCta />
       </aside>
+    </Container>
+  );
+}
+
+/** Khung xương khi đang tải bài */
+function ArticleSkeleton() {
+  return (
+    <Container className="grid gap-12 pt-8 pb-24 md:pt-10 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-14">
+      <div className="space-y-5" aria-hidden>
+        <div className="h-4 w-48 animate-pulse rounded bg-line/70" />
+        <div className="h-10 w-4/5 animate-pulse rounded bg-line/70" />
+        <div className="h-4 w-64 animate-pulse rounded bg-line/50" />
+        <div className="h-24 w-full animate-pulse rounded-xl bg-line/40" />
+        <div className="aspect-[16/9] w-full animate-pulse rounded-2xl bg-line/50" />
+      </div>
+      <div className="hidden space-y-4 lg:block" aria-hidden>
+        <div className="h-6 w-40 animate-pulse rounded bg-line/70" />
+        <div className="h-20 w-full animate-pulse rounded-lg bg-line/40" />
+        <div className="h-20 w-full animate-pulse rounded-lg bg-line/40" />
+      </div>
     </Container>
   );
 }
